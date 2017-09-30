@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+	
+body {
+  background-color: #e5f3ed;
+  color: #222;
+  font-family: Genath-Regular, serif;
+  font-weight: 300;
+  font-size: 15px;
+}
+nav {
+  background-color: #fff;
+  border: 1px solid #dedede;
+  border-radius: 4px;
+  margin: 8px 22px;
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.055);
+  color: #888;
+  width: 96%; 
+  overflow: hidden;
+ 
+}
+
+  nav ul {
+    margin: 0;
+    padding: 0;
+  }
+
+    nav ul li {
+      display: inline-block;
+	  
+    }
+      
+	  
+      nav > ul > li > a {
+        color: #aaa;
+        display: block;
+        line-height: 56px;
+        padding: 0 24px;
+        text-decoration: none;
+      }
+
+        nav > ul > li:hover {
+          background-color: rgb( 40, 44, 47 );
+        }
+
+        nav > ul > li:hover > a {
+          color: rgb( 255, 255, 255 );
+        }
+
+     
+		
+#logo { 
+  float: left; 
+  width: 43px;
+  height : 40px;
+  right: 80px;
+  padding: 0px 5px;
+  position: absolute;
+  top: 17px;   
+}	
+
+.container {
+   width:100%;
+}
+.left {   
+	margin-left:285px;
+	width:260px;
+	height:280px;
+    float: left;
+}
+.right {
+	margin-left:600px;
+	width:300px;
+	height:280px;
+    padding-left:25px;
+    text-align: left;
+}
+
+
+.left1 {
+	margin-left:250px;
+	width:300px;
+	height:280px;
+	 float: left;
+	 text-align:right;
+   
+}
+
+.right1 {   
+	margin-left:640px;
+	width:260px;
+	height:280px;
+	
+}
+
+.img-circle1 {
+    border-radius: 50%;
+	height : 250px;
+	width: 250px;
+    border:1px solid #fff;
+	box-shadow: 0px 6px 5px #ccc;
+}
+
+.h-line {
+	width : 500px;
+	margin-left:325px;
+	border-top: dotted 1px;
+	clear:both;
+}
+.button {
+    background-color: #8abdb4; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 1px1px;
+    cursor: pointer;
+}
+
+.button1 {
+    background-color: ; 
+    color: black; 
+    border: 2px solid #4CAF50;
+}
+
+#startingimg{
+	border-radius: 3px;
+	height : 470px;
+	width: 96%;
+    border:1px solid #fff;
+	box-shadow: 0px 6px 5px #ccc;
+	}
+	
+	
+h3{
+    font-size: 23px;
+	font-family: Genath-Regular, serif;
+	color:#34626f;
+}
+
+h4{
+	font-size: 18px;
+	font-family: Genath-Regular, serif;
+	color:#8abdb4;
+}	
+</style>
+<script>
+function postYourAdd () {
+    var iframe = $("#forPostyouradd");
+    iframe.attr("src", iframe.data("src")); 
+}
+</script>
+</head>
+<body>		
+		
+		
+		
+<nav >
+	<ul>
+		<li><a href="index.html">Home</a></li>
+		<li><a href="Notifications.html">Notifications</a></li>
+		<li><a href="Profile.html">Profile</a></li>
+		
+</nav>
+
+
+
+
+<center>
+<br><br>
+<form action="/action_page.php">
+<h3>Account number:<input type="text" name="fname"></h3>
+<h3>Account Type: <select>
+  <option value="saving">Saving</option>
+  <option value="checking">Checking</option>
+  <option value="credit Card">Credit Card</option>
+</select></h3>
+<br>
+<input type="button" onclick="test.location.href='Transactions.html';document.getElementById('test').frameBorder=1" value="SUBMIT" class= "button button1">
+</form>
+<br>
+<iframe src="blank.html" frameborder="0" name="test" id="test" width=500 height=500></iframe>
+</center>
+<br/><br/>
+
+</body>
+</html>
