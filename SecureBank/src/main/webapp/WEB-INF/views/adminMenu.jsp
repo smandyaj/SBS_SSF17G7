@@ -5,19 +5,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <style>
-#adminMenu>ul {
+#adminMenu ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #333;
 }
 
-#adminMenu>li {
+#adminMenu li {
 	float: left;
 }
 
-#adminMenu>li a {
+#adminMenu li a {
 	display: block;
 	color: white;
 	text-align: center;
@@ -26,7 +25,7 @@
 }
 
 /* Change the link color to #111 (black) on hover */
-#adminMenu>li a:hover {
+#adminMenu li a:hover {
 	background-color: #111;
 }
 </style>
