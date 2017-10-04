@@ -158,35 +158,38 @@ function postYourAdd () {
 </head>
 <body>		
 		
-	<nav >
-	<ul>
 		
-		<nav >
+		
+<nav >
 	<ul>
 		<li><a href="index_merchant.html">Home</a></li>
-		<li><a href="Savings.html">Savings</a></li>
-		<li><a href="Checking.html">Checking</a></li>
-        <li><a href="Credit.html">Credit</a></li>
-		<li><a href="Profile.html">Profile Update</a></li>
-		
+        <li><a href="saving_merchant.html">Savings</a></li>
+        <li><a href="checking_merchant.html">Checking</a></li>
+        <li><a href="credit.html">credit</a></li>
+        <li><a href="Profile.html">Profile Update</a></li>
 		
 </nav>
-		
-</nav>	
-		
 
 
 
 
 <center>
-<br><br>
-<form action="/action_page.php">
-<h3> Transfer to CUSTOMER ID :<input type="text" name="fname"></h3>
-<h3>AMOUNT:<input type="text" name="fname"></h3>
-<br>
-<button class = "button button1">Submit</button>
-</form>
-
+    <br><br>
+    <form action="/action_page.php">
+        <h3>     ACCOUNT DETAILS SUMMARY      </h3>
+        <h3> </h3>
+        <h3>Account number:<input type="text" name="fname"></h3>
+        <h3>Account Type: <select>
+            <option value="saving">Saving</option>
+            <option value="checking">Checking</option>
+            <option value="credit Card">Credit Card</option>
+        </select></h3>
+        <br>
+        <input type="button" onclick="test.location.href='Transactions.html';document.getElementById('test').frameBorder=1" value="SUBMIT" class= "button button1">
+    </form>
+    <br>
+    <iframe src="blank.html" frameborder="0" name="test" id="test" width=500 height=500></iframe>
+</center>
 <br/><br/>
 
 </body>
