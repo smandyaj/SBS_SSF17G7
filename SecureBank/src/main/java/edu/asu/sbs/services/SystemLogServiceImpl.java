@@ -22,13 +22,11 @@ public class SystemLogServiceImpl implements SystemLogService{
 		this.systemLogDAO = systemLogDAO;
 	}
 
-	@Override
 	public void addSystemLog(SystemLog s) {
 		// TODO Auto-generated method stub
 		this.systemLogDAO.addSystemLog(s);
 	}
 
-	@Override
 	public List<SystemLog> getSystemLog() {
 		// TODO Auto-generated method stub
 		return this.systemLogDAO.getSystemLog();
