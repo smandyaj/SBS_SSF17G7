@@ -5,18 +5,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <style>
-#adminMenu ul {
+#adminMenu > ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
+	background-color: #111;
 }
 
-#adminMenu li {
+#adminMenu > ul > li {
 	float: left;
 }
 
-#adminMenu li a {
+#adminMenu > ul > li > a {
 	display: block;
 	color: white;
 	text-align: center;
@@ -25,21 +26,21 @@
 }
 
 /* Change the link color to #111 (black) on hover */
-#adminMenu li a:hover {
+#adminMenu > ul > li > a:hover {
 	background-color: #111;
 }
 </style>
 </head>
 <body>
 	<div id="adminMenu">
-		<ul>
-			<li>Home</li>
-			<li>Employee Management</li>
-			<li>Requests Pending</li>
-			<li>System Log</li>
-			<li>PII</li>
-			<li>Profile</li>
-			<li>Logout</li>
+		<ul id="adminList">
+			<li><a href=#>Home</a></li>
+			<li><a href=${pageContext.request.contextPath}/employee/list>Employee Management</a></li>
+			<li><a href="#">Requests Pending</a></li>
+			<li><a href=${pageContext.request.contextPath}/admin/systemlogs>System Log</a></li>
+			<li><a href=${pageContext.request.contextPath}/employee/add>Add Users</a></li>
+			<li><a href="#">Profile</a></li>
+			<li><a href="#">Logout</a></li>
 		</ul>
 	</div>
 </body>
