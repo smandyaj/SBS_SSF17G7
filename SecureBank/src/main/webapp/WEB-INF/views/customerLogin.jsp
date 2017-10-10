@@ -30,6 +30,7 @@
 				<tr>
 					<td>Password:</td>
 					<td><input type='password' name='password' /></td>
+					<!--  use keyboard for security -->
 				</tr>
 				<tr>
 					<td>Account Type</td>
