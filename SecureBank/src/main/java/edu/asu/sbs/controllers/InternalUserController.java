@@ -14,8 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.asu.sbs.model.Account;
+import edu.asu.sbs.model.ExternalUser;
+import edu.asu.sbs.model.ExternalUserSearch;
 import edu.asu.sbs.model.InternalUser;
 import edu.asu.sbs.model.SystemLog;
+import edu.asu.sbs.services.AccountService;
+import edu.asu.sbs.services.ExternalUserService;
 import edu.asu.sbs.services.InternalUserService;
 import edu.asu.sbs.services.SystemLogService;
 
@@ -27,6 +32,17 @@ public class InternalUserController {
 	
 	@Autowired
 	private InternalUserService internalUserService;
+	
+	@Autowired
+	private ExternalUserService externalUserService;
+	
+	@Autowired
+	private AccountService accountService;
+	
+	@ModelAttribute
+	public ExternalUserSearch getExternalUser() {
+		return new ExternalUserSearch();
+	}
 	
 	/** Lists all the System logs */
 	@RequestMapping(value="/admin/systemlogs",method=RequestMethod.GET)
@@ -122,5 +138,29 @@ public class InternalUserController {
 		return modelAndView;
 	}
 	
-
+	@RequestMapping(value="/employee/transaction", method = RequestMethod.GET)
+	public ModelAndView returnTransactionPage() {
+		ModelAndView modelAndView  = new ModelAndView("customerSearch");
+		modelAndView.addObject("externalUser", getExternalUser());
+		return modelAndView;
+	}
+	
+	/** get accounts from the customer/merchant for transfer */
+	@RequestMapping(value="/employee/transaction", method = RequestMethod.POST)
+	public ModelAndView returnTransactionPage(@ModelAttribute ExternalUserSearch customer) {
+		ModelAndView modelAndView  = new ModelAndView("internalUserTransaction");
+		System.out.println("Fetching the user details " + customer.getCustomerId());
+		ExternalUser externalUser  = externalUserService.findUserById(customer.getCustomerId()); 
+		List<Account> accounts = accountService.getAccountByCustomerId(externalUser.getCustomerId());
+		modelAndView.addObject("accounts", accounts);
+		modelAndView.addObject("user", externalUser);
+		return modelAndView;
+	}
+	
+	/** process the transaction **/
+	@RequestMapping(value="/employee/transaction/process", method = RequestMethod.POST)
+	public ModelAndView processTransaction() {
+		
+		return new ModelAndView();
+	}
 }
