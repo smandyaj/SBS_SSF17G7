@@ -3,6 +3,7 @@ package edu.asu.sbs.dao;
 import java.util.List;
 
 import edu.asu.sbs.model.InternalUser;
+import edu.asu.sbs.model.ModifiedUser;
 
 public interface InternalUserDAO {
 
@@ -15,4 +16,6 @@ public interface InternalUserDAO {
 	void update(InternalUser user);
 	
 	void delete(Integer id);
+	
+	void update(ModifiedUser user);
 }

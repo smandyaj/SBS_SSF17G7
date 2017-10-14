@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import edu.asu.sbs.model.InternalUser;
+import edu.asu.sbs.model.ModifiedUser;
 
 @Repository
 public class InternalUserDAOImpl implements InternalUserDAO{
@@ -56,6 +57,17 @@ public class InternalUserDAOImpl implements InternalUserDAO{
 		InternalUser internalUser = findById(id);
 		System.out.println("Internal user "+ internalUser.getEmailId());
 		if( internalUser != null) getCurrentSession().delete(internalUser);		
+	}
+
+	@Override
+	public void update(ModifiedUser user) {
+		// TODO Auto-generated method stub
+		System.out.println("Updating the values with modified user");
+		InternalUser internalUser = findById(user.getUserId());
+		internalUser.setFirstName(user.getFirstName());
+		internalUser.setLastName(user.getLastName());
+		internalUser.setPhoneNumber(user.getPhoneNumber());
+		getCurrentSession().update(internalUser);
 	}
 	
 

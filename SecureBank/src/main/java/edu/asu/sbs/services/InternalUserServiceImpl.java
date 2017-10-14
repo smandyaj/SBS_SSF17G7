@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.asu.sbs.dao.InternalUserDAO;
 import edu.asu.sbs.model.InternalUser;
+import edu.asu.sbs.model.ModifiedUser;
 
 @Service
 @Transactional
@@ -44,6 +45,13 @@ public class InternalUserServiceImpl implements InternalUserService{
 	public void deleteUser(Integer id) {
 		// TODO Auto-generated method stub
 		internalUserDAO.delete(id);
+	}
+
+	@Override
+	public void updateUser(ModifiedUser user) {
+		// TODO Auto-generated method stub
+		internalUserDAO.update(user);
+		
 	}
 
 }

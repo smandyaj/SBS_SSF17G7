@@ -18,10 +18,12 @@ import edu.asu.sbs.model.Account;
 import edu.asu.sbs.model.ExternalUser;
 import edu.asu.sbs.model.ExternalUserSearch;
 import edu.asu.sbs.model.InternalUser;
+import edu.asu.sbs.model.ModifiedUser;
 import edu.asu.sbs.model.SystemLog;
 import edu.asu.sbs.services.AccountService;
 import edu.asu.sbs.services.ExternalUserService;
 import edu.asu.sbs.services.InternalUserService;
+import edu.asu.sbs.services.ModifiedUserService;
 import edu.asu.sbs.services.SystemLogService;
 
 @Controller
@@ -38,6 +40,9 @@ public class InternalUserController {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private ModifiedUserService modifiedUserService;
 	
 	@ModelAttribute
 	public ExternalUserSearch getExternalUser() {
@@ -162,5 +167,52 @@ public class InternalUserController {
 	public ModelAndView processTransaction() {
 		
 		return new ModelAndView();
+	}
+	
+	/** admin - request pending **/
+	@RequestMapping(value="/admin/requests-pending", method = RequestMethod.GET)
+	public ModelAndView getRequestsPending() {
+		ModelAndView modelAndView = new ModelAndView("pendingRequests");
+		List<ModifiedUser> users = modifiedUserService.findAllUsers();
+		modelAndView.addObject("users", users);
+		return modelAndView; 
+	}
+	
+	/** admin - approves **/
+	@RequestMapping(value="/admin/approve/{id}", method = RequestMethod.GET)
+	public ModelAndView approveInternalUserRequests(@PathVariable("id") Integer id) {
+		ModelAndView modelAndView = new ModelAndView("pendingRequests");
+		// get the modified user object
+		ModifiedUser modUser = modifiedUserService.findUserById(id);
+		System.out.println("modUser::"+ modUser.getFirstName());
+		//update the modified user object to approved
+		modUser.setStatus(1);
+		modUser.setStatus_quo("approved");;
+		modifiedUserService.updateUser(modUser);
+		internalUserService.updateUser(modUser);
+		System.out.println("Status has been updated and object modified");
+		List<ModifiedUser> users = modifiedUserService.findAllUsers();
+		modelAndView.addObject("users", users);
+		modelAndView.addObject("msg","Approved and the account has been modified.");
+		return modelAndView; 
+	}
+	
+	/** admin - rejects **/
+	@RequestMapping(value="/admin/decline/{id}", method = RequestMethod.GET)
+	public ModelAndView declineInternalUserRequests(@PathVariable("id") Integer id) {
+		ModelAndView modelAndView = new ModelAndView("pendingRequests");
+		// get the modified user object
+		ModifiedUser modUser = modifiedUserService.findUserById(id);
+		System.out.println("modUser::"+ modUser.getFirstName());
+		//update the modified user object to approved
+		modUser.setStatus(1);
+		modUser.setStatus_quo("decline");;
+		modifiedUserService.updateUser(modUser);
+		//internalUserService.updateUser(modUser);
+		System.out.println("Status has been updated and object modified");
+		List<ModifiedUser> users = modifiedUserService.findAllUsers();
+		modelAndView.addObject("users", users);
+		modelAndView.addObject("msg","Approved and the account has been modified.");
+		return modelAndView; 
 	}
 }
