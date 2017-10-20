@@ -18,4 +18,6 @@ public interface InternalUserService {
 	void deleteUser(Integer id);
 	
 	void updateUser(ModifiedUser user);
+	
+	InternalUser getInternalUserDetails();
 }

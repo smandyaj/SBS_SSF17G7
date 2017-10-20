@@ -18,4 +18,6 @@ public interface InternalUserDAO {
 	void delete(Integer id);
 	
 	void update(ModifiedUser user);
+	
+	InternalUser findByUserName(String userName);
 }

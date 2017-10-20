@@ -69,6 +69,12 @@ public class InternalUserDAOImpl implements InternalUserDAO{
 		internalUser.setPhoneNumber(user.getPhoneNumber());
 		getCurrentSession().update(internalUser);
 	}
+
+	@Override
+	public InternalUser findByUserName(String userName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 }

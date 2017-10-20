@@ -34,13 +34,12 @@
 <body>
 	<div id="adminMenu">
 		<ul id="adminList">
-			<li><a href=#>Home</a></li>
-			<li><a href=${pageContext.request.contextPath}/admin/employee-list>Employee Management</a></li>
-			<li><a href=${pageContext.request.contextPath}/admin/requests-pending>Requests Pending</a></li>
-			<li><a href=${pageContext.request.contextPath}/admin/systemlogs>System Log</a></li>
-			<li><a href=${pageContext.request.contextPath}/admin/employee-add>Add Users</a></li>
-			<li><a href="#">Profile</a></li>
-			<li><a href=${pageContext.request.contextPath}/logout/>Logout</a></li>
+             <li><a href="${pageContext.servletContext.contextPath}/views/internalEmpHome">Home</a></li>
+            <li><a href="${pageContext.servletContext.contextPath}/employee/customer-transaction">Add Transaction</a></li>
+            <li><a href="${pageContext.servletContext.contextPath}/views/internalEmpHome">Pending Transactions</a></li>
+            <li><a href="${pageContext.servletContext.contextPath}/views/internalEmpHome">View-Edit Users</a></li>
+			<li><a href="${pageContext.servletContext.contextPath}//views/internalEmpHome">Profile</a></li>
+            <li><a href="${pageContext.servletContext.contextPath}/logout">Logout</a></li>
 		</ul>
 	</div>
 </body>

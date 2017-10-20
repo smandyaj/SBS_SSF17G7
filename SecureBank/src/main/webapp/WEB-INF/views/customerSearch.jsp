@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Search Customer</title>
-  <%@ include file="tier1-menu.jsp" %>
+  <%@ include file="employeemenu.jsp" %>
   </head>
 
   <body role="document">
@@ -32,7 +32,7 @@
 		  <br>
 
           <div id="internalUser">
-          <form:form method="POST" modelAttribute="externalUser" action="transaction" >
+          <form:form method="POST" modelAttribute="externalUser" action="customer-transaction" >
           <c:if test="${!empty successMsg}">
 					<div class="alert alert-success">						
 						${fn:escapeXml(successMsg)}

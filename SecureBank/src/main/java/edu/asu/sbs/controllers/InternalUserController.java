@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -49,6 +52,13 @@ public class InternalUserController {
 		return new ExternalUserSearch();
 	}
 	
+	/********************* ADMIN ************************************/
+	/** authenticates and gives admin home */
+	@RequestMapping(value="/admin/home",method = RequestMethod.GET)
+	public String getAdminHome() {
+		return "adminhome";
+	}
+	
 	/** Lists all the System logs */
 	@RequestMapping(value="/admin/systemlogs",method=RequestMethod.GET)
 	public String getSystemLogs(Model model) {
@@ -60,7 +70,7 @@ public class InternalUserController {
 		model.addAttribute("systemLog", new SystemLog());
 		model.addAttribute("systemLogList", systemLogList);
 		model.addAttribute("msg", " Welcome Santosh");
-		return "systemLog";
+		return "systemlog";
 	}
 	
 	/** Add new System Log to the DB 
@@ -69,16 +79,16 @@ public class InternalUserController {
 	 *  This is just for testing purpose
 	 * */
 	public String addSystemLog(@ModelAttribute("systemLog") SystemLog systemLog) {
-		return "redirect:/systemLog";
+		return "redirect:/systemlog";
 	}
 	
 	
 	/** add, delete, update, find internal users **/
 	
-	/** lists all the internal users **/
-	@RequestMapping(value="/employee/list")
+	/** lists all the internal users for admin **/
+	@RequestMapping(value="/admin/employee-list")
 	public ModelAndView listOfEmployees() {
-		ModelAndView modelAndView = new ModelAndView("employeeList");
+		ModelAndView modelAndView = new ModelAndView("employeelist");
 		System.out.println("All Users Page");
 		@SuppressWarnings("rawtypes")
 		List employees = internalUserService.findAllUsers();
@@ -86,19 +96,19 @@ public class InternalUserController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="/employee/add")
+	@RequestMapping(value="/admin/employee-add")
 	public ModelAndView addInternalUserPage() {
 		System.out.println("Add new user page");
-		ModelAndView modelAndView = new ModelAndView("addUser");
+		ModelAndView modelAndView = new ModelAndView("admin_adduser");
 		modelAndView.addObject("employee", "new");
 		modelAndView.addObject("employeeForm", new InternalUser());
 		return modelAndView;
 	}
 	
 	// show update form
-	@RequestMapping(value = "/employee/{id}/update", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/employee-update/{id}", method = RequestMethod.GET)
 	public ModelAndView showUpdateEmployeeForm(@PathVariable("id") int id, Model model) {
-		ModelAndView modelAndView = new ModelAndView("addUser");
+		ModelAndView modelAndView = new ModelAndView("admin_adduser");
 		InternalUser internalUser = internalUserService.findUserById(id);
 		modelAndView.addObject("employee", "exists");
 		model.addAttribute("employeeForm", internalUser);
@@ -106,7 +116,7 @@ public class InternalUserController {
 
 	}
 	
-	@RequestMapping(value="/employee/addormodify")
+	@RequestMapping(value="/admin/employee-add-modify")
 	public ModelAndView addingInternalUser(@ModelAttribute InternalUser internalUser) {
 		System.out.println("Adding new user and redirecting" + internalUser.getPasswordHash());
 		java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -122,7 +132,7 @@ public class InternalUserController {
 			System.out.println("Modify User" + internalUser.getEmployeeId());
 			internalUserService.updateUser(internalUser);
 		}
-		ModelAndView modelAndView = new ModelAndView("employeeList");
+		ModelAndView modelAndView = new ModelAndView("employeelist");
 		System.out.println("All Users Page");
 		@SuppressWarnings("rawtypes")
 		List employees = internalUserService.findAllUsers();
@@ -131,48 +141,22 @@ public class InternalUserController {
 	}
 	
 
-	@RequestMapping(value="/employee/{id}/delete", method=RequestMethod.POST)
+	@RequestMapping(value="/admin/employee-delelte/{id}", method=RequestMethod.POST)
 	public ModelAndView deleteInternalUser(@PathVariable Integer id) {
 		System.out.println("Deleting the user with id"+ id);
 		internalUserService.deleteUser(id);
-		ModelAndView modelAndView = new ModelAndView("employeeList");
+		ModelAndView modelAndView = new ModelAndView("employeelist");
 		System.out.println("All Users Page");
 		@SuppressWarnings("rawtypes")
 		List employees = internalUserService.findAllUsers();
 		modelAndView.addObject("employees", employees);
 		return modelAndView;
 	}
-	
-	@RequestMapping(value="/employee/transaction", method = RequestMethod.GET)
-	public ModelAndView returnTransactionPage() {
-		ModelAndView modelAndView  = new ModelAndView("customerSearch");
-		modelAndView.addObject("externalUser", getExternalUser());
-		return modelAndView;
-	}
-	
-	/** get accounts from the customer/merchant for transfer */
-	@RequestMapping(value="/employee/transaction", method = RequestMethod.POST)
-	public ModelAndView returnTransactionPage(@ModelAttribute ExternalUserSearch customer) {
-		ModelAndView modelAndView  = new ModelAndView("internalUserTransaction");
-		System.out.println("Fetching the user details " + customer.getCustomerId());
-		ExternalUser externalUser  = externalUserService.findUserById(customer.getCustomerId()); 
-		List<Account> accounts = accountService.getAccountByCustomerId(externalUser.getCustomerId());
-		modelAndView.addObject("accounts", accounts);
-		modelAndView.addObject("user", externalUser);
-		return modelAndView;
-	}
-	
-	/** process the transaction **/
-	@RequestMapping(value="/employee/transaction/process", method = RequestMethod.POST)
-	public ModelAndView processTransaction() {
 		
-		return new ModelAndView();
-	}
-	
 	/** admin - request pending **/
 	@RequestMapping(value="/admin/requests-pending", method = RequestMethod.GET)
 	public ModelAndView getRequestsPending() {
-		ModelAndView modelAndView = new ModelAndView("pendingRequests");
+		ModelAndView modelAndView = new ModelAndView("pendingrequests");
 		List<ModifiedUser> users = modifiedUserService.findAllUsers();
 		modelAndView.addObject("users", users);
 		return modelAndView; 
@@ -181,7 +165,7 @@ public class InternalUserController {
 	/** admin - approves **/
 	@RequestMapping(value="/admin/approve/{id}", method = RequestMethod.GET)
 	public ModelAndView approveInternalUserRequests(@PathVariable("id") Integer id) {
-		ModelAndView modelAndView = new ModelAndView("pendingRequests");
+		ModelAndView modelAndView = new ModelAndView("pendingrequests");
 		// get the modified user object
 		ModifiedUser modUser = modifiedUserService.findUserById(id);
 		System.out.println("modUser::"+ modUser.getFirstName());
@@ -200,13 +184,13 @@ public class InternalUserController {
 	/** admin - rejects **/
 	@RequestMapping(value="/admin/decline/{id}", method = RequestMethod.GET)
 	public ModelAndView declineInternalUserRequests(@PathVariable("id") Integer id) {
-		ModelAndView modelAndView = new ModelAndView("pendingRequests");
+		ModelAndView modelAndView = new ModelAndView("pendingrequests");
 		// get the modified user object
 		ModifiedUser modUser = modifiedUserService.findUserById(id);
 		System.out.println("modUser::"+ modUser.getFirstName());
 		//update the modified user object to approved
 		modUser.setStatus(1);
-		modUser.setStatus_quo("decline");;
+		modUser.setStatus_quo("decline");
 		modifiedUserService.updateUser(modUser);
 		//internalUserService.updateUser(modUser);
 		System.out.println("Status has been updated and object modified");
@@ -215,4 +199,49 @@ public class InternalUserController {
 		modelAndView.addObject("msg","Approved and the account has been modified.");
 		return modelAndView; 
 	}
+	/** ----------- REGULAR AND MANAGER ----------------**/
+	
+	@RequestMapping(value="/employee/customer-transaction", method = RequestMethod.GET)
+	public ModelAndView returnTransactionPage() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    String currentUserName = authentication.getName();
+		    System.out.println("Current logged in user" + currentUserName);
+		}
+		ModelAndView modelAndView  = new ModelAndView("customersearch");
+		modelAndView.addObject("externalUser", getExternalUser());
+		return modelAndView;
+	}
+	
+	/** get accounts from the customer/merchant for transfer */
+	@RequestMapping(value="/employee/customer-transaction", method = RequestMethod.POST)
+	public ModelAndView returnTransactionPage(@ModelAttribute ExternalUserSearch customer) {
+		ModelAndView modelAndView  = new ModelAndView("internal_usertransaction");
+		System.out.println("Fetching the user details " + customer.getCustomerId());
+		ExternalUser externalUser  = externalUserService.findUserById(customer.getCustomerId()); 
+		List<Account> accounts = accountService.getAccountByCustomerId(externalUser.getCustomerId());
+		modelAndView.addObject("accounts", accounts);
+		modelAndView.addObject("user", externalUser);
+		return modelAndView;
+	}
+	
+	/** process the transaction **/
+	@RequestMapping(value="/employee/transaction/process", method = RequestMethod.POST)
+	public ModelAndView processTransaction() {
+		
+		return new ModelAndView();
+	}
+	
+	/** tier-1 profile **/
+	@RequestMapping(value="/employee/profile/{}",method=RequestMethod.GET)
+	public ModelAndView getEmployeeProfile() {
+		return null;
+		
+	}
+	
+	@RequestMapping(value="/employee/home",method=RequestMethod.GET)
+	public ModelAndView getEmployeeHomePage() {
+		return new ModelAndView("employeehome");
+	}
+	
 }

@@ -1,19 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page isELIgnored="false"%>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Pending Requests for Internal Users</title>
+<title>PII And Employee Management</title>
 </head>
 <body>
-<%@ include file="adminmenu.jsp" %>
 <div class="container">
 <c:if test="${not empty msg}">
 			<div class="alert alert-${css} alert-dismissible" role="alert">
@@ -24,30 +20,37 @@
 			</div>
 		</c:if>
 
-		<h1>Pending Requests</h1>
+		<h1>All employeess</h1>
 
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Employee ID</th>
+					<th>#employeesID</th>
 					<th>First Name</th>
 					<th>Last Name</th>
+					<th>Email</th>
+					<th>Mobile</th>
 					<th>Action</th>
 				</tr>
 			</thead>
 
-			<c:forEach var="user" items="${users}">
+			<c:forEach var="employee" items="${employees}">
 				<tr>
 					<td>
-						${user.userId}
+						${employee.id}
 					</td>
-					<td>${user.firstName}</td>
-					<td>${user.lastName}</td>
+					<td>${employee.firstName}</td>
+					<td>${employee.lastName}</td>
+					<td>${employee.email}</td>
+					<td>${employee.mobile}</td>
 					<td>
-						<spring:url value="/admin/approve/${user.modId}" var="adminApprovalUrl" />
-						<spring:url value="/admin/decline/${user.modId}" var="adminDeclineUrl" />
-						<button class="btn btn-info" onclick="location.href='${adminApprovalUrl}'">Approve</button>
-						<button class="btn btn-info" onclick="location.href='${adminDeclineUrl}'">Decline</button>
+						<spring:url value="/employees/${employee.id}" var="employeeUrl" />
+						<spring:url value="/employees/${employee.id}/delete" var="deleteUrl" /> 
+						<spring:url value="/employees/${employee.id}/update" var="updateUrl" />
+
+						<button class="btn btn-info" onclick="location.href='${employeeUrl}'">Query</button>
+						<button class="btn btn-primary" onclick="location.href='${updateUrl}'">Update</button>
+						<button class="btn btn-danger" onclick="this.disabled=true;post('${deleteUrl}')">Delete</button></td>
 				</tr>
 			</c:forEach>
 		</table>
