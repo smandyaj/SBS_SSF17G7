@@ -2,9 +2,14 @@ package edu.asu.sbs.dao;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import edu.asu.sbs.model.InternalUser;
@@ -71,9 +76,10 @@ public class InternalUserDAOImpl implements InternalUserDAO{
 	}
 
 	@Override
-	public InternalUser findByUserName(String userName) {
-		// TODO Auto-generated method stub
-		return null;
+	public InternalUser findByUserName(String currentUserName){
+		Criteria criteria = getCurrentSession().createCriteria(InternalUser.class);
+		InternalUser internalUser = (InternalUser) criteria.add(Restrictions.eq("userName", currentUserName)).uniqueResult();
+		return internalUser;
 	}
 	
 

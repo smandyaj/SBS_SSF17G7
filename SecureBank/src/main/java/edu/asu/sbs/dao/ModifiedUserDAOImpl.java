@@ -36,6 +36,8 @@ public class ModifiedUserDAOImpl implements ModifiedUserDAO{
 	@Override
 	public void add(ModifiedUser user) {
 		// TODO Auto-generated method stub
+		System.out.println("Saving user");
+		getCurrentSession().save(user);
 		
 	}
 

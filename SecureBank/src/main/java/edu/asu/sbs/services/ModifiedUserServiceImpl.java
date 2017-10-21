@@ -31,6 +31,7 @@ public class ModifiedUserServiceImpl implements ModifiedUserService{
 	@Override
 	public void addUser(ModifiedUser user) {
 		// TODO Auto-generated method stub
+		modifiedUserDAO.add(user);
 		
 	}
 

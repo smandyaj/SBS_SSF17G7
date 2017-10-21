@@ -49,7 +49,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 			// customer
 			if (grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_CUSTOMER") || 
 					grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_MERCHANT")) {
-				return "/home/";
+				return "/customer/home/";
 			} 
 			
 			// normal employee - tier1

@@ -141,7 +141,7 @@ public class InternalUserController {
 	}
 	
 
-	@RequestMapping(value="/admin/employee-delelte/{id}", method=RequestMethod.POST)
+	@RequestMapping(value="/admin/employee-delete/{id}", method=RequestMethod.POST)
 	public ModelAndView deleteInternalUser(@PathVariable Integer id) {
 		System.out.println("Deleting the user with id"+ id);
 		internalUserService.deleteUser(id);
@@ -199,15 +199,10 @@ public class InternalUserController {
 		modelAndView.addObject("msg","Approved and the account has been modified.");
 		return modelAndView; 
 	}
-	/** ----------- REGULAR AND MANAGER ----------------**/
+	/** ----------- REGULAR AND MANAGER----------------**/
 	
 	@RequestMapping(value="/employee/customer-transaction", method = RequestMethod.GET)
 	public ModelAndView returnTransactionPage() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!(authentication instanceof AnonymousAuthenticationToken)) {
-		    String currentUserName = authentication.getName();
-		    System.out.println("Current logged in user" + currentUserName);
-		}
 		ModelAndView modelAndView  = new ModelAndView("customersearch");
 		modelAndView.addObject("externalUser", getExternalUser());
 		return modelAndView;
@@ -233,15 +228,32 @@ public class InternalUserController {
 	}
 	
 	/** tier-1 profile **/
-	@RequestMapping(value="/employee/profile/{}",method=RequestMethod.GET)
+	@RequestMapping(value="/employee/profile",method=RequestMethod.GET)
 	public ModelAndView getEmployeeProfile() {
-		return null;
+		ModelAndView modelAndView = new ModelAndView("employee-profile");
+		modelAndView.addObject("employeeForm", internalUserService.findByUserName());
+		return modelAndView;
 		
+	}
+	
+	/** tier-1 profile update */
+	@RequestMapping(value="/employee/modify-profile",method=RequestMethod.POST)
+	public ModelAndView addModifiedProfile(@ModelAttribute InternalUser internalUser) {
+		ModelAndView modelAndView = new ModelAndView("employee-profile");
+		System.out.println("User name to be modified ::" + internalUser.getFirstName());
+		ModifiedUser modUser = new ModifiedUser(internalUser.getEmployeeId(), internalUser.getFirstName(), 
+				internalUser.getLastName(), internalUser.getEmailId(), internalUser.getPhoneNumber(), 
+				internalUser.getAddress(), 0, "pending",1);
+		modifiedUserService.addUser(modUser);
+		modelAndView.addObject("msg", "Profile has been submitted for approval");
+		return modelAndView;
 	}
 	
 	@RequestMapping(value="/employee/home",method=RequestMethod.GET)
 	public ModelAndView getEmployeeHomePage() {
 		return new ModelAndView("employeehome");
 	}
+	
+	
 	
 }

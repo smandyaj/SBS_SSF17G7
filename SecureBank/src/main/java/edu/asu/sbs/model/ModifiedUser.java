@@ -84,22 +84,6 @@ public class ModifiedUser {
 		this.address = address;
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getPasswordHash() {
-		return passwordHash;
-	}
-
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
-
 	public int getStatus() {
 		return status;
 	}
@@ -134,15 +118,27 @@ public class ModifiedUser {
 	@Column(name = "address")
 	private String address;
 	
-	@Column(name = "user_name")
-	private String userName;
-	
-	@Column(name = "password_hash")
-	private String passwordHash;
-	
 	@Column(name = "status")
 	private int status;
 	
 	@Column(name = "status_quo")
 	private String status_quo;
+
+	public ModifiedUser(int userId, String firstName, String lastName, String emailId, BigInteger phoneNumber,
+			String address, int status, String status_quo, int userType) {
+		super();
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.emailId = emailId;
+		this.phoneNumber = phoneNumber;
+		this.address = address;
+		this.status = status;
+		this.status_quo = status_quo;
+		this.userType = userType;
+	}
+
+
+	
+	
 }

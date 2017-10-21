@@ -38,7 +38,7 @@
             <li><a href="${pageContext.servletContext.contextPath}/employee/customer-transaction">Add Transaction</a></li>
             <li><a href="${pageContext.servletContext.contextPath}/views/internalEmpHome">Pending Transactions</a></li>
             <li><a href="${pageContext.servletContext.contextPath}/views/internalEmpHome">View-Edit Users</a></li>
-			<li><a href="${pageContext.servletContext.contextPath}//views/internalEmpHome">Profile</a></li>
+			<li><a href="${pageContext.servletContext.contextPath}/employee/profile">Profile</a></li>
             <li><a href="${pageContext.servletContext.contextPath}/logout">Logout</a></li>
 		</ul>
 	</div>

@@ -19,5 +19,5 @@ public interface InternalUserService {
 	
 	void updateUser(ModifiedUser user);
 	
-	InternalUser getInternalUserDetails();
+	InternalUser findByUserName();
 }

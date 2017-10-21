@@ -58,7 +58,7 @@ public class InternalUserServiceImpl implements InternalUserService{
 	}
 
 	@Override
-	public InternalUser getInternalUserDetails() {
+	public InternalUser findByUserName() {
 		// TODO Auto-generated method stub
 		String currentUserName = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -69,5 +69,6 @@ public class InternalUserServiceImpl implements InternalUserService{
         
         return internalUserDAO.findByUserName(currentUserName);
 	}
+
 
 }
