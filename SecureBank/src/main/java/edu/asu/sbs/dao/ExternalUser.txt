@@ -1,0 +1,259 @@
+package edu.asu.sbs.dao;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import edu.asu.sbs.model.ExternalUser;
+
+@Repository
+public class ExternalUserDAOImpl implements ExternalUserDAO{
+
+	@Autowired
+	SessionFactory sessionFactory;
+	
+	private Session getCurrentSession() {
+		return sessionFactory.getCurrentSession();
+	}
+	
+	@Override
+	public ExternalUser findById(Integer Id) {
+		// TODO Auto-generated method stub
+		Session session = this.sessionFactory.getCurrentSession();
+		ExternalUser externalUser = (ExternalUser) session.get(ExternalUser.class, Id);
+		return externalUser;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ExternalUser> findAll() {
+		// TODO Auto-generated method stub
+		return getCurrentSession().createQuery("from ExternalUser").list();
+	}
+
+	@Override
+	public void add(ExternalUser user) {
+		// TODO Auto-generated method stub
+		getCurrentSession().save(user);
+		
+	}
+
+	@Override
+	public void update(ExternalUser user) {
+		// TODO Auto-generated method stub
+		ExternalUser externalUser = findById(user.getCustomerId());
+		externalUser.setCustomer_address(user.getCustomerAddress());
+		externalUser.setEmail_id(user.getEmailId());
+		externalUser.setPhone(user.getPhone());
+		getCurrentSession().update(externalUser);
+	}
+
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		ExternalUser externalUser = findById(id);
+		System.out.println("External user "+ externalUser.getEmailId());
+		if( externalUser != null) getCurrentSession().delete(externalUser);		
+	}
+	
+	@Override
+	public void debit(int accNumber, String userName, double amount, int acc_type){
+		// TODO Auto-generated method stub
+		ExternalUser e = findbyUserName(userName);
+		
+		
+		// Add userName to Account Table
+		int customer_id = e.getCustomerId();
+		
+		
+		
+		// Account number and amount belongs to the person who is receiving the money 
+			if(e.getAccountType() != acc_type){
+				System.out.println("No such user");
+				return;
+			}
+		
+	
+		Query query = session.createQuery("from Account where customer_id=:c ");
+		query.setParameter("c", customer_id);
+		Account merchantAccount = (Account) query.uniqueResult();
+		
+		double merchantBalance = merchantAccount.getAccountBalance();
+		
+		
+		if(merchantBalance >= amount){
+				Transaction t = new Transaction();
+				
+				/*
+				merchantBalance += amount;
+				recepientBalance -= amount;
+				
+				Modifieduser m = new Modifieduser();
+				m.setBalance(merchantBalance);
+				m.setUserName(userName);
+				*/
+				
+				
+				t.setPayerId(merchantAccount.getAccountId());
+				t.setReceiverId(accNumber);
+				t.setTransactionAmount(amount);
+				getCurrentSession().save(t);
+				
+				
+				
+				/*
+				// Get the status as whether Approved or Not
+				// To retrieve only status col
+				Query query = session.createQuery("from modified_users where user_name=:u ").setProjection(Projections.property("status"));
+				query.setParameter("u", userName);
+				// may fetch a list - if so, use appropriate List<> type.
+				
+				Modifieduser m1 = (Modifieduser) query.uniqueResult();
+				int status = m1.getStatus(); // Define Modifieduser model with getter and setter
+				
+				if(status == 1){
+					ExternalUser e2 = findbyUserName(userName);
+					e2.setBalance(merchantBalance);
+					e2.setAccountType(acc_type);
+					getCurrentSession().save(e2);
+					Account userAccount = new Account();
+					userAccount.setBalance(recepientBalance);
+					userAccount.setAccountId(accNumber);
+					getCurrentSession().save(userAccount);
+					
+				}
+				*/
+		}
+		
+		
+}
+
+
+@Override
+	public void debit_final(int transaction_id){
+	Query query = session.createQuery("from Transaction where transaction_id=:t");
+	query.setParameter("t", transaction_id);
+	Transaction t = (Transaction) query.uniqueResult();
+	int payer_id = t.getPayerId();
+	int receiver_id = t.getReceiverId();
+	int transaction_amount = t.getTransactionAmount();
+	
+	
+	Query query = session.createQuery("from Account where accountId=:a");
+	query.setParameter("a", payer_id);
+	Account a = (Account) query.uniqueResult();
+	double balance = a.getAccountBalance();
+	balance -= transaction_amount;
+	
+	
+	Query query = session.createQuery("from Account where accountId=:a");
+	query.setParameter("a", receiver_id);
+	Account a = (Account) query.uniqueResult();
+	double rbalance = a.getAccountBalance();
+	rbalance += transaction_amount;
+	
+	
+
+	Query q2 = session.createQuery("update Account set accountBalance = :b where accountId = :ai");
+	query.setParameter("b", balance);
+	query.setParameter("ai", payer_id);
+	
+	Query q3 = session.createQuery("update Account set accountBalance = :b where accountId = :ai");
+	query.setParameter("b", rbalance);
+	query.setParameter("ai", receiver_id);
+	
+	
+}
+	
+
+
+
+
+@Override
+	public void credit(int accNumber, String userName, double amount){
+		// TODO Auto-generated method stub
+		ExternalUser e = findbyUserName(userName);
+		
+		
+		// Add userName to Account Table
+		int customer_id = e.getCustomerId();
+		
+	
+		Query query = session.createQuery("from Account where customer_id=:c ");
+		query.setParameter("c", customer_id);
+		Account merchantAccount = (Account) query.uniqueResult();
+		
+		double merchantBalance = e.getBalance();
+		
+		
+		// Assumption that transaction has been approved by Merchant - we are getting the above parameters using JSP 
+		// accNumber & amount - user paying to merchant
+		
+		AccountDAOImpl balance = new AccountDAOImpl();
+		double payyeBalance = balance.getBalance(accNumber);
+		
+		
+		if(payyeBalance >= amount){
+			
+			merchantBalance += amount;
+			payyeBalance -= amount;
+			
+			
+			Query q2 = session.createQuery("update Account set accountBalance = :b where accountId = :ai");
+			query.setParameter("b", merchantBalance);
+			query.setParameter("ai", merchantAccount.getAccountId());
+	
+			Query q3 = session.createQuery("update Account set accountBalance = :b where accountId = :ai");
+			query.setParameter("b", payyeBalance);
+			query.setParameter("ai", accNumber);
+		}
+		
+		
+		
+}		
+
+	// Create model for modified user
+	// Transfer through email and message
+	
+	//Transfer through email
+	@Override
+	public void transfer_email(String email_id, String userName, double amount){
+		// ADD ACCOUNT_NUMBER accNumber FIELD IN EXTERNAL USER TABLE
+		Query query = session.createQuery("from external_users where email_id=:e and accountType=:at");
+		query.setParameter("e", email_id);
+		
+		query.setParameter("at", 0); // savings is zero
+		
+		ExternalUser e1 = (ExternalUser) query.uniqueResult();
+		int accNumber = e1.getAccountNumber(); // Define Modifieduser model with getter and setter
+		
+		debit(accNumber, userName, amount, acc_type);
+		
+	
+	}
+	
+	
+	//Transfer through message
+	@Override
+	public void transfer_message(int phone, String userName, double amount){
+		// ADD ACCOUNT_NUMBER accNumber FIELD IN EXTERNAL USER TABLE
+		Query query = session.createQuery("from external_users where phone=:p and accountType=:at");
+		query.setParameter("p", phone);
+		
+		query.setParameter("at", 0); // savings is zero
+		
+		ExternalUser e1 = (ExternalUser) query.uniqueResult();
+		int accNumber = e1.getAccountNumber(); // Define Modifieduser model with getter and setter
+		
+		debit(accNumber, userName, amount, acc_type);
+		
+	
+	}
+	
+	
+	
+	
+}
