@@ -1,17 +1,23 @@
 package edu.asu.sbs.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import edu.asu.sbs.model.Account;
 import edu.asu.sbs.model.ExternalUser;
+import edu.asu.sbs.model.Transaction;
 
 @Repository
-public class ExternalUserDAOImpl implements ExternalUserDAO{
 
+public class ExternalUserDAOImpl implements ExternalUserDAO {
 	@Autowired
 	SessionFactory sessionFactory;
 	
@@ -62,7 +68,7 @@ public class ExternalUserDAOImpl implements ExternalUserDAO{
 	@Override
 	public void debit(int accNumber, String userName, double amount, int acc_type){
 		// TODO Auto-generated method stub
-		ExternalUser e = findbyUserName(userName);
+		ExternalUser e = findByUserName(userName);
 		
 		
 		// Add userName to Account Table
@@ -76,8 +82,8 @@ public class ExternalUserDAOImpl implements ExternalUserDAO{
 				return;
 			}
 		
-	
-		Query query = session.createQuery("from Account where customer_id=:c ");
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Account where customerId=:c ");
 		query.setParameter("c", customer_id);
 		Account merchantAccount = (Account) query.uniqueResult();
 		
@@ -97,8 +103,8 @@ public class ExternalUserDAOImpl implements ExternalUserDAO{
 				*/
 				
 				
-				t.setPayerId(merchantAccount.getAccountId());
-				t.setReceiverId(accNumber);
+				t.setPayerId(merchantAccount.getAccountId() + "");
+				t.setReceiverId(accNumber + "");
 				t.setTransactionAmount(amount);
 				getCurrentSession().save(t);
 				
@@ -134,25 +140,26 @@ public class ExternalUserDAOImpl implements ExternalUserDAO{
 
 @Override
 	public void debit_final(int transaction_id){
-	Query query = session.createQuery("from Transaction where transaction_id=:t");
+	Session session = this.sessionFactory.getCurrentSession();
+	Query query = session.createQuery("from Transaction where transactionId=:t");
 	query.setParameter("t", transaction_id);
 	Transaction t = (Transaction) query.uniqueResult();
-	int payer_id = t.getPayerId();
-	int receiver_id = t.getReceiverId();
-	int transaction_amount = t.getTransactionAmount();
+	String payer_id = t.getPayerId();
+	String receiver_id = t.getReceiverId();
+	double transaction_amount = t.getTransactionAmount();
 	
 	
-	Query query = session.createQuery("from Account where accountId=:a");
-	query.setParameter("a", payer_id);
-	Account a = (Account) query.uniqueResult();
+	Query query1 = session.createQuery("from Account where accountId=:a");
+	query1.setParameter("a", payer_id);
+	Account a = (Account) query1.uniqueResult();
 	double balance = a.getAccountBalance();
 	balance -= transaction_amount;
 	
 	
-	Query query = session.createQuery("from Account where accountId=:a");
-	query.setParameter("a", receiver_id);
-	Account a = (Account) query.uniqueResult();
-	double rbalance = a.getAccountBalance();
+	Query query2 = session.createQuery("from Account where accountId=:a");
+	query2.setParameter("a", receiver_id);
+	Account a1 = (Account) query.uniqueResult();
+	double rbalance = a1.getAccountBalance();
 	rbalance += transaction_amount;
 	
 	
@@ -171,18 +178,18 @@ public class ExternalUserDAOImpl implements ExternalUserDAO{
 
 
 
-
 @Override
-	public void credit(int accNumber, String userName, double amount){
+public void credit(int accNumber, String userName, double amount){
 		// TODO Auto-generated method stub
-		ExternalUser e = findbyUserName(userName);
+		Session session = this.sessionFactory.getCurrentSession();
+		ExternalUser e = findByUserName(userName);
 		
 		
 		// Add userName to Account Table
 		int customer_id = e.getCustomerId();
 		
 	
-		Query query = session.createQuery("from Account where customer_id=:c ");
+		Query query = session.createQuery("from Account where customerId=:c ");
 		query.setParameter("c", customer_id);
 		Account merchantAccount = (Account) query.uniqueResult();
 		
@@ -193,13 +200,13 @@ public class ExternalUserDAOImpl implements ExternalUserDAO{
 		// accNumber & amount - user paying to merchant
 		
 		AccountDAOImpl balance = new AccountDAOImpl();
-		double payyeBalance = balance.getBalance(accNumber);
+		double payyeBalance = balance.getBalance(accNumber + "").doubleValue();
 		
 		
 		if(payyeBalance >= amount){
 			
 			merchantBalance += amount;
-			payyeBalance -= amount;
+			payyeBalance = payyeBalance - amount;
 			
 			
 			Query q2 = session.createQuery("update Account set accountBalance = :b where accountId = :ai");
@@ -222,16 +229,26 @@ public class ExternalUserDAOImpl implements ExternalUserDAO{
 	@Override
 	public void transfer_email(String email_id, String userName, double amount){
 		// ADD ACCOUNT_NUMBER accNumber FIELD IN EXTERNAL USER TABLE
-		Query query = session.createQuery("from external_users where email_id=:e and accountType=:at");
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from ExternalUsers where emailId=:e and accountType=:at");
 		query.setParameter("e", email_id);
 		
 		query.setParameter("at", 0); // savings is zero
 		
+		
 		ExternalUser e1 = (ExternalUser) query.uniqueResult();
-		int accNumber = e1.getAccountNumber(); // Define Modifieduser model with getter and setter
+		int customerId = e1.getCustomerId(); // Define Modifieduser model with getter and setter
+		Query query1 = session.createQuery("from Account where customerId=:c");
+		query1.setParameter("c", customerId);
 		
-		debit(accNumber, userName, amount, acc_type);
+		Account a = (Account) query.uniqueResult();
+		int accountNo = a.getAccountId();
 		
+		
+		debit(accountNo, userName, amount, 0);
+		
+		
+	
 	
 	}
 	
@@ -239,21 +256,38 @@ public class ExternalUserDAOImpl implements ExternalUserDAO{
 	//Transfer through message
 	@Override
 	public void transfer_message(int phone, String userName, double amount){
+		Session session = this.sessionFactory.getCurrentSession();
+		//Session session = this.sessionFactory.getCurrentSession();
 		// ADD ACCOUNT_NUMBER accNumber FIELD IN EXTERNAL USER TABLE
-		Query query = session.createQuery("from external_users where phone=:p and accountType=:at");
+		Query query = session.createQuery("from ExternalUsers where phone=:p and accountType=:at");
 		query.setParameter("p", phone);
 		
 		query.setParameter("at", 0); // savings is zero
 		
 		ExternalUser e1 = (ExternalUser) query.uniqueResult();
-		int accNumber = e1.getAccountNumber(); // Define Modifieduser model with getter and setter
+		int customerId = e1.getCustomerId(); // Define Modifieduser model with getter and setter
+		Query query1 = session.createQuery("from Account where customerId=:c");
+		query1.setParameter("c", customerId);
 		
-		debit(accNumber, userName, amount, acc_type);
+		Account a = (Account) query.uniqueResult();
+		int accountNo = a.getAccountId();
+		
+		
+		debit(accountNo, userName, amount, 0);
 		
 	
+	}
+	
+	@Override
+	public ExternalUser findByUserName(String currentUserName){
+		Session session = this.sessionFactory.getCurrentSession();
+		Criteria criteria = getCurrentSession().createCriteria(ExternalUser.class);
+		ExternalUser externalUser = (ExternalUser) criteria.add(Restrictions.eq("userName", currentUserName)).uniqueResult();
+		return externalUser;
 	}
 	
 	
 	
 	
 }
+
