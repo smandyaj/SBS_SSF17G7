@@ -36,9 +36,9 @@
 		<ul id="customerList">
 			<li><a href=#>Home</a></li>
 			<li><a href="#">Accounts</a></li>
-			<li><a href="#">Make Transfer</a></li>
+			<li><a href="makePayment">Make Payment</a></li>
 			<li><a href="#">Transaction Management</a></li>
-			<li><a href="#">Profile</a></li>
+			<li><a href="CustomerProfile">Profile</a></li>
 			<li><a href="#">Logout</a></li>
 		</ul>
 	</div>

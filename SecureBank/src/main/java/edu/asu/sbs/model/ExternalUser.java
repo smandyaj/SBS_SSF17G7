@@ -1,5 +1,7 @@
 package edu.asu.sbs.model;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ExternalUser")
+@Table(name = "external_users")
 public class ExternalUser
 {
 	@Id
@@ -38,7 +40,7 @@ public class ExternalUser
 	private int zip;
 	
 	@Column(name = "phone")
-	private int phone;
+	private BigInteger phone;
 	
 	@Column(name = "account_type")
 	private int accountType;
@@ -64,7 +66,7 @@ public class ExternalUser
 		return emailId;
 	}
 
-	public void setEmail_id(String emailId){
+	public void setEmailId(String emailId){
 		this.emailId=emailId;
 	}
 
@@ -80,7 +82,7 @@ public class ExternalUser
 		return lastName;
 	}
 
-	public void setLast_name(String lastName){
+	public void setLastName(String lastName){
 		this.lastName=lastName;
 	}
 
@@ -116,12 +118,12 @@ public class ExternalUser
 		this.zip=zip;
 	}
 
-	public int getPhone(){
+	public BigInteger getPhone(){
 		return phone;
 	}
 
-	public void setPhone(int phone){
-		this.phone=phone;
+	public void setPhone(BigInteger bigInteger){
+		this.phone=bigInteger;
 	}
 
 	public int getAccountType(){

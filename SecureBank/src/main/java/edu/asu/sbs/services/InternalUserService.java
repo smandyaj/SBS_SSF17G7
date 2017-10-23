@@ -3,6 +3,7 @@ package edu.asu.sbs.services;
 import java.util.List;
 
 import edu.asu.sbs.model.InternalUser;
+import edu.asu.sbs.model.ModifiedUser;
 
 public interface InternalUserService {
 
@@ -15,4 +16,8 @@ public interface InternalUserService {
 	void updateUser(InternalUser user);
 	
 	void deleteUser(Integer id);
+	
+	void updateUser(ModifiedUser user);
+	
+	InternalUser findByUserName();
 }

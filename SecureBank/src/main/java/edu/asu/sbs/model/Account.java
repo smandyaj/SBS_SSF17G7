@@ -15,6 +15,17 @@ public class Account{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "account_id")
 	private int accountId;
+	
+	@Column(name="customer_id")
+	private int customerId;
+	
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
 
 	@Column(name = "account_type")
 	private int accountType;

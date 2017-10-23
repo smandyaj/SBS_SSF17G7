@@ -7,6 +7,7 @@
 						<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 						<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 						<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+						<script src="src/main/webapp/WEB-INF/js/userRegister.js"></script>
 						<title>{Bank Name}</title>
 					</head>
 
@@ -22,7 +23,7 @@
 												</span>New User Sign Up</h3>
 										</div>
 
-										<form class="form-horizontal" method="POST" action="register-user" commandName="registerPage">
+										<form class="form-horizontal" method="POST" action="register-user" modelAttribute="extUserForm"  onsubmit="return validateForm()" name="registerPage">
 											<input type="hidden" name="id" value="${user.id}" />
 											<div class="form-group">
 												<label class="control-label col-md-3">FIRST NAME</label>
@@ -58,9 +59,8 @@
 											<div class="form-group">
 												<label class="control-label col-md-3">Confirm Password</label>
 												<div class="col-md-7">
-													<input type="password" class="form-control" name="password" value="${user.password }" />
+													<input type="password" class="form-control" name="confirmPassword" value="${user.confirmPassword }" />
 												</div>
-
 											</div>
 
 											<div class="form-group">

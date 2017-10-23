@@ -2,12 +2,18 @@ package edu.asu.sbs.dao;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import edu.asu.sbs.model.InternalUser;
+import edu.asu.sbs.model.ModifiedUser;
 
 @Repository
 public class InternalUserDAOImpl implements InternalUserDAO{
@@ -56,6 +62,24 @@ public class InternalUserDAOImpl implements InternalUserDAO{
 		InternalUser internalUser = findById(id);
 		System.out.println("Internal user "+ internalUser.getEmailId());
 		if( internalUser != null) getCurrentSession().delete(internalUser);		
+	}
+
+	@Override
+	public void update(ModifiedUser user) {
+		// TODO Auto-generated method stub
+		System.out.println("Updating the values with modified user");
+		InternalUser internalUser = findById(user.getUserId());
+		internalUser.setFirstName(user.getFirstName());
+		internalUser.setLastName(user.getLastName());
+		internalUser.setPhoneNumber(user.getPhoneNumber());
+		getCurrentSession().update(internalUser);
+	}
+
+	@Override
+	public InternalUser findByUserName(String currentUserName){
+		Criteria criteria = getCurrentSession().createCriteria(InternalUser.class);
+		InternalUser internalUser = (InternalUser) criteria.add(Restrictions.eq("userName", currentUserName)).uniqueResult();
+		return internalUser;
 	}
 	
 

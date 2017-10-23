@@ -18,7 +18,7 @@
         					<div class="page-header" style="margin-top: 5px;" align="center">
     							<h3>${first_name} ${last_name}</h3>
     						</div>
-    						<form:form id="profileForm" class="form-horizontal" action="profile" commandName="profile" method="POST">
+    						<form:form id="profileForm"  class="form-horizontal" action="profile" commandName="profile" method="POST">
   						
   						<div class="form-group">
     						<label for="username" class="col-sm-2 control-label">First Name</label>
