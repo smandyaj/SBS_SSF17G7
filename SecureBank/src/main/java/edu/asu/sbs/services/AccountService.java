@@ -13,8 +13,4 @@ public interface AccountService {
 	public void updateAccount(Account account);
 	public BigDecimal getBalance(String accountNumber);
 	void transferFunds(Transaction sender, Transaction receiver,BigDecimal amount);
-	void update(Account a1);
-	Account findByAccountNumber(String payer_id);
-	
-	
 }

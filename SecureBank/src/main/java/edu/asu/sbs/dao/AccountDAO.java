@@ -10,7 +10,4 @@ public interface AccountDAO {
 	Account findByAccountNumber(String accNumber);
 	public BigDecimal getBalance(String accNumber);
 	public void updateAccount(Account account);
-	Account getAccountNumber(int customer_id);
-	
-	
 }

@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,15 +44,7 @@ public class AccountDAOImpl implements AccountDAO{
 	@Override
 	public void updateAccount(Account account) {
 		// TODO Auto-generated method stub
-		Session session = this.sessionFactory.getCurrentSession();
-		session.update(account);
+		
 	}
-	
-	
-	
-	
-	
-	
-	
 
 }

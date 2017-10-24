@@ -1,31 +1,19 @@
 package edu.asu.sbs.dao;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import edu.asu.sbs.model.Account;
 import edu.asu.sbs.model.ExternalUser;
-import edu.asu.sbs.model.Transaction;
-import edu.asu.sbs.services.AccountService;
-import edu.asu.sbs.services.TransactionService;
 
 @Repository
+public class ExternalUserDAOImpl implements ExternalUserDAO{
 
-public class ExternalUserDAOImpl implements ExternalUserDAO {
 	@Autowired
 	SessionFactory sessionFactory;
-	@Autowired
-	AccountService as;
-	@Autowired
-	TransactionService ts;
 	
 	private Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
@@ -71,82 +59,4 @@ public class ExternalUserDAOImpl implements ExternalUserDAO {
 		if( externalUser != null) getCurrentSession().delete(externalUser);		
 	}
 	
-	@Override
-	public void debit(int accNumber, String userName, double amount, int acc_type){
-		ts.debit(accNumber, userName, amount, acc_type);		
 }
-
-
-@Override
-	public void debit_final(int transaction_id){
-	ts.debit_final(transaction_id);
-	}
-	
-
-
-
-@Override
-public void credit(int accNumber, String userName, double amount){
-		// TODO Auto-generated method stub
-		ts.credit(accNumber, userName, amount);
-		
-		
-		
-}		
-
-	// Create model for modified user
-	// Transfer through email and message
-	
-	//Transfer through email
-	@Override
-	public void transfer_email(String email_id, String userName, double amount){
-		// ADD ACCOUNT_NUMBER accNumber FIELD IN EXTERNAL USER TABLE
-	
-		ts.transfer_email(email_id, userName, amount);
-		
-		
-		
-	
-	}
-	
-	
-	//Transfer through message
-	@Override
-	public void transfer_message(int phone, String userName, double amount){
-		ts.transfer_message(phone, userName, amount);
-		
-	
-	}
-	
-	@Override
-	public ExternalUser findByEmail(String email_id) {
-		Session session = this.sessionFactory.getCurrentSession();
-		Criteria criteria = getCurrentSession().createCriteria(ExternalUser.class);
-		ExternalUser externalUser = (ExternalUser) criteria.add(Restrictions.eq("emailId", email_id)).uniqueResult();
-		return externalUser;
-	}
-	
-	@Override
-	public ExternalUser findByPhone(int phone) {
-		Session session = this.sessionFactory.getCurrentSession();
-		Criteria criteria = getCurrentSession().createCriteria(ExternalUser.class);
-		ExternalUser externalUser = (ExternalUser) criteria.add(Restrictions.eq("phone", phone)).uniqueResult();
-		return externalUser;
-	}
-	
-	
-	
-	
-	@Override
-	public ExternalUser findByUserName(String currentUserName){
-		Session session = this.sessionFactory.getCurrentSession();
-		Criteria criteria = getCurrentSession().createCriteria(ExternalUser.class);
-		ExternalUser externalUser = (ExternalUser) criteria.add(Restrictions.eq("userName", currentUserName)).uniqueResult();
-		return externalUser;
-	}
-	
-	
-	
-	
-}
-

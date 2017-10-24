@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ExternalUser")
+@Table(name = "external_users")
 public class ExternalUser
 {
 	@Id
@@ -155,6 +155,4 @@ public class ExternalUser
 	public void setPassword_hash(String passwordHash){
 		this.passwordHash=passwordHash;
 	}
-
-	
 }
