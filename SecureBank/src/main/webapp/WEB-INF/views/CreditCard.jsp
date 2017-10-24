@@ -41,7 +41,7 @@ border-collapse: collapse;">
 </tr>
 
   		<tr>
-  			<td>${CreditCard.getCheckingsAccountNumber()}</td>
+  			<td>${CreditCard.getBalance()}</td>
     		<td>${CreditCard.getlatepayment()}</td>
     		<td>${CreditCard.getcreditlimit()}</td>
  		</tr>
