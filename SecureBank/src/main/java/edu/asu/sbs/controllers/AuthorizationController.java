@@ -25,7 +25,7 @@ public class AuthorizationController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		// if already authenticated, redirect to logged in page
-		if (!(auth instanceof AnonymousAuthenticationToken )) {
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
 
 			Collection<? extends GrantedAuthority> authorities = auth
 					.getAuthorities();

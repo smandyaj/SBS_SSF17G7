@@ -7,8 +7,8 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(11);
-        System.out.println(encoder.encode("smandyaj3"));
-        System.out.println(encoder.encode("smandyaj4"));
+        System.out.println(encoder.encode("chan2"));
+        //System.out.println(encoder.encode("smandyaj4"));
 	}
 
 }

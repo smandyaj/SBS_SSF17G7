@@ -8,26 +8,27 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<%@ include file="adminMenu.jsp"%>
+<%@ include file="customerMenu.jsp"%>
 
 <div class="container">
-
-	<c:choose>
-		<c:when test="${employee eq 'new'}">
-			<h1>Add Employee</h1>
-		</c:when>
-		<c:otherwise>
-			<h1>Update Employee ${employee}</h1>
-		</c:otherwise>
-	</c:choose>
+			<h1>Update Customer ${user}</h1>
+			<spring:url value="/customer/modify-profile" var="actionUrl" /> 
 	<br />
 
-	<spring:url value="/employee/addormodify" var="employeeActionUrl" />
+	<c:if test="${not empty msg}">
+			<div class="alert alert-${css} alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<strong>${msg}</strong>
+			</div>
+		</c:if>
 
 	<form:form class="form-horizontal" method="post"
-		modelAttribute="employeeForm" action="${employeeActionUrl}">
+		modelAttribute="customerForm" action="${actionUrl}">
 
-		<form:hidden path="employeeId" />
+		<form:hidden path="customerId" />
 
 		<spring:bind path="firstName">
 			<div class="form-group ${status.error ? 'has-error' : ''}">
@@ -51,18 +52,6 @@
 			</div>
 		</spring:bind>
 
-		<spring:bind path="employeeType">
-			<div class="form-group ${status.error ? 'has-error' : ''}">
-				<label class="col-sm-2 control-label">Employee Type</label>
-				<div class="col-sm-10">
-					<form:input path="employeeType" type="text" class="form-control "
-						id="employeeType" placeholder="Employee Type" />
-					<form:errors path="employeeType" class="control-label" />
-				</div>
-			</div>
-		</spring:bind>
-
-
 		<spring:bind path="emailId">
 			<div class="form-group ${status.error ? 'has-error' : ''}">
 				<label class="col-sm-2 control-label">Email</label>
@@ -74,26 +63,25 @@
 			</div>
 		</spring:bind>
 
-		<!--  need to add confirm password -->
-		<spring:bind path="address">
+		<spring:bind path="customerAddress">
 			<div class="form-group ${status.error ? 'has-error' : ''}">
 				<label class="col-sm-2 control-label">Address</label>
 				<div class="col-sm-10">
-					<form:textarea path="address" rows="5" class="form-control"
-						id="address" placeholder="address" />
-					<form:errors path="address" class="control-label" />
+					<form:textarea path="customerAddress" rows="5" class="form-control"
+						id="customerAddress" placeholder="customerAddress" />
+					<form:errors path="customerAddress" class="control-label" />
 				</div>
 			</div>
 		</spring:bind>
 
 
-		<spring:bind path="phoneNumber">
+		<spring:bind path="phone">
 			<div class="form-group ${status.error ? 'has-error' : ''}">
 				<label class="col-sm-2 control-label">Mobile</label>
 				<div class="col-sm-10">
-					<form:input path="phoneNumber" class="form-control"
-						id="phoneNumber" placeholder="Mobile" />
-					<form:errors path="phoneNumber" class="control-label" />
+					<form:input path="phone" class="form-control"
+						id="phone" placeholder="Mobile" />
+					<form:errors path="phone" class="control-label" />
 				</div>
 			</div>
 		</spring:bind>
@@ -109,27 +97,9 @@
 			</div>
 		</spring:bind>
 
-		<spring:bind path="passwordHash">
-			<div class="form-group ${status.error ? 'has-error' : ''}">
-				<label class="col-sm-2 control-label">Password</label>
-				<div class="col-sm-10">
-					<form:password path="passwordHash" class="form-control"
-						id="passwordHash" placeholder="password" />
-					<form:errors path="passwordHash" class="control-label" />
-				</div>
-			</div>
-		</spring:bind>
-
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<c:choose>
-					<c:when test="${employee  eq 'new'}">
-						<button type="submit" class="btn-lg btn-primary pull-right">Add</button>
-					</c:when>
-					<c:otherwise>
 						<button type="submit" class="btn-lg btn-primary pull-right">Update</button>
-					</c:otherwise>
-				</c:choose>
 			</div>
 		</div>
 	</form:form>

@@ -18,7 +18,7 @@
 	<!-- <script src="${pageContext.servletContext.contextPath}/assets/js/transaction.js"></script> -->
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>External User - Transaction</title>
-<%@ include file="employeemenu.jsp" %>
+<%@ include file="customerMenu.jsp" %>
 <script>
 $(function() {
 
@@ -125,7 +125,7 @@ $(function() {
 
           <h2>Make Payment</h2>
 
-	<form:form id="fund-transfer" action="addTransactionSuccess" method="POST" modelAttribute="transaction">
+ 	<form:form id="fund-transfer" action="addTransactionSuccess" method="POST" modelAttribute="transaction">
 		<div class="modal-body">
 			<c:if test="${!empty successMsg}">
 				<div class="alert alert-success">						
@@ -235,5 +235,5 @@ $(function() {
 		<div class="modal-footer">
 			<button type="submit" class="btn btn-success">Transfer Funds</button>
 		</div>
-	</form:form>
-</html>
+	</form:form> 
+</html></html>

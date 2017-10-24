@@ -236,7 +236,7 @@ public class InternalUserController {
 		
 	}
 	
-	/** tier-1 profile update */ //customer modify.
+	/** tier-1 profile update */
 	@RequestMapping(value="/employee/modify-profile",method=RequestMethod.POST)
 	public ModelAndView addModifiedProfile(@ModelAttribute InternalUser internalUser) {
 		ModelAndView modelAndView = new ModelAndView("employee-profile");
@@ -253,6 +253,8 @@ public class InternalUserController {
 	public ModelAndView getEmployeeHomePage() {
 		return new ModelAndView("employeehome");
 	}
+	
+	
 	
 	
 	

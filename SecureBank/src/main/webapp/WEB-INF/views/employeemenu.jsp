@@ -12,9 +12,11 @@
 	overflow: hidden;
 	background-color: #111;
 }
+
 #adminMenu > ul > li {
 	float: left;
 }
+
 #adminMenu > ul > li > a {
 	display: block;
 	color: white;
@@ -22,6 +24,7 @@
 	padding: 14px 16px;
 	text-decoration: none;
 }
+
 /* Change the link color to #111 (black) on hover */
 #adminMenu > ul > li > a:hover {
 	background-color: #111;

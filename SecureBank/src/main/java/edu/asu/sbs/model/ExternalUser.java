@@ -53,6 +53,9 @@ public class ExternalUser
 	
 	@Column(name = "password_hash")
 	private String passwordHash;
+	
+	@Column(name = "user_name")
+	private String userName;
 
 	public int getCustomerId(){
 		return customerId;
@@ -90,7 +93,7 @@ public class ExternalUser
 		return customerAddress;
 	}
 
-	public void setCustomer_address(String customerAddress){
+	public void setCustomerAddress(String customerAddress){
 		this.customerAddress=customerAddress;
 	}
 
@@ -122,8 +125,8 @@ public class ExternalUser
 		return phone;
 	}
 
-	public void setPhone(BigInteger bigInteger){
-		this.phone=bigInteger;
+	public void setPhone(BigInteger phone){
+		this.phone=phone;
 	}
 
 	public int getAccountType(){
@@ -157,4 +160,14 @@ public class ExternalUser
 	public void setPassword_hash(String passwordHash){
 		this.passwordHash=passwordHash;
 	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
+	
 }

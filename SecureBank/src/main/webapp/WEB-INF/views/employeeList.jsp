@@ -31,7 +31,7 @@ function post(path, params, method) {
 }
 </script>
 </head>
-<%@ include file="adminMenu.jsp"%>
+<%@ include file="adminmenu.jsp"%>
 
 <body>
 
@@ -65,8 +65,8 @@ function post(path, params, method) {
 					<td>${employee.firstName}</td>
 					<td>${employee.emailId}</td>
 					<%-- <spring:url value="/employee/${employee.employeeId}" var="userUrl" /> --%>
-					<spring:url value="/employee/${employee.employeeId}/delete" var="deleteUrl" />
-					<spring:url value="/employee/${employee.employeeId}/update" var="updateUrl" />
+					<spring:url value="/admin/employee-delete/${employee.employeeId}" var="deleteUrl" />
+					<spring:url value="/admin/employee-update/${employee.employeeId}" var="updateUrl" />
 					<td>
 					<%-- <button class="btn btn-info" onclick="location.href='${userUrl}'">Query</button> --%>
 					<button class="btn btn-primary"

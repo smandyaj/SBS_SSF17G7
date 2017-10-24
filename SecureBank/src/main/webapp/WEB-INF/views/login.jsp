@@ -50,6 +50,32 @@
 			</p>
 		</div>
 	</form>
+	<%-- <div id="loginBox">
+		<form name="loginForm" action="<c:url value='/customerRedirect'/>"
+			method='POST'>
+			<table>
+				<tr>
+					<td>User:</td>
+					<td><input type='text' name='username'></td>
+				</tr>
+				<tr>
+					<td>Password:</td>
+					<td><input type='password' name='password' /></td>
+					<!--  use keyboard for security -->
+				</tr>
+				<tr>
+					<td colspan='2'><input name="submit" type="submit"
+						value="Submit" /></td>
+				</tr>
+				<tr>
+			</table>
+
+			<span><a href="newUser"><button>Sign up</button></a></span> <span><a
+				href="forgotPassword"><button>Forgot Password</button></a></span>
+
+		</form>
+
+	</div> --%>
 
 	<div id="virtualKeyboard"></div>
 

@@ -8,6 +8,6 @@
 <%@ page isELIgnored="false"%>
 </head>
 <body>
-<%@ include file="adminMenu.jsp"%>
+<%@ include file="adminmenu.jsp"%>
 </body>
 </html>

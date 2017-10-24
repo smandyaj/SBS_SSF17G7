@@ -4,6 +4,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page isELIgnored="false"%>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,6 +13,7 @@
 <title>Pending Requests for Internal Users</title>
 </head>
 <body>
+<%@ include file="adminmenu.jsp" %>
 <div class="container">
 <c:if test="${not empty msg}">
 			<div class="alert alert-${css} alert-dismissible" role="alert">
@@ -27,25 +30,22 @@
 			<thead>
 				<tr>
 					<th>Employee ID</th>
-					<th>Date</th>
 					<th>First Name</th>
 					<th>Last Name</th>
-					<th>Employee Type</th>
 					<th>Action</th>
 				</tr>
 			</thead>
 
-			<c:forEach var="employee" items="${employees}">
+			<c:forEach var="user" items="${users}">
 				<tr>
 					<td>
-						${employee.id}
+						${user.userId}
 					</td>
-					<td>${employee.lastUpdate}</td>
-					<td>${employee.firstName}</td>
-					<td>${employee.lastName}</td>
+					<td>${user.firstName}</td>
+					<td>${user.lastName}</td>
 					<td>
-						<spring:url value="/adminApproval/${employee.id}" var="adminApprovalUrl" />
-						<spring:url value="/adminApproval/${employee.id}" var="adminDeclineUrl" />
+						<spring:url value="/admin/approve/${user.modId}" var="adminApprovalUrl" />
+						<spring:url value="/admin/decline/${user.modId}" var="adminDeclineUrl" />
 						<button class="btn btn-info" onclick="location.href='${adminApprovalUrl}'">Approve</button>
 						<button class="btn btn-info" onclick="location.href='${adminDeclineUrl}'">Decline</button>
 				</tr>

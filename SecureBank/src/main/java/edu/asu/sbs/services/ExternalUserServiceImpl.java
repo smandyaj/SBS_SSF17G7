@@ -1,25 +1,24 @@
 package edu.asu.sbs.services;
 
-import java.io.Externalizable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.asu.sbs.dao.ExternalUserDAO;
-import edu.asu.sbs.dao.InternalUserDAO;
 import edu.asu.sbs.model.ExternalUser;
-import edu.asu.sbs.model.ModifiedUser;
+import edu.asu.sbs.model.InternalUser;
 
+@Service
+@Transactional
 public class ExternalUserServiceImpl implements ExternalUserService{
-	
 	
 	@Autowired
 	ExternalUserDAO externalUserDAO;
-	
-	
 	
 	@Override
 	public ExternalUser findUserById(Integer Id) {
@@ -30,34 +29,27 @@ public class ExternalUserServiceImpl implements ExternalUserService{
 	@Override
 	public List<ExternalUser> findAllUsers() {
 		// TODO Auto-generated method stub
-		return externalUserDAO.findAll();
+		return null;
 	}
 
 	@Override
 	public void addUser(ExternalUser user) {
 		// TODO Auto-generated method stub
-		externalUserDAO.add(user);
+		
 	}
 
 	@Override
 	public void updateUser(ExternalUser user) {
 		// TODO Auto-generated method stub
-		externalUserDAO.update(user);
+		
 	}
 
 	@Override
 	public void deleteUser(Integer id) {
 		// TODO Auto-generated method stub
-		externalUserDAO.delete(id);
-	}
-
-	@Override
-	public void updateUser(ModifiedUser user) {
-		// TODO Auto-generated method stub
-		externalUserDAO.update(user);
 		
 	}
-
+	
 	@Override
 	public ExternalUser findByUserName() {
 		// TODO Auto-generated method stub
@@ -70,7 +62,5 @@ public class ExternalUserServiceImpl implements ExternalUserService{
         
         return externalUserDAO.findByUserName(currentUserName);
 	}
-	
-	
-	
+
 }

@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<%@ include file="adminMenu.jsp"%>
+<%@ include file="adminmenu.jsp"%>
 
 <div class="container">
 

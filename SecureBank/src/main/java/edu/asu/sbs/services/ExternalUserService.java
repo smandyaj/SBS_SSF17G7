@@ -3,7 +3,6 @@ package edu.asu.sbs.services;
 import java.util.List;
 
 import edu.asu.sbs.model.ExternalUser;
-import edu.asu.sbs.model.ModifiedUser;
 
 public interface ExternalUserService {
 
@@ -16,8 +15,6 @@ public interface ExternalUserService {
 	void updateUser(ExternalUser user);
 	
 	void deleteUser(Integer id);
-	
-	void updateUser(ModifiedUser user);
 	
 	ExternalUser findByUserName();
 }
