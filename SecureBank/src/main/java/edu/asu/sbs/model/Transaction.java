@@ -12,7 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "Transactions")
+@Table(name = "Transaction")
 public class Transaction {
 	
 	@Id
@@ -27,9 +27,6 @@ public class Transaction {
 	//@Temporal(TemporalType.TIMESTAMP)
 	private Date transactionCreateTime;
 	
-	@Column(name = "transaction_status")
-	private String transactionStatus;
-	
 	@Column(name = "payer_id")
 	private String payerId;
 	
@@ -38,6 +35,39 @@ public class Transaction {
 	
 	@Column(name = "transaction_amount")
 	private double transactionAmount;
+	
+	@Column(name="status")
+	private int status;
+	
+	@Column(name="auth")
+	private int auth;
+	
+	@Column(name="status_quo")
+	private String status_quo;
+	
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public int getAuth() {
+		return auth;
+	}
+
+	public void setAuth(int auth) {
+		this.auth = auth;
+	}
+
+	public String getStatus_quo() {
+		return status_quo;
+	}
+
+	public void setStatus_quo(String status_quo) {
+		this.status_quo = status_quo;
+	}
 
 	public int getTransactionId(){
 		return transactionId;
@@ -63,14 +93,6 @@ public class Transaction {
 		this.transactionCreateTime=transactionCreateTime;
 	}
 
-	public String getTransactionStatus(){
-		return transactionStatus;
-	}
-
-	public void setTransactionStatus(String transactionStatus){
-		this.transactionStatus=transactionStatus;
-	}
-
 	public String getPayerId(){
 		return payerId;
 	}
@@ -93,5 +115,36 @@ public class Transaction {
 
 	public void setTransactionAmount(double transactionAmount){
 		this.transactionAmount=transactionAmount;
+	}
+
+	public Transaction(int transactionType, Date transactionCreateTime, String transactionStatus, String payerId,
+			String receiverId, double transactionAmount, int status, int auth, String status_quo) {
+		super();
+		this.transactionType = transactionType;
+		this.transactionCreateTime = transactionCreateTime;
+		this.payerId = payerId;
+		this.receiverId = receiverId;
+		this.transactionAmount = transactionAmount;
+		this.status = status;
+		this.auth = auth;
+		this.status_quo = status_quo;
+	}
+
+	public Transaction(int transactionId, int transactionType, Date transactionCreateTime, String payerId,
+			String receiverId, double transactionAmount, int status, int auth, String status_quo) {
+		super();
+		this.transactionId = transactionId;
+		this.transactionType = transactionType;
+		this.transactionCreateTime = transactionCreateTime;
+		this.payerId = payerId;
+		this.receiverId = receiverId;
+		this.transactionAmount = transactionAmount;
+		this.status = status;
+		this.auth = auth;
+		this.status_quo = status_quo;
+	}
+	
+	public Transaction() {
+		
 	}
 }

@@ -34,7 +34,7 @@ public class AuthorizationController {
 				// customer
 				if (grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_CUSTOMER") || 
 						grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_MERCHANT")) {
-					return "redirect:/home/";
+					return "redirect:/customer/home/";
 				} 
 				
 				// Manager
@@ -77,9 +77,17 @@ public class AuthorizationController {
     }
     
     
+    
+    
     @RequestMapping(value="/expired", method = RequestMethod.GET)
     public String getExpired(ModelMap model) {
     	model.addAttribute("error", "Your session has expired due to access from another device or browser.");
     	return "auth/login";
+    }
+    
+    @RequestMapping(value="/forgotpass", method = RequestMethod.GET)
+    public String getForgotPassword(ModelMap model) {
+    	model.addAttribute("title", "Forgot Password");
+        return "forgotpass";
     }
 }

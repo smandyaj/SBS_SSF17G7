@@ -1,5 +1,7 @@
 package edu.asu.sbs.model;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,7 +40,7 @@ public class ExternalUser
 	private int zip;
 	
 	@Column(name = "phone")
-	private int phone;
+	private BigInteger phone;
 	
 	@Column(name = "account_type")
 	private int accountType;
@@ -49,6 +51,17 @@ public class ExternalUser
 	@Column(name = "balance")
 	private double balance;
 	
+	@Column(name="user_name")
+	private String userName;
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	@Column(name = "password_hash")
 	private String passwordHash;
 
@@ -116,12 +129,12 @@ public class ExternalUser
 		this.zip=zip;
 	}
 
-	public int getPhone(){
+	public BigInteger getPhone(){
 		return phone;
 	}
 
-	public void setPhone(int phone){
-		this.phone=phone;
+	public void setPhone(BigInteger bigInteger){
+		this.phone=bigInteger;
 	}
 
 	public int getAccountType(){

@@ -10,6 +10,9 @@
 	<mvc:annotation-driven />
 
 	<mvc:resources mapping="/assets/**" location="/WEB-INF/assets/" />
+	<mvc:resources mapping="/assets/css/**" location="/WEB-INF/assets/css/"/>
+    <mvc:resources mapping="/assets/img/**" location="/WEB-INF/assets/img/"/>
+    <mvc:resources mapping="/assets/js/**" location="/WEB-INF/assets/js/"/>
 <!-- 	
 	<bean class="org.springframework.web.servlet.view.XmlViewResolver">
 	   <property name="location">
