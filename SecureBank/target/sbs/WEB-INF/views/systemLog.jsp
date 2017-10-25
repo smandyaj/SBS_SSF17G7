@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<%@ include file="adminMenu.jsp" %>
+<%@ include file="adminmenu.jsp" %>
 <title>Systems Log</title>
 </head>
 <body>

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.asu.sbs.dao.ExternalUserDAO;
 import edu.asu.sbs.model.ExternalUser;
 import edu.asu.sbs.model.InternalUser;
+import edu.asu.sbs.model.ModifiedUser;
 
 @Service
 @Transactional
@@ -29,18 +30,19 @@ public class ExternalUserServiceImpl implements ExternalUserService{
 	@Override
 	public List<ExternalUser> findAllUsers() {
 		// TODO Auto-generated method stub
-		return null;
+		return externalUserDAO.findAll();
 	}
 
 	@Override
 	public void addUser(ExternalUser user) {
 		// TODO Auto-generated method stub
-		
+		 externalUserDAO.add(user);
 	}
 
 	@Override
 	public void updateUser(ExternalUser user) {
 		// TODO Auto-generated method stub
+		externalUserDAO.update(user);
 		
 	}
 
@@ -48,6 +50,12 @@ public class ExternalUserServiceImpl implements ExternalUserService{
 	public void deleteUser(Integer id) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void updateUser(ModifiedUser user) {
+		// TODO Auto-generated method stub
+		externalUserDAO.update(user);
 	}
 	
 	@Override

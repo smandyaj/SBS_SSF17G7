@@ -35,12 +35,11 @@
 	<div id="adminMenu">
 		<ul id="adminList">
 			<li><a href=#>Home</a></li>
-			<li><a href=${pageContext.request.contextPath}/employee/list>Employee Management</a></li>
-			<li><a href="#">Requests Pending</a></li>
+			<li><a href=${pageContext.request.contextPath}/admin/employee-list>PII And Employee Management</a></li>
+			<li><a href=${pageContext.request.contextPath}/admin/requests-pending>Requests Pending</a></li>
 			<li><a href=${pageContext.request.contextPath}/admin/systemlogs>System Log</a></li>
-			<li><a href=${pageContext.request.contextPath}/employee/add>Add Users</a></li>
-			<li><a href="#">Profile</a></li>
-			<li><a href="#">Logout</a></li>
+			<li><a href=${pageContext.request.contextPath}/admin/employee-add>Add Users</a></li>
+			<li><a href=${pageContext.request.contextPath}/logout/>Logout</a></li>
 		</ul>
 	</div>
 </body>

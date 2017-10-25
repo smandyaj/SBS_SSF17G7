@@ -23,9 +23,9 @@ public class ModifiedUserServiceImpl implements ModifiedUserService{
 	}
 
 	@Override
-	public List<ModifiedUser> findAllUsers() {
+	public List<ModifiedUser> findAllUsers(int userType) {
 		// TODO Auto-generated method stub
-		return modifiedUserDAO.findAll();
+		return modifiedUserDAO.findAll(userType);
 	}
 
 	@Override

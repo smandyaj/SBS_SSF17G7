@@ -10,16 +10,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 
 import edu.asu.sbs.model.InternalUser;
 import edu.asu.sbs.model.ModifiedUser;
+import edu.asu.sbs.model.Role;
+import edu.asu.sbs.model.Users;
+import edu.asu.sbs.services.BCryptHashService;
 
 @Repository
 public class InternalUserDAOImpl implements InternalUserDAO{
 
 	@Autowired
 	SessionFactory sessionFactory;
+	
+	@Autowired
+	UserDAO userDAO;
+	
+	@Autowired
+	RoleDAO roleDAO;
+	
+	@Autowired
+	BCryptHashService bCryptHashService;
 	
 	private Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
@@ -40,16 +53,27 @@ public class InternalUserDAOImpl implements InternalUserDAO{
 	}
 
 	@Override
-	public void add(InternalUser user) {
+	public void add(InternalUser internalUser) {
 		// TODO Auto-generated method stub
-		getCurrentSession().save(user);
-		
+		String encodedPwd = bCryptHashService.getBCryptHash(internalUser.getPasswordHash());
+		getCurrentSession().save(internalUser);
+		// add to users table
+		System.out.println("Adding to users table");
+		Users user = new Users(internalUser.getUserName(),encodedPwd,1);
+		userDAO.add(user);
+		// add to user_roles table with appropriate role
+		System.out.println("Adding to roles table");
+		String userRole = internalUser.getEmployeeType() == 0 ? "ROLE_REGULAR" : "ROLE_MANAGER";
+		Role role = new Role(internalUser.getUserName(),userRole);
+		roleDAO.add(role);
 	}
 
 	@Override
 	public void update(InternalUser user) {
 		// TODO Auto-generated method stub
+		System.out.println("$$Updating the user with modified details$$");
 		InternalUser internalUser = findById(user.getEmployeeId());
+		System.out.println("$$Updating the user with modified details$$" + internalUser.getEmailId());
 		internalUser.setAddress(user.getAddress());
 		internalUser.setEmailId(user.getEmailId());
 		internalUser.setPhoneNumber(user.getPhoneNumber());

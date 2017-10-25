@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <style>
-#customerMenu > ul {
+#adminMenu > ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
@@ -13,11 +13,11 @@
 	background-color: #111;
 }
 
-#customerMenu > ul > li {
+#adminMenu > ul > li {
 	float: left;
 }
 
-#customerMenu > ul > li > a {
+#adminMenu > ul > li > a {
 	display: block;
 	color: white;
 	text-align: center;
@@ -26,20 +26,19 @@
 }
 
 /* Change the link color to #111 (black) on hover */
-#customerMenu > ul > li > a:hover {
+#adminMenu > ul > li > a:hover {
 	background-color: #111;
 }
 </style>
 </head>
 <body>
-	<div id="customerMenu">
-		<ul id="customerList">
-			<li><a href=#>Home</a></li>
-			<li><a href="#">Accounts</a></li>
-			<li><a href="#">Make Transfer</a></li>
-			<li><a href="#">Transaction Management</a></li>
-			<li><a href="#">Profile</a></li>
-			<li><a href="#">Logout</a></li>
+	<div id="adminMenu">
+		<ul id="adminList">
+             <li><a href="${pageContext.servletContext.contextPath}/customer/home">Home</a></li>
+             <li><a href="${pageContext.servletContext.contextPath}/customer/customer-transaction">Add Transaction</a></li>
+            <li><a href="${pageContext.servletContext.contextPath}/views/internalEmpHome">Pending Transactions</a></li>
+			<li><a href="${pageContext.servletContext.contextPath}/customer/profile">Profile</a></li>
+            <li><a href="${pageContext.servletContext.contextPath}/logout">Logout</a></li>
 		</ul>
 	</div>
 </body>

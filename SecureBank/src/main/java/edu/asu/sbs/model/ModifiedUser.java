@@ -137,7 +137,10 @@ public class ModifiedUser {
 		this.status_quo = status_quo;
 		this.userType = userType;
 	}
-
+	
+	public ModifiedUser() {
+		
+	}
 
 	
 	

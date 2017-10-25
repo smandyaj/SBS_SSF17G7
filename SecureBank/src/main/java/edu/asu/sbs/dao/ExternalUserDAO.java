@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.asu.sbs.model.ExternalUser;
 import edu.asu.sbs.model.InternalUser;
+import edu.asu.sbs.model.ModifiedUser;
 
 public interface ExternalUserDAO {
 	
@@ -14,6 +15,7 @@ public interface ExternalUserDAO {
 	void add(ExternalUser user);
 	
 	void update(ExternalUser user);
+	void update(ModifiedUser user);
 	
 	void delete(Integer id);
 	

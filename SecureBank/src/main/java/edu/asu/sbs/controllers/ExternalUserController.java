@@ -64,7 +64,7 @@ public class ExternalUserController {
 	
 	@RequestMapping(value="/customer/customer-transaction", method = RequestMethod.GET)
 	public ModelAndView returnCustomerTransactionPage() {
-		ModelAndView modelAndView  = new ModelAndView("customersearch");
+		ModelAndView modelAndView  = new ModelAndView("external_usertransaction");
 		modelAndView.addObject("externalUser", getExternalUser());
 		return modelAndView;
 	}

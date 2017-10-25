@@ -9,7 +9,7 @@ public interface ModifiedUserService {
 	
 	ModifiedUser findUserById(Integer Id);
 	
-	List<ModifiedUser> findAllUsers();
+	List<ModifiedUser> findAllUsers(int userType);
 	
 	void addUser(ModifiedUser user);
 	

@@ -11,12 +11,25 @@ import org.springframework.stereotype.Repository;
 
 import edu.asu.sbs.model.ExternalUser;
 import edu.asu.sbs.model.InternalUser;
+import edu.asu.sbs.model.ModifiedUser;
+import edu.asu.sbs.model.Role;
+import edu.asu.sbs.model.Users;
+import edu.asu.sbs.services.BCryptHashService;
 
 @Repository
 public class ExternalUserDAOImpl implements ExternalUserDAO{
 
 	@Autowired
 	SessionFactory sessionFactory;
+	
+	@Autowired
+	UserDAO userDAO;
+	
+	@Autowired
+	RoleDAO roleDAO;
+	
+	@Autowired
+	BCryptHashService bCryptHashService;
 	
 	private Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
@@ -38,9 +51,20 @@ public class ExternalUserDAOImpl implements ExternalUserDAO{
 	}
 
 	@Override
-	public void add(ExternalUser user) {
+	public void add(ExternalUser externalUser) {
 		// TODO Auto-generated method stub
-		getCurrentSession().save(user);
+				String encodedPwd = bCryptHashService.getBCryptHash(externalUser.getPasswordHash());
+				getCurrentSession().save(externalUser);
+				// add to users table
+				System.out.println("Adding to users table");
+				Users user = new Users(externalUser.getUserName(),encodedPwd,1);
+				userDAO.add(user);
+				// add to user_roles table with appropriate role
+				System.out.println("Adding to roles table");
+				String userRole = externalUser.getCustomerType() == 0 ? "ROLE_CUSTOMER" : "ROLE_MERCHANT";
+				Role role = new Role(externalUser.getUserName(),userRole);
+				roleDAO.add(role);
+				getCurrentSession().save(user);
 		
 	}
 
@@ -69,6 +93,17 @@ public class ExternalUserDAOImpl implements ExternalUserDAO{
 		ExternalUser externalUser = (ExternalUser) criteria.add(Restrictions.eq("userName", currentUserName)).uniqueResult();
 		return externalUser;
 	}
+	 
+	 @Override
+		public void update(ModifiedUser user) {
+			// TODO Auto-generated method stub
+			System.out.println("Updating the values with modified user for external user");
+			ExternalUser externalUser = findById(user.getUserId());
+			externalUser.setFirstName(user.getFirstName());
+			externalUser.setLastName(user.getLastName());
+			externalUser.setPhone(user.getPhoneNumber());
+			getCurrentSession().update(externalUser);
+		}
 	
 	 
 	
