@@ -1,30 +1,30 @@
 package edu.asu.sbs.model;
 
-import java.sql.Date;
+
+import java.math.BigInteger;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "SYSTEMLOG")
+@Table(name = "systemlog")
 public class SystemLog {
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private BigInteger id;
 	
 	@Column(name= "login_time")
-	private Date logTime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date loginTime;
 	
 	@Column(name = "first_name")
 	private String firstName;
@@ -35,12 +35,22 @@ public class SystemLog {
 	@Column(name = "action")
 	private String action;
 
-	public Date getLogTime() {
-		return logTime;
+	
+
+	public BigInteger getId() {
+		return id;
 	}
 
-	public void setLogTime(Date logTime) {
-		this.logTime = logTime;
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+
+	public Date getLoginTime() {
+		return loginTime;
+	}
+
+	public void setLoginTime(Date loginTime) {
+		this.loginTime = loginTime;
 	}
 
 	public String getFirstName() {
@@ -69,7 +79,7 @@ public class SystemLog {
 
 	public SystemLog(Date logTime, String firstName, String lastName, String action) {
 		super();
-		this.logTime = logTime;
+		this.loginTime = logTime;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.action = action;
@@ -83,7 +93,7 @@ public class SystemLog {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "logTime="+ this.logTime.toString()+", name="+this.firstName+",action="+this.action;
+		return "logTime="+ this.loginTime.toString()+", name="+this.firstName+",action="+this.action;
 	}
 	
 	
