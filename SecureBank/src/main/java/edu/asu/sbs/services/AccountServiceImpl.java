@@ -1,7 +1,10 @@
 package edu.asu.sbs.services;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
+
+import javax.sound.midi.Receiver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.asu.sbs.dao.AccountDAO;
 import edu.asu.sbs.model.Account;
 import edu.asu.sbs.model.Transaction;
+
 @Service
 @Transactional
 public class AccountServiceImpl implements AccountService{
@@ -47,80 +51,32 @@ public class AccountServiceImpl implements AccountService{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
+
 	@Override
-	public boolean approveTransaction(Transaction transaction) {
+	public Account findByAccountNumber(int i) {
 		// TODO Auto-generated method stub
-/*		System.out.println("inside approve transaction");
-
-		if (transaction.getStatus() != 0) {
-			return false;
-		}
-
-		System.out.println("Transaction is pending");
-
-		Account senderAcc = accountDAO.findByAccountNumber(transaction
-				.getSenderAccNumber());
-		Account recieverAcc = accountDAO.findByAccountNumber(transaction
-				.getReceiverAccNumber());
-
-		System.out.println("Accounts retreived");
-
-		double amount = transaction.getTransactionAmount();
-
-		// Means credit debit type of transactions
-		if (senderAcc.getNumber().equals(recieverAcc.getNumber())) {
-			if (transaction.getType().equalsIgnoreCase("credit")) {
-				senderAcc.setBalance(senderAcc.getBalance().add(amount));
-			} else if(amount.compareTo(zero) == 1 && senderAcc.getBalance().compareTo(
-					amount) == 1) {
-				senderAcc.setBalance(senderAcc.getBalance().subtract(amount));
-			
-			} else {
-				return false;
-			}
-			
-			transaction.setBalance(senderAcc.getBalance());
-			transaction.setStatus("approved");
-			senderAcc.setUpdatedAt(now);
-			transaction.setUpdatedAt(now);
-			updateTransaction(transaction);
-
-			return true;
-
-		}
-
-		// For other transactions
-		if ((amount.compareTo(zero) == 1 && senderAcc.getBalance().compareTo(
-				amount) == 1)) {
-
-			senderAcc.setBalance(senderAcc.getBalance().subtract(amount));
-			senderAcc.setUpdatedAt(now);
-			recieverAcc.setBalance(recieverAcc.getBalance().add(amount));
-			recieverAcc.setUpdatedAt(now);
-
-			if (transaction.getType().equalsIgnoreCase("credit")) {
-				transaction.setBalance(recieverAcc.getBalance());
-				updateTransactionPair(transaction, "approved",
-						senderAcc.getBalance());
-			} else {
-				transaction.setBalance(senderAcc.getBalance());
-				updateTransactionPair(transaction, "approved",
-						recieverAcc.getBalance());
-			}
-
-			transaction.setStatus("approved");
-			transaction.setUpdatedAt(now);
-			updateTransaction(transaction);
-			accountService.updateAccount(senderAcc);
-			accountService.updateAccount(recieverAcc);
-
-			return true;
-
-		}*/
-
-		return false;
+		return accountDAO.findByAccountNumber(i);
 	}
+	
+	public void transferFunds(TransactionService transactionService,
+			AccountService accountService, Transaction senderTransaction,
+			Transaction receiverTransaction, double amount) {
+		
+		Account senderAccount = accountService.getAccountByNumber(senderTransaction.getSenderAccNumber());
+		Account receiverAccount = accountService.getAccountByNumber(senderTransaction.getReceiverAccNumber());
+		System.out.println("senderAccount: " + senderAccount);
+		System.out.println("receiverAccount: " + receiverAccount);
+		
+		// update account balances
+		senderAccount.setAccountBalance(senderAccount.getAccountBalance() - amount);
+		receiverAccount.setAccountBalance(receiverAccount.getAccountBalance() + amount);
+		
+		System.out.println("senderAccount after updating balance: " + senderAccount);
+		System.out.println("receiverAccount after updating balance: " + receiverAccount);
+		
+		// create transactions
+		transactionService.addTransaction(senderTransaction);
+		transactionService.addTransaction(receiverTransaction);
 
+	}
 }

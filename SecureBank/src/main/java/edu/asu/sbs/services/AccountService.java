@@ -13,5 +13,8 @@ public interface AccountService {
 	public void updateAccount(Account account);
 	public BigDecimal getBalance(int accountNumber);
 	void transferFunds(Transaction sender, Transaction receiver,BigDecimal amount);
-	public boolean approveTransaction(Transaction transaction);
+	Account findByAccountNumber(int i);
+	void transferFunds(TransactionService transactionService,
+			AccountService accountService, Transaction senderTransaction,
+			Transaction receiverTransaction, double amount);
 }

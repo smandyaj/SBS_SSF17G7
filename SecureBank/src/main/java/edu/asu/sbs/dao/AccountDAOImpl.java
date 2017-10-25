@@ -44,7 +44,7 @@ public class AccountDAOImpl implements AccountDAO{
 	@Override
 	public void updateAccount(Account account) {
 		// TODO Auto-generated method stub
-		
+		this.sessionFactory.getCurrentSession().update(account);
 	}
 
 }

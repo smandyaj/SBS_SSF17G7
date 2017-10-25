@@ -4,19 +4,26 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.sbs.model.Account;
 import edu.asu.sbs.model.ExternalUser;
@@ -229,10 +236,125 @@ public class InternalUserController {
 	}
 	
 	/** process the transaction **/
-	@RequestMapping(value="/employee/transaction/process", method = RequestMethod.POST)
-	public ModelAndView processTransaction() {
+	@RequestMapping(value="/employee/addTransactionSuccess", method = RequestMethod.POST)
+	public String processTransaction(ModelMap model, HttpServletRequest request,
+			@ModelAttribute("transaction") Transaction senderTransaction,
+			BindingResult result, RedirectAttributes attr) {
 		
-		return new ModelAndView();
+		boolean isManager = request.isUserInRole("ROLE_MANAGER");
+		boolean isTransferAccountValid;
+		
+		// get account of the sender
+		Account account = accountService.getAccountByNumber(senderTransaction
+				.getSenderAccNumber());
+
+		// Exit the transaction if Account doesn't exist
+		if (account == null) {
+			System.out.println("Someone tried credit/debit functionality for some other account. Details:");
+			//System.out.println("Credit/Debit Acc No: " + request.getParameter("number"));
+			// add the return attributes
+			return "redirect:/employee/customer-transaction";
+		}
+
+		int receiverAccNumber = 0;
+		if (request.getParameter("type").equalsIgnoreCase("internal")) {
+			// if it is internal
+			receiverAccNumber = Integer.parseInt(request.getParameter("receiverAccNumber"));
+			System.out.println("internal transfer");
+		} else {
+			// if it us external
+			receiverAccNumber = Integer.parseInt(request.getParameter("receiverAccNumberExternal"));
+			System.out.println("external transfer");
+		}
+
+		if (receiverAccNumber == Integer.parseInt(request.getParameter("senderAccNumber"))) {
+			// same account transfer not allowed
+			return "redirect:/employee/customer-transaction";
+		}
+		
+		// get the to account details
+		Account toAccount = accountService.getAccountByNumber(receiverAccNumber);
+
+		if (toAccount != null) {
+			isTransferAccountValid = true;
+		} else {
+			isTransferAccountValid = false;
+		}
+
+		System.out.println("isTransferAccountValid: " + isTransferAccountValid);
+		if (isTransferAccountValid) {
+
+			double amount = Double.parseDouble((request.getParameter("amount")));
+
+			System.out.println("receiverAccNumber: " + receiverAccNumber);
+
+			boolean isCritical = transactionService.isTransferCritical(amount);
+			
+			// create the transaction object
+			int status = 1;
+			String status_quo = "approved";
+			
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+			senderTransaction = new Transaction(0, date, account.getCustomerId(), toAccount.getCustomerId(),
+					amount, status, 1, status_quo,
+					Integer.parseInt(request.getParameter("senderAccNumber")),receiverAccNumber);
+			System.out.println("Sender Transaction created: " + senderTransaction);
+
+			// Check if Debit amount is < balance in the account
+			if ( account.getAccountBalance() - amount <= 0) {
+				System.out.println("No balance in account");
+				return "redirect:/employee/customer-transaction";
+			}
+
+			
+			
+			Transaction receiverTransaction = new Transaction(1, date, account.getCustomerId(), toAccount.getCustomerId(),
+					amount, status, 1, status_quo,
+					Integer.parseInt(request.getParameter("senderAccNumber")),receiverAccNumber);
+
+
+			System.out.println("Receiver Transaction created: " + receiverTransaction);
+
+			try {
+				System.out.println("Trying to transfer funds");
+				if(isManager) {
+					System.out.println("Transfer as manager ");
+					receiverTransaction.setStatus(1);
+					receiverTransaction.setStatus_quo("approved");
+					accountService.transferFunds(transactionService,
+					accountService, senderTransaction, receiverTransaction,
+						amount);
+				}else {
+					System.out.println("Transfer as regular employee");
+					if(isCritical) {
+						System.out.println("Transer critical and only manager can approve");
+						receiverTransaction.setStatus(0);
+						receiverTransaction.setStatus_quo("pending");
+						transactionService.addTransaction(senderTransaction);
+						transactionService.addTransaction(receiverTransaction);
+					}else {
+						System.out.println("Transaction not critical and can be approved by regular");
+						receiverTransaction.setStatus(1);
+						receiverTransaction.setStatus_quo("approved");
+						accountService.transferFunds(transactionService,
+						accountService, senderTransaction, receiverTransaction,
+							amount);
+					}
+					return "redirect:/employee/customer-transaction";
+				}
+			} catch (Exception e) {
+				System.out.println("Transfer unsuccessful. Please try again or contact the admin.");
+				return "redirect:/employee/customer-transaction";
+			}
+
+			System.out.println("Transaction completed successfully. Transaction should show up on the user account now");
+
+		} else {
+			System.out.println("Transfer unsucessful. Please try again or contact the admin");
+		}
+
+		// redirect to the view page
+		return "redirect:/employee/customer-transaction";
 	}
 	
 	/** tier-1 profile **/
@@ -277,11 +399,8 @@ public class InternalUserController {
 	public String approveCustomerPendingTrans(@PathVariable("id") int id){
 		System.out.println("Approving the pending customer transactions");
 		Transaction transaction = transactionService.get(id);
-		transaction.setStatus(1);
-		transaction.setStatus_quo("approved");
-		transactionService.updateTransaction(transaction);
 		// update the respective accounts to reflect changes
-		
+		transactionService.approveTransaction(transaction);
 		// redirection not working
 		return "redirect:/employee/pending-transactions";
 	}
@@ -315,7 +434,7 @@ public class InternalUserController {
 		System.out.println("modUser::"+ modUser.getFirstName());
 		//update the modified user object to approved
 		modUser.setStatus(1);
-		modUser.setStatus_quo("approved");;
+		modUser.setStatus_quo("approved");
 		modifiedUserService.updateUser(modUser);
 		externalUserService.updateUser(modUser);
 		System.out.println("Status has been updated and object modified");
