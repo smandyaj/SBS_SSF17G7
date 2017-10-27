@@ -104,7 +104,7 @@
 
 				<div id="external-transfer" class="hidden">
 					<p>
-						<label>Beneficiery Account Number:</label> <input type="text"
+						<label>Beneficiary Account Number:</label> <input type="text"
 							class="form-control" name="receiverAccNumberExternal"
 							placeholder="eg: 1234">
 					</p>

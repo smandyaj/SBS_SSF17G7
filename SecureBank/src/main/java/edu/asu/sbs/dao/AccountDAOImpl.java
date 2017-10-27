@@ -27,7 +27,7 @@ public class AccountDAOImpl implements AccountDAO{
 	}
 
 	@Override
-	public Account findByAccountNumber(String accNumber) {
+	public Account findByAccountNumber(int accNumber) {
 		// TODO Auto-generated method stub
 		Session session = this.sessionFactory.getCurrentSession();
 		Account account = new Account();
@@ -36,7 +36,7 @@ public class AccountDAOImpl implements AccountDAO{
 	}
 
 	@Override
-	public BigDecimal getBalance(String accNumber) {
+	public BigDecimal getBalance(int accNumber) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -44,7 +44,7 @@ public class AccountDAOImpl implements AccountDAO{
 	@Override
 	public void updateAccount(Account account) {
 		// TODO Auto-generated method stub
-		
+		this.sessionFactory.getCurrentSession().update(account);
 	}
 
 }

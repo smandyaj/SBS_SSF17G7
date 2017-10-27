@@ -7,7 +7,7 @@ import edu.asu.sbs.model.Account;
 
 public interface AccountDAO {
 	List<Account> findByCustomerID(int customerId);
-	Account findByAccountNumber(String accNumber);
-	public BigDecimal getBalance(String accNumber);
+	Account findByAccountNumber(int i);
+	public BigDecimal getBalance(int accNumber);
 	public void updateAccount(Account account);
 }

@@ -23,7 +23,14 @@ public class TransactionDAOImpl implements TransactionDAO{
 	@Override
 	public List<Transaction> listAll(int internalUserType) {
 		// TODO Auto-generated method stub
-		return getCurrentSession().createQuery("from Transaction where auth=?").setParameter(0, 1).list();
+		// 0 - pending, 1 - approved, 2- declined
+		if( internalUserType == 0) {
+			return getCurrentSession().createQuery("from Transaction where auth=? and status=?")
+					.setParameter(0, 1)
+					.setParameter(0, 0).list();
+		}
+		
+		return getCurrentSession().createQuery("from Transaction where status=?").setParameter(0, 0).list();
 	}
 
 	@Override

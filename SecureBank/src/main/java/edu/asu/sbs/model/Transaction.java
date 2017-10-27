@@ -1,6 +1,7 @@
 package edu.asu.sbs.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,13 +26,13 @@ public class Transaction {
 	
 	@Column(name = "transaction_create_time")
 	//@Temporal(TemporalType.TIMESTAMP)
-	private Date transactionCreateTime;
+	private Timestamp transactionCreateTime;
 	
 	@Column(name = "payer_id")
-	private String payerId;
+	private int payerId;
 	
 	@Column(name = "receiver_id")
-	private String receiverId;
+	private int receiverId;
 	
 	@Column(name = "transaction_amount")
 	private double transactionAmount;
@@ -45,6 +46,28 @@ public class Transaction {
 	@Column(name="status_quo")
 	private String status_quo;
 	
+	@Column(name="senderAccNumber")
+	private int senderAccNumber;
+	
+	@Column(name="receiverAccNumber")
+	private int receiverAccNumber;
+	
+	public int getSenderAccNumber() {
+		return senderAccNumber;
+	}
+
+	public void setSenderAccNumber(int senderAccNumber) {
+		this.senderAccNumber = senderAccNumber;
+	}
+
+	public int getReceiverAccNumber() {
+		return receiverAccNumber;
+	}
+
+	public void setReceiverAccNumber(int receiverAccNumber) {
+		this.receiverAccNumber = receiverAccNumber;
+	}
+
 	public int getStatus() {
 		return status;
 	}
@@ -85,27 +108,27 @@ public class Transaction {
 		this.transactionType=transactionType;
 	}
 
-	public Date getTransactionCreateTime(){
+	public Timestamp getTransactionCreateTime(){
 		return transactionCreateTime;
 	}
 
-	public void setTransactionCreateTime(Date transactionCreateTime){
+	public void setTransactionCreateTime(Timestamp transactionCreateTime){
 		this.transactionCreateTime=transactionCreateTime;
 	}
 
-	public String getPayerId(){
+	public int getPayerId(){
 		return payerId;
 	}
 
-	public void setPayerId(String payerId){
+	public void setPayerId(int payerId){
 		this.payerId=payerId;
 	}
 
-	public String getReceiverId(){
+	public int getReceiverId(){
 		return receiverId;
 	}
 
-	public void setReceiverId(String receiverId){
+	public void setReceiverId(int receiverId){
 		this.receiverId=receiverId;
 	}
 
@@ -117,33 +140,23 @@ public class Transaction {
 		this.transactionAmount=transactionAmount;
 	}
 
-	public Transaction(int transactionType, Date transactionCreateTime, String transactionStatus, String payerId,
-			String receiverId, double transactionAmount, int status, int auth, String status_quo) {
+	
+	public Transaction(int transactionType, Timestamp currentTimestamp, int payerId, int receiverId,
+			double transactionAmount, int status, int auth, String status_quo, int senderAccNumber,
+			int receiverAccNumber) {
 		super();
 		this.transactionType = transactionType;
-		this.transactionCreateTime = transactionCreateTime;
+		this.transactionCreateTime = currentTimestamp;
 		this.payerId = payerId;
 		this.receiverId = receiverId;
 		this.transactionAmount = transactionAmount;
 		this.status = status;
 		this.auth = auth;
 		this.status_quo = status_quo;
+		this.senderAccNumber = senderAccNumber;
+		this.receiverAccNumber = receiverAccNumber;
 	}
 
-	public Transaction(int transactionId, int transactionType, Date transactionCreateTime, String payerId,
-			String receiverId, double transactionAmount, int status, int auth, String status_quo) {
-		super();
-		this.transactionId = transactionId;
-		this.transactionType = transactionType;
-		this.transactionCreateTime = transactionCreateTime;
-		this.payerId = payerId;
-		this.receiverId = receiverId;
-		this.transactionAmount = transactionAmount;
-		this.status = status;
-		this.auth = auth;
-		this.status_quo = status_quo;
-	}
-	
 	public Transaction() {
 		
 	}

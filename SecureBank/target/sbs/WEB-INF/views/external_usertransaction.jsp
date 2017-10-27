@@ -138,6 +138,7 @@ $(function() {
 				</div>
 			</c:if>
 			<p>
+			<h2>{$firstName} {$lastName}</h2>
 				<label>Debit Account:</label> <select class="form-control"
 					name="senderAccNumber" id="select-account">
 					<option value="">Select an Account</option>
