@@ -9,7 +9,7 @@ public interface ModifiedUserDAO {
 
 	ModifiedUser findById(Integer Id);
 	
-	List<ModifiedUser> findAll();
+	List<ModifiedUser> findAll(int userType);
 	
 	void add(ModifiedUser user);
 	

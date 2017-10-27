@@ -28,9 +28,12 @@ public class ModifiedUserDAOImpl implements ModifiedUserDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ModifiedUser> findAll() {
+	public List<ModifiedUser> findAll(int userType) {
 		// TODO Auto-generated method stub
-		return getCurrentSession().createQuery("from ModifiedUser where status = ?").setParameter(0, 0).list();
+		return getCurrentSession().createQuery("from ModifiedUser where status = ? and userType=?")
+				.setParameter(0, 0)
+				.setParameter(1, userType)
+				.list();
 	}
 
 	@Override
@@ -58,4 +61,3 @@ public class ModifiedUserDAOImpl implements ModifiedUserDAO{
 	}
 
 }
-	
