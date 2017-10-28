@@ -1,5 +1,6 @@
 package edu.asu.sbs.services;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,18 @@ public class ExternalUserServiceImpl implements ExternalUserService{
 		}
         
         return externalUserDAO.findByUserName(currentUserName);
+	}
+
+	@Override
+	public ExternalUser findByPhoneNumber(BigInteger phoneNumber) {
+		// TODO Auto-generated method stub
+		return externalUserDAO.findByPhoneNumber(phoneNumber);
+	}
+
+	@Override
+	public ExternalUser findByEmailId(String emailId) {
+		// TODO Auto-generated method stub
+		return externalUserDAO.findByEmailId(emailId);
 	}
 
 }

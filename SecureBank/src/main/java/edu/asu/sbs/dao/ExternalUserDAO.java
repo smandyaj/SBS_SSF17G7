@@ -1,5 +1,6 @@
 package edu.asu.sbs.dao;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import edu.asu.sbs.model.ExternalUser;
@@ -20,4 +21,8 @@ public interface ExternalUserDAO {
 	void delete(Integer id);
 	
 	ExternalUser findByUserName(String userName);
+	
+	ExternalUser findByPhoneNumber(BigInteger phoneNumber);
+	
+	ExternalUser findByEmailId(String emailId);
 }

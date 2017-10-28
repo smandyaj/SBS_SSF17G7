@@ -1,5 +1,6 @@
 package edu.asu.sbs.controllers;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,7 +62,7 @@ public class ExternalUserController {
 	public ModelAndView getCustomerProfile() {
 		ModelAndView modelAndView = new ModelAndView("customer-profile");
 		modelAndView.addObject("customerForm", externalUserService.findByUserName());
-		System.out.println("user is: "+externalUserService.findByUserName());
+		System.out.println("user is: "+externalUserService.findByUserName().getCustomerId());
 		return modelAndView;
 		
 	}
@@ -84,7 +85,7 @@ public class ExternalUserController {
 		ModelAndView modelAndView  = new ModelAndView("customersearch");
 		modelAndView.addObject("externalUser", getExternalUser());
 		
-		System.out.println("Fetching the user: " + externalUserService.findByUserName());
+		System.out.println("Fetch the user: " + externalUserService.findByUserName().getUserName());
 		return modelAndView;
 	}
 	
@@ -128,27 +129,78 @@ public class ExternalUserController {
 			System.out.println("Someone tried credit/debit functionality for some other account. Details:");
 			//System.out.println("Credit/Debit Acc No: " + request.getParameter("number"));
 			// add the return attributes
-			return "redirect:/customer/customer-transaction";
+			return "redirect:/customer/home";
 		}
 
 		int receiverAccNumber = 0;
+		BigInteger receiverPhoneNum=BigInteger.ZERO;
+		String receiverEmailId="";
 		if (request.getParameter("type").equalsIgnoreCase("internal")) {
 			// if it is internal
 			receiverAccNumber = Integer.parseInt(request.getParameter("receiverAccNumber"));
 			System.out.println("internal transfer");
 		} else {
 			// if it us external
-			receiverAccNumber = Integer.parseInt(request.getParameter("receiverAccNumberExternal"));
-			System.out.println("external transfer");
+			String type = request.getParameter("modes");
+			System.out.println("Mode" + type);
+			if(type.equals("receiverEmailId")) {
+				System.out.println("Email id" + request.getParameter("receiverEmailId"));
+				receiverEmailId=request.getParameter("receiverEmailId");
+				System.out.println("Transfer through email.");
+			}
+			else if(type.equals("receiverPhoneNumber")) {
+				System.out.println("Phone Number:" + request.getParameter("receiverPhoneNumber"));
+				receiverPhoneNum=new BigInteger(request.getParameter("receiverPhoneNumber"));
+				System.out.println("Transfer through phone.");
+			}
+			else if(type.equals("receiverAccNumberExt")) {
+				System.out.println("Account Number:" + request.getParameter("receiverAccNumberExt"));
+				receiverAccNumber = Integer.parseInt(request.getParameter("receiverAccNumberExt"));
+				System.out.println("Transfer through accountNum.");
+			}
+			/*receiverAccNumber = Integer.parseInt(request.getParameter("receiverAccNumberExt"));
+			System.out.println("external transfer");*/
+			
 		}
 
 		if (receiverAccNumber == Integer.parseInt(request.getParameter("senderAccNumber"))) {
 			// same account transfer not allowed
-			return "redirect:/customer/customer-transaction";
+			return "redirect:/customer/home";
 		}
-		
+		List<Account> accList=null;
+		Account toAccount=null;
+		ExternalUser receiver=null;
+		if(receiverAccNumber!=0) {
+			toAccount = accountService.getAccountByNumber(receiverAccNumber);
+		}
+		else if(receiverEmailId!= null && !receiverEmailId.isEmpty()) {
+			System.out.println("in mail");
+			receiver=externalUserService.findByEmailId(receiverEmailId);
+			accList = accountService.getAccountByCustomerId(receiver.getCustomerId());
+			for(int i=0;i<accList.size();i++) {
+				if(accList.get(i).getAccountType()==0) {
+					toAccount=accList.get(i);
+					break;
+				}
+			}
+			receiverAccNumber=toAccount.getAccountId();
+			/*receiverAccNumber=toAccount.getAccountId();
+			System.out.println("acc num="+receiverAccNumber);*/
+			
+		}
+		else if(receiverPhoneNum!=BigInteger.ZERO) {
+			receiver=externalUserService.findByPhoneNumber(receiverPhoneNum);
+			accList = accountService.getAccountByCustomerId(receiver.getCustomerId());
+			for(int i=0;i<accList.size();i++) {
+				if(accList.get(i).getAccountType()==0) {
+					toAccount=accList.get(i);
+					break;
+				}
+			}
+			receiverAccNumber=toAccount.getAccountId();
+		}
 		// get the to account details
-		Account toAccount = accountService.getAccountByNumber(receiverAccNumber);
+		
 
 		if (toAccount != null) {
 			isTransferAccountValid = true;
@@ -181,7 +233,7 @@ public class ExternalUserController {
 			// Check if Debit amount is < balance in the account
 			if ( account.getAccountBalance() - amount <= 0) {
 				System.out.println("No balance in account");
-				return "redirect:/customer/customer-transaction";
+				return "redirect:/customer/home";
 			}
 
 			
@@ -218,11 +270,11 @@ public class ExternalUserController {
 						accountService, senderTransaction, receiverTransaction,
 							amount);
 					}
-					return "redirect:/customer/customer-transaction";
+					return "redirect:/customer/home";
 				}
 			} catch (Exception e) {
 				System.out.println("Transfer unsuccessful. Please try again or contact the admin.");
-				return "redirect:/employee/customer-transaction";
+				return "redirect:/employee/home";
 			}
 
 			System.out.println("Transaction completed successfully. Transaction should show up on the user account now");
@@ -232,7 +284,7 @@ public class ExternalUserController {
 		}
 
 		// redirect to the view page
-		return "redirect:/customer/customer-transaction";
+		return "redirect:/customer/home";
 	}
 
 }

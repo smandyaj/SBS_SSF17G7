@@ -1,5 +1,6 @@
 package edu.asu.sbs.services;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import edu.asu.sbs.model.ExternalUser;
@@ -20,4 +21,8 @@ public interface ExternalUserService {
 	void deleteUser(Integer id);
 	
 	ExternalUser findByUserName();
+	
+	ExternalUser findByPhoneNumber(BigInteger phoneNumber);
+	
+	ExternalUser findByEmailId(String emailId);
 }
