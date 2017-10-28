@@ -52,8 +52,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 				return "/customer/home/";
 			} 
 			
-			// normal employee - tier1
-			if (grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_REGULAR")) {
+			// regular employee - tier1 and manager - tier2
+			if (grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_REGULAR")||
+					grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_MANAGER")) {
 				return "/employee/home";
 			}
 			
@@ -63,10 +64,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 				return "/admin/home";
 			}
 			
-			// Manager - tier2
+/*			// Manager - tier2
 			if (grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_MANAGER")) {
-				return "/manager/home";
-			}
+				return "/employee/home";
+			}*/
 			
 		}
 		

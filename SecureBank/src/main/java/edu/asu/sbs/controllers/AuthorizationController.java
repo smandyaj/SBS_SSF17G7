@@ -34,11 +34,14 @@ public class AuthorizationController {
 				// customer
 				if (grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_CUSTOMER") || 
 						grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_MERCHANT")) {
+					System.out.println("*******CUSTOMER/MERCHANT REDIRECT***********");
 					return "redirect:/customer/home/";
 				} 
 				
-				// Manager
-				if (grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_CLERK")) {
+				// Regular employee and Manager
+				if (grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_REGULAR")||
+						grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_MANAGER")) {
+					System.out.println("*******EMPLOYEE REDIRECT***********");
 					return "redirect:/employee/home";
 				}
 				
@@ -48,10 +51,11 @@ public class AuthorizationController {
 					return "redirect:/admin/home";
 				}
 				
-				// Manager
+/*				// Manager
 				if (grantedAuthority.getAuthority().equalsIgnoreCase("ROLE_MANAGER")) {
-					return "redirect:/manager/home";
-				}
+					System.out.println("*******MANAGER REDIRECT***********");
+					return "redirect:/employee/home";
+				}*/
 				
 			}
 			

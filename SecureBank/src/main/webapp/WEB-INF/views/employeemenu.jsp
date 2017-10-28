@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+     <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -38,7 +39,11 @@
             <li><a href="${pageContext.servletContext.contextPath}/employee/customer-transaction">Add Transaction</a></li>
             <li><a href="${pageContext.servletContext.contextPath}/employee/pending-transactions">Pending Transactions</a></li>
             <li><a href="${pageContext.servletContext.contextPath}/employee/pending-profile">Pending Profile</a></li>
-            <li><a href="${pageContext.servletContext.contextPath}/employee/customer-list">View-Edit Users</a></li>
+            <li><a href="${pageContext.servletContext.contextPath}/employee/customer-list">View-Edit Customers</a></li>
+            <sec:authorize access="hasRole('MANAGER')">
+            <li><a href="${pageContext.servletContext.contextPath}/employee/employee-add">Add Internal Users</a></li>
+            <li><a href="${pageContext.servletContext.contextPath}/employee/employee-list">View-Edit Internal Users</a></li>
+            </sec:authorize>
             <li><a href="${pageContext.servletContext.contextPath}/employee/customer-add">Add Users</a></li>
 			<li><a href="${pageContext.servletContext.contextPath}/employee/profile">Profile</a></li>
             <li><a href="${pageContext.servletContext.contextPath}/logout">Logout</a></li>

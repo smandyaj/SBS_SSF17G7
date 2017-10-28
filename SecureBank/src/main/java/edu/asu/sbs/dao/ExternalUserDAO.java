@@ -19,4 +19,6 @@ public interface ExternalUserDAO {
 	void delete(Integer id);
 	
 	void update(ModifiedUser user);
+	
+	ExternalUser findByUserName(String userName);
 }

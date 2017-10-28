@@ -122,7 +122,7 @@ public class InternalUserController {
 	@RequestMapping(value = "/admin/employee-update/{id}", method = RequestMethod.GET)
 	public ModelAndView showUpdateEmployeeForm(@PathVariable("id") int id, Model model) {
 		System.out.println("Updating user");
-		ModelAndView modelAndView = new ModelAndView("admin_adduser");
+		ModelAndView modelAndView = new ModelAndView("admin-adduser");
 		InternalUser internalUser = internalUserService.findUserById(id);
 		modelAndView.addObject("employee", "exists");
 		model.addAttribute("employeeForm", internalUser);
@@ -505,5 +505,108 @@ public class InternalUserController {
 		return "redirect:/employee/customer-list";
 	}
 	
-	/** MANAGER LIST **/
+	/** MANAGER URLS **/
+	
+	/** add, delete, update, find internal users **/
+	
+	/** lists all the internal users for manager **/
+	@RequestMapping(value="/employee/employee-list")
+	public ModelAndView listOfEmployeesForManager(ModelMap model, HttpServletRequest request) {
+		boolean isManager = request.isUserInRole("ROLE_MANAGER");
+		if( !isManager) {
+			ModelAndView modelAndView  = new ModelAndView("employeehome");
+			modelAndView.addObject("msg", "You are not authorized to access this page");
+			return modelAndView;
+		}
+		ModelAndView modelAndView = new ModelAndView("manager-employeelist");
+		System.out.println("All Users Page");
+		@SuppressWarnings("rawtypes")
+		List employees = internalUserService.findAllUsers();
+		modelAndView.addObject("employees", employees);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/employee/employee-add")
+	public ModelAndView addInternalUserPageForManager(ModelMap model, HttpServletRequest request) {
+		System.out.println("Add new user page");
+		boolean isManager = request.isUserInRole("ROLE_MANAGER");
+		if( !isManager) {
+			ModelAndView modelAndView  = new ModelAndView("employeehome");
+			modelAndView.addObject("msg", "You are not authorized to access this page");
+			return modelAndView;
+		}
+		
+		ModelAndView modelAndView = new ModelAndView("manager-adduser");
+		modelAndView.addObject("employee", "new");
+		modelAndView.addObject("employeeForm", new InternalUser());
+		return modelAndView;
+	}
+	
+	// show update form
+	@RequestMapping(value = "/employee/employee-update/{id}", method = RequestMethod.GET)
+	public ModelAndView showUpdateEmployeeFormForManager(@PathVariable("id") int id, Model model,HttpServletRequest request) {
+		System.out.println("Updating user");
+		boolean isManager = request.isUserInRole("ROLE_MANAGER");
+		if( !isManager) {
+			ModelAndView modelAndView  = new ModelAndView("employeehome");
+			modelAndView.addObject("msg", "You are not authorized to access this page");
+			return modelAndView;
+		}
+		ModelAndView modelAndView = new ModelAndView("manager-adduser");
+		InternalUser internalUser = internalUserService.findUserById(id);
+		modelAndView.addObject("employee", "exists");
+		model.addAttribute("employeeForm", internalUser);
+		return modelAndView;
+
+	}
+	
+	@RequestMapping(value="/employee/employee-add-modify")
+	public ModelAndView addingInternalUserForManager(@ModelAttribute InternalUser internalUser,HttpServletRequest request) {
+		
+		System.out.println("Adding new user and redirecting" + internalUser.getPasswordHash());
+		boolean isManager = request.isUserInRole("ROLE_MANAGER");
+		if( !isManager) {
+			ModelAndView modelAndView  = new ModelAndView("employeehome");
+			modelAndView.addObject("msg", "You are not authorized to access this page");
+			return modelAndView;
+		}
+		java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+		java.text.SimpleDateFormat sdf = 
+		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		internalUser.setCreationDate(date);
+		internalUser.setLastLogin(date);
+		
+		if( internalUser.getEmployeeId() == 0) {
+			System.out.println("Add User" + internalUser.getEmployeeId());
+			internalUserService.addUser(internalUser);	
+		}else {
+			System.out.println("Modify User" + internalUser.getEmployeeId());
+			internalUserService.updateUser(internalUser);
+		}
+		ModelAndView modelAndView = new ModelAndView("manager-employeelist");
+		System.out.println("All Users Page");
+		@SuppressWarnings("rawtypes")
+		List employees = internalUserService.findAllUsers();
+		modelAndView.addObject("employees", employees);
+		return modelAndView;
+	}
+	
+
+	@RequestMapping(value="/employee/employee-delete/{id}", method=RequestMethod.POST)
+	public ModelAndView deleteInternalUserForManager(@PathVariable Integer id,HttpServletRequest request) {
+		boolean isManager = request.isUserInRole("ROLE_MANAGER");
+		if( !isManager) {
+			ModelAndView modelAndView  = new ModelAndView("employeehome");
+			modelAndView.addObject("msg", "You are not authorized to access this page");
+			return modelAndView;
+		}
+		System.out.println("Deleting the user with id"+ id);
+		internalUserService.deleteUser(id);
+		ModelAndView modelAndView = new ModelAndView("manager-employeelist");
+		System.out.println("All Users Page");
+		@SuppressWarnings("rawtypes")
+		List employees = internalUserService.findAllUsers();
+		modelAndView.addObject("employees", employees);
+		return modelAndView;
+	}
 }

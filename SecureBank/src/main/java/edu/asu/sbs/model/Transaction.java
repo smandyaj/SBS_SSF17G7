@@ -51,6 +51,17 @@ public class Transaction {
 	@Column(name="receiverAccNumber")
 	private int receiverAccNumber;
 	
+	@Column(name = "transaction_type_quo")
+	private String transactionTypeQuo;
+	
+	public String getTransactionTypeQuo() {
+		return transactionTypeQuo;
+	}
+
+	public void setTransactionTypeQuo(String transactionTypeQuo) {
+		this.transactionTypeQuo = transactionTypeQuo;
+	}
+
 	public int getSenderAccNumber() {
 		return senderAccNumber;
 	}
@@ -154,6 +165,23 @@ public class Transaction {
 		this.status_quo = status_quo;
 		this.senderAccNumber = senderAccNumber;
 		this.receiverAccNumber = receiverAccNumber;
+	}
+
+	public Transaction(int transactionType, Date transactionCreateTime, int payerId, int receiverId,
+			double transactionAmount, int status, int auth, String status_quo, int senderAccNumber,
+			int receiverAccNumber, String transactionTypeQuo) {
+		super();
+		this.transactionType = transactionType;
+		this.transactionCreateTime = transactionCreateTime;
+		this.payerId = payerId;
+		this.receiverId = receiverId;
+		this.transactionAmount = transactionAmount;
+		this.status = status;
+		this.auth = auth;
+		this.status_quo = status_quo;
+		this.senderAccNumber = senderAccNumber;
+		this.receiverAccNumber = receiverAccNumber;
+		this.transactionTypeQuo = transactionTypeQuo;
 	}
 
 	public Transaction() {

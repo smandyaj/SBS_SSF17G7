@@ -18,4 +18,6 @@ public interface ExternalUserService {
 	void updateUser(ModifiedUser user);
 	
 	void deleteUser(Integer id);
+	
+	ExternalUser findByUserName();
 }

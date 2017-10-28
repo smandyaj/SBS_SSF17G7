@@ -2,8 +2,10 @@ package edu.asu.sbs.dao;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -93,6 +95,13 @@ public class ExternalUserDAOImpl implements ExternalUserDAO{
 		externalUser.setLast_name(user.getLastName());
 		externalUser.setPhone(user.getPhoneNumber());
 		getCurrentSession().update(externalUser);
+	}
+
+	@Override
+	public ExternalUser findByUserName(String userName) {
+		Criteria criteria = getCurrentSession().createCriteria(ExternalUser.class);
+		ExternalUser externalUser = (ExternalUser) criteria.add(Restrictions.eq("userName", userName)).uniqueResult();
+		return externalUser;
 	}
 	
 }
