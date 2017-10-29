@@ -14,62 +14,34 @@
 <%@ include file="customerMenu.jsp"%>
 Hello !!!!
 <br>
-<!-- <label for="debit" class="sr-only">Enter money to debit:</label> <input
-				name="debit" type="text" id="inputDebit" class="form-control"
-				placeholder="Enter Money ex:100$" required="" autofocus=""
-				autocomplete="off">
-				<br>
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Debit</button> -->
-				
-				<%-- <form:form method="POST" modelAttribute="accDebitSuccess" action="customer-debit" >
-          <c:if test="${!empty successMsg}">
-					<div class="alert alert-success">						
-						${fn:escapeXml(successMsg)}
-					</div>
-				</c:if>
-          	<c:if test="${!empty failureMsg}">
-					<div class="alert alert-danger">						
-						${fn:escapeXml(failureMsg)}
-					</div>
-				</c:if>
-            <p>
-              <label>Enter money to debit:</label>
-              <form:input  path = "customerId" type="text" class="form-control" placeholder="Enter Money ex:100$" maxlength="11" minlength="1" required= "required"></form:input>
-            </p>
-			<div class="modal-footer" >                
-              <button type="submit" class="btn btn-success">Debit</button>
-            </div>
-		   </form:form> --%>
-		   
-		   <%-- <form:form class="form-horizontal" action="debit-money" commandName="debit" method="POST">
-    							
-	        						<div class="page-header" style="margin-top: 5px;" align="center">
-	    								<h3>Debit Money</h3>
-	    							</div>
-	    							
-	    							<div class="form-group">
-    								<label for="displayAccountBalance" id="displayBalance" class="col-lg-2 control-label">Account Balance</label>
-    								<form:label path="balance" for="displayAmount" class="col-lg2 control-label">${debitOp.getBalance()}</form:label>
-  									</div>
-  					
-  								
-	  								<div class="form-group">
-	    								<label for="inputAmount" class="col-lg-2 control-label">Amount</label>
-	   										<div class="col-sm-10">
-	   											<div class="col-sm-24">
-	     										
-	     										<form:input path="transactionAmount" type="number" class="form-control" id="inputAmount" placeholder="Enter Amount" min="0" />
-	     											
-	   			 								</div>
-	   			 							</div>
-	  								</div>
-	  								
-	  								<div class="form-group">
-	    								<div class="col-lg-offset-2 col-lg-10">
-	    									<button type="submit" class="btn btn-primary">Submit</button>
-	     										<button type="reset" class="btn btn-success">Cancel</button>
-	    								</div>
-	    							</div>
-    						</form:form> --%>
+<div class="page-header">
+		<h1>Welcome ${fn:escapeXml(fullname)}</h1>
+		<h4>Customer Id: ${fn:escapeXml(customerId) }</h4>
+	</div>
+
+	<h2>Accounts:</h2>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Balance</th>
+				<th>Statement</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:if test="${empty accounts}">
+				<tr><td colspan="3" class="center">No Accounts to display. Please
+					contact the bank.</td></tr>
+			</c:if>
+			<c:forEach items="${accounts}" var="account">
+				<tr>
+					<td>$${fn:escapeXml(account.accountId)}</td>
+					<td>$${fn:escapeXml(account.accountBalance)}</td>
+					<td><a href="statements">View Statements</a></td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 </body>
 </html>

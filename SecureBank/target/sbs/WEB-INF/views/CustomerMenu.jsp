@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -34,12 +33,21 @@
 <body>
 	<div id="adminMenu">
 		<ul id="adminList">
-             <li><a href="${pageContext.servletContext.contextPath}/customer/home">Home</a></li>
-             <li><a href="${pageContext.servletContext.contextPath}/customer/customer-transaction">Add Transaction</a></li>
-            <li><a href="${pageContext.servletContext.contextPath}/views/internalEmpHome">Pending Transactions</a></li>
-			<li><a href="${pageContext.servletContext.contextPath}/customer/profile">Profile</a></li>
-            <li><a href="${pageContext.servletContext.contextPath}/logout">Logout</a></li>
+             <li><a href=${pageContext.request.contextPath}/customer/home>Home</a></li>
+             <li><a href=${pageContext.servletContext.contextPath}/customer/customer-transaction>Add Transaction</a></li>
+            <li><a href=${pageContext.request.contextPath}/customer/credit-debit>Credit-Debit</a></li>
+			<li><a href=${pageContext.request.contextPath}/customer/requests-pending>Requests Pending</a></li>
+			<li><a href=${pageContext.servletContext.contextPath}/customer/profile>Profile</a></li>
+            <li><a href=${pageContext.servletContext.contextPath}/logout>Logout</a></li>
 		</ul>
 	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script
+		src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
+	<script
+		src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.js"></script>
+	<script
+		src="${pageContext.servletContext.contextPath}/assets/js/common.js"></script>
 </body>
 </html>

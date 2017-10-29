@@ -1,10 +1,13 @@
 package edu.asu.sbs.controllers;
 
 import java.math.BigInteger;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -24,6 +28,7 @@ import edu.asu.sbs.model.ExternalUserSearch;
 import edu.asu.sbs.model.InternalUser;
 import edu.asu.sbs.model.ModifiedUser;
 import edu.asu.sbs.model.Transaction;
+import edu.asu.sbs.model.Users;
 import edu.asu.sbs.services.AccountService;
 import edu.asu.sbs.services.ExternalUserService;
 import edu.asu.sbs.services.ModifiedUserService;
@@ -52,9 +57,17 @@ public class ExternalUserController {
 	private TransactionService transactionService;
 	
 	
-	@RequestMapping(value="/customer/home",method=RequestMethod.GET)
-	public ModelAndView getCustomerHomePage() {
-		return new ModelAndView("customerHome");
+	@RequestMapping(value = "/customer/home", method = RequestMethod.GET)
+	public String getHome(ModelMap model) {
+		ExternalUser user = externalUserService.findByUserName();
+		List<Account> accounts = accountService.getAccountByCustomerId(user
+				.getCustomerId());
+		model.addAttribute("title", "Welcome " + user.getFirstName());
+		model.addAttribute("fullname",
+				user.getFirstName() + " " + user.getLastName());
+		model.addAttribute("accounts", accounts);
+		model.addAttribute("customerId", user.getCustomerId());
+		return "customerHome";
 	}
 	
 	
@@ -66,6 +79,148 @@ public class ExternalUserController {
 		return modelAndView;
 		
 	}
+	
+	@RequestMapping(value = "/customer/credit-debit", method = RequestMethod.GET)
+	public String getCreditDebit(ModelMap model) {
+		ExternalUser user = externalUserService.findByUserName();
+		model.put("user", user);
+
+
+
+		List<Account> accounts = accountService.getAccountByCustomerId(user
+				.getCustomerId());
+		model.addAttribute("title", "Welcome " + user.getFirstName());
+		model.addAttribute("fullname",
+				user.getFirstName() + " " + user.getLastName());
+		model.addAttribute("accounts", accounts);
+		return "creditdebit";
+	}
+	
+	
+	@RequestMapping(value = "/customer/credit-debit", method = RequestMethod.POST)
+	public String postCreditDebit(ModelMap model, HttpServletRequest request,
+			@ModelAttribute("transaction") Transaction transaction,
+			BindingResult result, RedirectAttributes attr) {
+
+		// Get user details
+		ExternalUser user = externalUserService.findByUserName();
+		model.put("user", user);
+
+		// Get user accounts and other data for display
+		List<Account> accounts = accountService.getAccountByCustomerId(user.getCustomerId());
+		model.addAttribute("fullname",
+				user.getFirstName() + " " + user.getLastName());
+		model.addAttribute("accounts", accounts);
+		model.addAttribute("title", "Welcome " + user.getFirstName());
+
+		double amount = Double.parseDouble(request.getParameter("amount"));
+
+		boolean isCritical = transactionService.isTransferCritical(amount);
+
+		// create the transaction object
+		Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+		transaction = new Transaction(0, currentTimestamp, user.getCustomerId(), user.getCustomerId(), 
+				amount,1, 0, "pending", Integer.parseInt(request.getParameter("number")), Integer.parseInt(request.getParameter("number")));
+		
+		// If account is empty or null, skip the account service check
+		Account account = accountService.getAccountByNumber(Integer.parseInt(request.getParameter("number")));
+
+		// Exit the transaction if Account doesn't exist
+		if (account == null) {
+			System.out.println("Someone tried credit/debit functionality for some other account. Details:");
+			System.out.println("Credit/Debit Acc No: "
+					+ request.getParameter("number"));
+			System.out.println("Customer ID: " + user.getCustomerId());
+			attr.addFlashAttribute("failureMsg",
+					"Could not process your transaction. Please try again or contact the bank.");
+			return "redirect:/customer/credit-debit";
+		}
+
+		// Check if Debit amount is < balance in the account
+		if (request.getParameter("type").equalsIgnoreCase("debit") 
+				&& ( account.getAccountBalance() < amount)) {
+			attr.addFlashAttribute(
+					"failureMsg",
+					"Could not process your transaction. Debit amount cannot be higher than account balance");
+			return "redirect:/customer/credit-debit";
+		}
+
+		// OTP only for critical transactions
+		if (isCritical) {
+
+			String sessionId = RequestContextHolder
+					.currentRequestAttributes().getSessionId();
+			System.out.println("Got session id: " + sessionId);
+			Random range = new Random();
+			int rand = range.nextInt(Integer.MAX_VALUE);
+			//otp = otpService.generateOTP(sessionId.getBytes(), new Long(
+					//rand), 8, false, rand);
+
+			//Otp otpObj = new Otp(hashService.getBCryptHash(otp), date, 
+							//user.getCustomerId(), transaction.getTransactionId(), "creditdebit");
+			transaction.setStatus(3);
+			transaction.setStatus_quo("otp");
+			transactionService.addTransaction(transaction);
+
+			String content = "You have made a new request to for Credit / Debit "
+					+ "The payment request will expire in the next 10 minutes from now.\n\n"
+					+ "Please use the following OTP to accept the payment: "
+					+ "\n\n" + "You can accept the payment or cancel it.";
+
+
+			return "redirect:/customer/credit-debit";
+
+		}
+
+		transactionService.addTransaction(transaction);
+
+		attr.addFlashAttribute(
+				"successMsg",
+				"Transaction completed successfully. Transaction should show up on your account shortly after bank approval.");
+
+		// redirect to the credit debit view page
+		return "redirect:/customer/credit-debit";
+	}
+/*
+	@RequestMapping(value = "/statements/download", method = RequestMethod.POST)
+	public ModelAndView postDownloadStatement(ModelMap model,
+			HttpServletRequest request, RedirectAttributes attr) {
+
+		ExternalUser user = externalUserService.findByUserName();
+		model.put("user", user);
+
+		List<Account> accounts = accountService.getAccountByCustomerId(user.getCustomerId());
+
+		// If account is empty or null, skip the account service check
+		Account account = accountService.getValidAccountByNumber(
+				request.getParameter("number"), accounts);
+
+		if (account == null) {
+			logger.warn("Someone tried view statement functionality for some other account. Details:");
+			logger.warn("Acc No: " + request.getParameter("number"));
+			logger.warn("Customer ID: " + user.getCustomerID());
+			attr.addFlashAttribute("statementFailureMsg",
+					"Could not process your request. Please try again or contact the bank.");
+			return new ModelAndView("redirect:/home/statements");
+		}
+
+		List<Transaction> transactions = transactionService
+				.getCompletedTransactionsByAccountNummber(
+						request.getParameter("number"),
+						request.getParameter("month"),
+						Integer.parseInt(request.getParameter("year")));
+
+		model.addAttribute("title", "Account Statements");
+		model.addAttribute("user", user);
+		model.addAttribute("account", account);
+		model.addAttribute("transactions", transactions);
+		model.addAttribute("statementName", request.getParameter("month") + " "
+				+ request.getParameter("year"));
+
+		return new ModelAndView("pdfView", "model", model);
+	}*/
+	
+	
 	
 	@RequestMapping(value="/customer/modify-profile",method=RequestMethod.POST)
 	public ModelAndView addModifiedProfile(@ModelAttribute ExternalUser externalUser) {
@@ -81,26 +236,26 @@ public class ExternalUserController {
 	}
 	
 	@RequestMapping(value="/customer/customer-transaction", method = RequestMethod.GET)
-	public ModelAndView returnCustomerTransactionPage() {
-		ModelAndView modelAndView  = new ModelAndView("customersearch");
-		modelAndView.addObject("externalUser", getExternalUser());
-		
+	public String returnCustomerTransactionPage(ModelMap model) {
 		System.out.println("Fetch the user: " + externalUserService.findByUserName().getUserName());
-		return modelAndView;
+		
+		ExternalUser user = externalUserService.findByUserName();
+		model.put("user", user);
+		List<Account> accounts = accountService.getAccountByCustomerId(user
+				.getCustomerId());
+		model.addAttribute("title", "Welcome " + user.getFirstName());
+		model.addAttribute("fullname",
+				user.getFirstName() + " " + user.getLastName());
+		model.addAttribute("accounts", accounts);
+		model.addAttribute("customerId", user.getCustomerId());
+		return "external_usertransaction";
+		
 	}
-	
-	/*@RequestMapping(value = "/customer/debit_money", method = RequestMethod.POST)
-	public ModelAndView debitmoneyPageAction(@ModelAttribute("debit") Transaction trans) {
-		ModelAndView modelAndView  = new ModelAndView("external_usertransaction");
-		
-		
-		ExternalUser extUser= externalUserService.findByUserName();
-		trans.setTransactionAmount(transactionAmount);
-		return modelAndView;
-	}*/
+
 
 	@RequestMapping(value="/customer/customer-transaction", method = RequestMethod.POST)
-	public ModelAndView returnCustomerTransactionPage(@ModelAttribute ExternalUserSearch customer) {
+	public ModelAndView returnCustomerTransactionPage(@ModelAttribute ExternalUser
+ customer) {
 		ModelAndView modelAndView  = new ModelAndView("external_usertransaction");
 		System.out.println("Fetching the user details " + customer.getCustomerId());
 		ExternalUser externalUser  = externalUserService.findUserById(customer.getCustomerId());
