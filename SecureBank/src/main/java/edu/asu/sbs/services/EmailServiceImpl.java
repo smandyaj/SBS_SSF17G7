@@ -1,60 +1,64 @@
 package edu.asu.sbs.services;
 
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
+import java.util.Properties;
 
-public class EmailServiceImpl {
-	private String senderEmailID = "cse545g7@gmail.com";
-	private String senderPassword = "QAZ?@963";
-	private String emailSMTPserver = "smtp.gmail.com";
-	private String emailServerPort = "465";
-/*	
-	public static void main(String args[]) {
-		 new SendEmail("santosh.mandyajayaram@gmail.com", "Test Email", "Test Email");
-	}*/
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
-	public EmailServiceImpl(String receiverEmailID, String emailSubject, String emailBody) {
+import org.springframework.stereotype.Service;
 
-		Properties properties = new Properties();
-		properties.put("mail.smtp.user", senderEmailID);
-		properties.put("mail.smtp.host", emailSMTPserver);
-		properties.put("mail.smtp.port", emailServerPort);
-		properties.put("mail.smtp.starttls.enable", "true");
-		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.smtp.socketFactory.port", emailServerPort);
-		properties.put("mail.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		properties.put("mail.smtp.socketFactory.fallback", "false");
-		SecurityManager security = System.getSecurityManager();
+import edu.asu.sbs.model.Email;
 
-		try {
-			SMTPAuthenticator auth = new SMTPAuthenticator();
-			Session session = Session.getInstance(properties, auth);
-			MimeMessage msg = new MimeMessage(session);
-			msg.setText(emailBody);
-			msg.setSubject(emailSubject);
-			msg.setFrom(new InternetAddress(senderEmailID));
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(receiverEmailID));
-			Transport transport = session.getTransport("smtps");
-            transport.connect(emailSMTPserver, Integer.valueOf(emailServerPort), senderEmailID, senderPassword);
-            transport.sendMessage(msg, msg.getAllRecipients());
-            transport.close();
-			System.out.println("Message Send");
+@Service
+public class EmailServiceImpl implements EmailService{
+	
+	@Override
+	public void sendEmail(Email email) {
+		
+		try{
+			final String senderEmailID = "cse545g7@gmail.com";
+			final String senderPassword = "QAZ?@963";
+			final String emailSMTPserver = "smtp.gmail.com";
+			final String emailServerPort = "587";
+			
+            System.out.println("TLSEmail Start");
+            Properties props = new Properties();
+            props.put("mail.smtp.host", emailSMTPserver); //SMTP Host
+            props.put("mail.smtp.port", emailServerPort); //TLS Port
+            props.put("mail.smtp.auth", "true"); //enable authentication
+            props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
 
-		}
+                //create Authenticator object to pass in Session.getInstance argument
+            Authenticator auth = new Authenticator() {
+                //override the getPasswordAuthentication method
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(senderEmailID, senderPassword);
+                }
+            };
+            Session session = Session.getInstance(props, auth);
 
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(senderEmailID));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email.getEmailId()));
 
-	}
+            System.out.println("Mail Check 2");
 
-	private class SMTPAuthenticator extends javax.mail.Authenticator {
-		public PasswordAuthentication getPasswordAuthentication() {
-			String username = emailSMTPserver;
-			String password = senderPassword;
-			return new PasswordAuthentication(username, password);
-		}
+            message.setSubject(email.getSubject());
+            message.setText(email.getBody());
+
+            System.out.println("Mail Check 3");
+
+            Transport.send(message);
+            System.out.println("Mail Sent");
+        }catch(Exception ex){
+            System.out.println("Mail fail");
+            System.out.println(ex);
+        }
 	}
 
 }

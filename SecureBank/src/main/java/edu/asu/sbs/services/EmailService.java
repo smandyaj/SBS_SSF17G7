@@ -3,10 +3,10 @@
  */
 package edu.asu.sbs.services;
 
+import edu.asu.sbs.model.Email;
+
 public interface EmailService {
 
-	boolean sendEmail(String emailAddress, String subject, String content);
-
-	boolean sendEmailWithAttachment(String emailAddress, String subject, String content);	
+	public void sendEmail(Email email);
 	
 }
