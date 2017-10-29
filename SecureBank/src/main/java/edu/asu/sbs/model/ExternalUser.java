@@ -1,5 +1,7 @@
 package edu.asu.sbs.model;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,8 +11,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "external_users")
-public class ExternalUser {
-
+public class ExternalUser
+{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "customer_id")
@@ -38,7 +40,7 @@ public class ExternalUser {
 	private int zip;
 	
 	@Column(name = "phone")
-	private int phone;
+	private BigInteger phone;
 	
 	@Column(name = "account_type")
 	private int accountType;
@@ -46,119 +48,12 @@ public class ExternalUser {
 	@Column(name = "customer_type")
 	private int customerType;
 	
-	@Column(name = "password_hash")
-	private String passwordHash;
+	@Column(name = "balance")
+	private double balance;
 	
-	@Column(name = "user_type")
-	private String userType;
-	
-	@Column(name = "user_name")
+	@Column(name="user_name")
 	private String userName;
-
-	public int getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
-
-	public String getEmailId() {
-		return emailId;
-	}
-
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getCustomerAddress() {
-		return customerAddress;
-	}
-
-	public void setCustomerAddress(String customerAddress) {
-		this.customerAddress = customerAddress;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public int getZip() {
-		return zip;
-	}
-
-	public void setZip(int zip) {
-		this.zip = zip;
-	}
-
-	public int getPhone() {
-		return phone;
-	}
-
-	public void setPhone(int phone) {
-		this.phone = phone;
-	}
-
-	public int getAccountType() {
-		return accountType;
-	}
-
-	public void setAccountType(int accountType) {
-		this.accountType = accountType;
-	}
-
-	public int getCustomerType() {
-		return customerType;
-	}
-
-	public void setCustomerType(int customerType) {
-		this.customerType = customerType;
-	}
-
-	public String getPasswordHash() {
-		return passwordHash;
-	}
-
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
-
-	public String getUserType() {
-		return userType;
-	}
-
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
-
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -166,10 +61,111 @@ public class ExternalUser {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
-	
-	
-	
-	
-	
+
+	@Column(name = "password_hash")
+	private String passwordHash;
+
+	public int getCustomerId(){
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId){
+		this.customerId=customerId;
+	}
+
+	public String getEmailId(){
+		return emailId;
+	}
+
+	public void setEmail_id(String emailId){
+		this.emailId=emailId;
+	}
+
+	public String getFirstName(){
+		return firstName;
+	}
+
+	public void setFirstName(String firstName){
+		this.firstName=firstName;
+	}
+
+	public String getLastName(){
+		return lastName;
+	}
+
+	public void setLast_name(String lastName){
+		this.lastName=lastName;
+	}
+
+	public String getCustomerAddress(){
+		return customerAddress;
+	}
+
+	public void setCustomer_address(String customerAddress){
+		this.customerAddress=customerAddress;
+	}
+
+	public String getState(){
+		return state;
+	}
+
+	public void setState(String state){
+		this.state=state;
+	}
+
+	public String getCountry(){
+		return country;
+	}
+
+	public void setCountry(String country){
+		this.country=country;
+	}
+
+	public int getZip(){
+		return zip;
+	}
+
+	public void setZip(int zip){
+		this.zip=zip;
+	}
+
+	public BigInteger getPhone(){
+		return phone;
+	}
+
+	public void setPhone(BigInteger bigInteger){
+		this.phone=bigInteger;
+	}
+
+	public int getAccountType(){
+		return accountType;
+	}
+
+	public void setAccountType(int accountType){
+		this.accountType=accountType;
+	}
+
+	public int getCustomerType(){
+		return customerType;
+	}
+
+	public void setCustomerType(int customerType){
+		this.customerType=customerType;
+	}
+
+	public double getBalance(){
+		return balance;
+	}
+
+	public void setBalance(double balance){
+		this.balance=balance;
+	}
+
+	public String getPasswordHash(){
+		return passwordHash;
+	}
+
+	public void setPassword_hash(String passwordHash){
+		this.passwordHash=passwordHash;
+	}
 }

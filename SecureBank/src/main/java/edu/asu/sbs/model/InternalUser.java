@@ -12,10 +12,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity
-@Table(name = "internal_users")
-public class InternalUser {
+import org.joda.time.LocalDateTime;
 
+@Entity
+@Table(name="internal_users")
+public class InternalUser {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "employee_id")
@@ -31,7 +33,7 @@ public class InternalUser {
 	private String lastName;
 	
 	@Column(name = "mail_id")
-	private String mailId;
+	private String emailId;
 	
 	@Column(name = "phone_number")
 	private BigInteger phoneNumber;
@@ -52,9 +54,6 @@ public class InternalUser {
 	@Column(name = "last_login")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastLogin;
-	
-	@Column(name = "user_type")
-	private String userType;
 
 	public int getEmployeeId() {
 		return employeeId;
@@ -88,12 +87,12 @@ public class InternalUser {
 		this.lastName = lastName;
 	}
 
-	public String getMailId() {
-		return mailId;
+	public String getEmailId() {
+		return emailId;
 	}
 
-	public void setMailId(String mailId) {
-		this.mailId = mailId;
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 
 	public BigInteger getPhoneNumber() {
@@ -132,28 +131,15 @@ public class InternalUser {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
+	public void setCreationDate(Date timestamp) {
+		this.creationDate = timestamp;
 	}
 
 	public Date getLastLogin() {
 		return lastLogin;
 	}
 
-	public void setLastLogin(Date lastLogin) {
-		this.lastLogin = lastLogin;
+	public void setLastLogin(Date timestamp) {
+		this.lastLogin = timestamp;
 	}
-
-	public String getUserType() {
-		return userType;
-	}
-
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
-	
-	
-	
-	
-	
 }

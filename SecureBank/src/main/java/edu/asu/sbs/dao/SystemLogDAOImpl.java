@@ -38,7 +38,7 @@ public class SystemLogDAOImpl implements SystemLogDAO{
 		// TODO Auto-generated method stub
 		System.out.println("System log is being fetched");
 		Session session = this.sessionFactory.getCurrentSession();
-		List<SystemLog> systemLogList = session.createQuery("from SystemLog").getResultList();
+		List<SystemLog> systemLogList = session.createQuery("from SystemLog").list();
 		System.out.println(systemLogList.size());
 		for(SystemLog systemLog : systemLogList) {
 			logger.info(systemLog.toString());

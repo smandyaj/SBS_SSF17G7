@@ -9,55 +9,39 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "modified_users")
 public class ModifiedUser {
-
-	@Column(name = "id")
-	private int id;
-	
-	@Column(name = "first_name")
-	private String firstName;
-	
-	@Column(name = "last_name")
-	private String lastName;
-	
-	@Column(name = "mail_id")
-	private String mailId;
-	
-	@Column(name = "phone_number")
-	private BigInteger phoneNumber;
-	
-	@Column(name = "address")
-	private String address;
-	
-	@Column(name = "user_name")
-	private String userName;
-	
-	@Column(name = "password_hash")
-	private String passwordHash;
-	
-	@Column(name = "user_type")
-	private int userType;
-	
-	@Column(name = "status")
-	private int status;
-	
-	@Column(name = "status_quo")
-	private String statusQuo;
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "mod_id")
 	private int modId;
-
-	public int getId() {
-		return id;
+	
+	@Column(name = "id")
+	private int userId;
+	
+	public int getModId() {
+		return modId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setModId(int modId) {
+		this.modId = modId;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public int getUserType() {
+		return userType;
+	}
+
+	public void setUserType(int userType) {
+		this.userType = userType;
 	}
 
 	public String getFirstName() {
@@ -76,12 +60,12 @@ public class ModifiedUser {
 		this.lastName = lastName;
 	}
 
-	public String getMailId() {
-		return mailId;
+	public String getEmailId() {
+		return emailId;
 	}
 
-	public void setMailId(String mailId) {
-		this.mailId = mailId;
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 
 	public BigInteger getPhoneNumber() {
@@ -100,30 +84,6 @@ public class ModifiedUser {
 		this.address = address;
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getPasswordHash() {
-		return passwordHash;
-	}
-
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
-
-	public int getUserType() {
-		return userType;
-	}
-
-	public void setUserType(int userType) {
-		this.userType = userType;
-	}
-
 	public int getStatus() {
 		return status;
 	}
@@ -132,25 +92,56 @@ public class ModifiedUser {
 		this.status = status;
 	}
 
-	public String getStatusQuo() {
-		return statusQuo;
+	public String getStatus_quo() {
+		return status_quo;
 	}
 
-	public void setStatusQuo(String statusQuo) {
-		this.statusQuo = statusQuo;
+	public void setStatus_quo(String status_quo) {
+		this.status_quo = status_quo;
 	}
 
-	public int getModId() {
-		return modId;
+	@Column(name = "user_type")
+	private int userType;
+	
+	@Column(name = "first_name")
+	private String firstName;
+	
+	@Column(name = "last_name")
+	private String lastName;
+	
+	@Column(name = "mail_id")
+	private String emailId;
+	
+	@Column(name = "phone_number")
+	private BigInteger phoneNumber;
+	
+	@Column(name = "address")
+	private String address;
+	
+	@Column(name = "status")
+	private int status;
+	
+	@Column(name = "status_quo")
+	private String status_quo;
+
+	public ModifiedUser(int userId, String firstName, String lastName, String emailId, BigInteger phoneNumber,
+			String address, int status, String status_quo, int userType) {
+		super();
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.emailId = emailId;
+		this.phoneNumber = phoneNumber;
+		this.address = address;
+		this.status = status;
+		this.status_quo = status_quo;
+		this.userType = userType;
+	}
+	
+	public ModifiedUser() {
+		
 	}
 
-	public void setModId(int modId) {
-		this.modId = modId;
-	}
-	
-	
-	
-	
 	
 	
 }
