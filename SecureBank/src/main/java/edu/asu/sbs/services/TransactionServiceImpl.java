@@ -121,12 +121,15 @@ public class TransactionServiceImpl implements TransactionService {
 					return false;
 				}
 
-				System.out.println("Transaction is pending");
+				System.out.println("Transaction is pending and its parameters are "+transaction.getSenderAccNumber()+" "+transaction.getReceiverAccNumber());
 
 				Account senderAcc = accountService.findByAccountNumber(transaction
 						.getSenderAccNumber());
+				System.out.println("sender account        "+senderAcc.getAccountId());
 				Account recieverAcc = accountService.findByAccountNumber(transaction
 						.getReceiverAccNumber());
+				
+				System.out.println("receiver account        "+recieverAcc.getAccountId());
 
 				System.out.println("Accounts retreived");
 
@@ -169,6 +172,7 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public List<Transaction> getPendingTransactions(Integer customerId) {
 		// TODO Auto-generated method stub
+		System.out.println("customer id   "+customerId);
 		return transactionDAO.listForPendingTransactions(customerId);
 	}
 
@@ -176,6 +180,30 @@ public class TransactionServiceImpl implements TransactionService {
 	public List<Transaction> getTransactionsForAccount(Integer accountId) {
 		// TODO Auto-generated method stub
 		return transactionDAO.listForAccount(accountId);
+	}
+
+	@Override
+	public List<Transaction> getTransactionsByPayerId(int Id) {
+		// TODO Auto-generated method stub
+		return this.transactionDAO.getByPayerId(Id);
+	}
+
+	@Override
+	public List<Transaction> getTransactionsByReceiverId(int Id) {
+		// TODO Auto-generated method stub
+		return this.transactionDAO.getByReceiverId(Id);
+	}
+
+	@Override
+	public List<Transaction> getTransactionsByPayerOrReceiverId(int Id) {
+		// TODO Auto-generated method stub
+		return this.transactionDAO.getByPayerOrReceiverId(Id);
+	}
+
+	@Override
+	public List<Transaction> getOrderedTransactionsByPayerOrReceiverId(int Id) {
+		// TODO Auto-generated method stub
+		return this.transactionDAO.getByPayerOrReceiverIdOrderedByTime(Id);
 	}
 	
 	

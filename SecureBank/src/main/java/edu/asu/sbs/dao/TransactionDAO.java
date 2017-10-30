@@ -24,6 +24,17 @@ public interface TransactionDAO {
 
 	public List<Transaction> listForAccount(int accountId);
 	public List<Transaction> listForPendingTransactions(int customerId);
+	
+	
+public Transaction getById(int Id);
+	
+	public List<Transaction> getByPayerId(int Id);
+	
+	public List<Transaction> getByReceiverId(int Id);
+	
+	public List<Transaction> getByPayerOrReceiverId(int Id);
+	
+	public List<Transaction> getByPayerOrReceiverIdOrderedByTime(int Id);
 
 
 }

@@ -29,4 +29,20 @@ List<Transaction> getTransactionsForAccount(Integer accountId);
 List<Transaction> getPendingTransactions(Integer accountId);
 
 
+
+
+public List<Transaction> getTransactionsByPayerId(int Id);
+
+public List<Transaction> getTransactionsByReceiverId(int Id);
+
+public List<Transaction> getTransactionsByPayerOrReceiverId(int Id);
+
+public List<Transaction> getOrderedTransactionsByPayerOrReceiverId(int Id);
+
+
+
+
+
+
+
 }

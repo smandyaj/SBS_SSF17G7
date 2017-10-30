@@ -664,6 +664,7 @@ public class ExternalUserController {
 	public String approveCustomerPendingTrans(@PathVariable("id") int id){
 		System.out.println("Approving the pending request");
 		Transaction transaction = transactionService.get(id);
+		System.out.println("transaction approve id  "+transaction.getTransactionId());
 		// update the respective accounts to reflect changes
 		transactionService.approveTransaction(transaction);
 		// redirection not working
