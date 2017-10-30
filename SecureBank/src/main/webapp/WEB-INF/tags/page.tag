@@ -6,7 +6,7 @@
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head >
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +15,7 @@
 <link rel="icon"
 	href="${pageContext.servletContext.contextPath}/static/favicon.ico">
 
-<title>${title} | Sun Devil Bank - Group 7</title>
+<title>${title} | State Bnak of USA - Group 7</title>
 
 <!-- Bootstrap core CSS -->
 <link
@@ -38,16 +38,16 @@
     <![endif]-->
 </head>
 
-<body role="document">
+<body role="document" >
 
-	<div class="container container-main" role="main">
+	<div class="container container-main" role="main" >
 
 		<div class="row">
 
 			<c:if test="${!fn:endsWith(pageContext.request.requestURI, 'statement.jsp')}">
-			<div class="col-sm-3 col-md-2 sidebar">
+			<div class="col-sm-3 col-md-2 sidebar"  >
 
-				<ul class="nav nav-sidebar">
+				<%-- <ul class="nav nav-sidebar">
 					<li
 						class="${fn:endsWith(pageContext.request.requestURI, 'home.jsp') ? 'active':''}"><a
 						href="${pageContext.servletContext.contextPath}/home/">Home</a></li>
@@ -82,7 +82,7 @@
 						
 					<li class="${fn:endsWith(pageContext.request.requestURI, 'logout.jsp') ? 'active':''}"><a
 						href="${pageContext.servletContext.contextPath}/logout">Logout</a></li>
-				</ul>
+				</ul> --%>
 
 			</div>
 			<!-- sidebar -->
@@ -112,10 +112,10 @@
 	<script
 		src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.js"></script>
 	<script
-		src="${pageContext.servletContext.contextPath}/static/js/bootstrap.min.js"></script>
+		src=${pageContext.servletContext.contextPath}/static/js/bootstrap.min.js></script>
 	<script
-		src="${pageContext.servletContext.contextPath}/static/js/validation.js"></script>
+		src=${pageContext.servletContext.contextPath}/static/js/validation.js></script>
 	<script
-		src="${pageContext.servletContext.contextPath}/static/js/common.js"></script>
+		src=${pageContext.servletContext.contextPath}/static/js/common.js></script>
 </body>
 </html>

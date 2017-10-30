@@ -13,4 +13,5 @@ public interface TransactionService {
 	public Transaction get(int transactionId);
 	public boolean approveTransaction(Transaction transaction);
 	public boolean isTransferCritical(double amount);
+	List<Transaction> getTransactionsForAccount(Integer accountId);
 }

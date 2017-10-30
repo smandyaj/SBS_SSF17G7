@@ -43,6 +43,12 @@ public class TransactionServiceImpl implements TransactionService{
 		// TODO Auto-generated method stub
 		return transactionDAO.listForCustomer(customerId);
 	}
+	
+	@Override
+	public List<Transaction> getTransactionsForAccount(Integer accountId) {
+		// TODO Auto-generated method stub
+		return transactionDAO.listForAccount(accountId);
+	}
 
 	@Override
 	public Transaction get(int transactionId) {

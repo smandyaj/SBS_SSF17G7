@@ -13,13 +13,13 @@
 	<mvc:resources mapping="/assets/css/**" location="/WEB-INF/assets/css/"/>
     <mvc:resources mapping="/assets/img/**" location="/WEB-INF/assets/img/"/>
     <mvc:resources mapping="/assets/js/**" location="/WEB-INF/assets/js/"/>
-<!-- 	
+	
 	<bean class="org.springframework.web.servlet.view.XmlViewResolver">
 	   <property name="location">
 	       <value>/WEB-INF/config/spring-pdf.xml</value>
 	   </property>
 	   <property name="order" value="0" />
-	</bean> -->
+	</bean> 
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

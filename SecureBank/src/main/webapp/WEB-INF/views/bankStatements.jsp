@@ -8,11 +8,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
 <title>Customer Home Page</title>
 </head>
-<body>
+<body colspan="10">
 <%@ include file="customerMenu.jsp"%>
-Hello !!!!
 <br>
 
 
@@ -46,28 +46,30 @@ Hello !!!!
 		</tbody>
 	</table> --%>
 	
-	<t:page>
+  
 
-    <div class="page-header">
-        <h1>Account Statements</h1>
-    </div>
-
-    <div class="row">
-    <form:form id="statements-form" method="POST" modelAttribute="transaction" action="statements">
+    <div class="row" colspan="10" >
+     <form:form id="statements-form" method="POST" modelAttribute="transaction" action="bankStatements" >
         
-        <div class="col-xs-8">
-            <label>Select an account:</label><br>
-            <select class="form-control" id="select-account-statements2" name="number" style="display:inline-block; width:60%;">
-                <option value="">Select an Account</option>
-                <c:forEach items="${accounts}" var="account">
-                    <option value="${fn:escapeXml(account.number)}" ${accNumber == account.number? 'selected': ''}>${fn:escapeXml(account.name)}
-                        (*${fn:escapeXml(fn:substring(account.number, fn:length(account.number) - 4, fn:length(account.number)))})</option>
-                </c:forEach>
-            </select>
-            <button type="submit" class="btn btn-success" style="display:inline-block">Submit</button>
-            <br><br>
-        </div>    
-    </form:form>
+						<p style="left: 10%;">
+
+						<label>Account:</label> 
+						<select class="form-control" name="accountId" id="select-account">
+							<option value="">Select an Account</option>
+							<c:set var="count" value="0" scope="page" />
+							<c:forEach items="${accounts}" var="account">
+								<option id="acc${count}"
+									value="${fn:escapeXml(account.accountId)}" ${accNumber == account.accountId? 'selected': ''}>Savings:
+									${fn:escapeXml(account.accountId)}</option>
+
+								<c:set var="count" value="${count + 1}" scope="page" />
+							</c:forEach>
+						</select>
+						  <button type="submit" class="btn btn-success" style="display:inline-block">Submit</button>
+						<form:errors path="bankAccounts" cssClass="error"
+							element="label" />
+						</p>  
+    </form:form> 
     </div>
 
     <c:if test="${!empty statementFailureMsg}">
@@ -75,11 +77,14 @@ Hello !!!!
             ${fn:escapeXml(statementFailureMsg)}
         </div>
     </c:if>
-
-    <table class="table table-bordered">
+<p>${fn:escapeXml(accNumber)} </p>
+    <table class="table table-striped">
     <thead>
         <tr>
-            <th colspan="3">Statements</th>
+            <th >Transaction Id</th>
+            <th >Transaction Type</th>
+            <th>Transaction Time</th>
+            <th>Transaction Amount</th>
         </tr>
     </thead>
         <tbody>
@@ -97,29 +102,23 @@ Hello !!!!
             </c:choose>
             <c:forEach items="${statements}" var="statement">                
                 <tr>
-                    <td width="70%"><a href="#">${fn:escapeXml(statement.month)} ${fn:escapeXml(statement.year)}</a></td>
+                    <td width="20%">${fn:escapeXml(statement.transactionId)}</td>
+                    <td width="20%"> ${statement.transactionType=='1'?'Credit':'Debit'}</td>
+<%--                     <td width="20%">${fn:escapeXml(statement.transactionCreateTime)}</td>
+                    <td width="20%"> ${fn:escapeXml(statement.transactionAmount)}</td> --%>
+
                     <td class="center">
-                        <form:form action="statements/view" method="post">
-                            <input type="hidden" name="number" value="${accNumber}"></input>
-                            <input type="hidden" name="month" value="${fn:escapeXml(statement.month)}"></input>
-                            <input type="hidden" name="year" value="${fn:escapeXml(statement.year)}"></input>
-                            <button type="submit" class="btn btn-default">View</button>
-                        </form:form>
-                    </td>
-                    <td class="center">
-                        <form:form action="statements/download" method="post">
-                            <input type="hidden" name="number" value="${accNumber}"></input>
-                            <input type="hidden" name="month" value="${fn:escapeXml(statement.month)}"></input>
-                            <input type="hidden" name="year" value="${fn:escapeXml(statement.year)}"></input>
-                            <button type="submit" class="btn btn-default">Download</button>
+                        <form:form action="bankStatements/download" method="post" target="_blank">
+                            <input type="hidden" name="accountId" value="${accNumber}"></input>
+                            <input type="hidden" name="transactionId" value="${fn:escapeXml(statement.transactionId)}"></input>
+                            <input type="hidden" name="transactionType" value="${fn:escapeXml(statement.transactionType)}"></input>
+                            <button type="submit" class="btn btn-default" >Download</button>
                         </form:form>
                     </td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
-
-</t:page>
 	
 </body>
 </html>

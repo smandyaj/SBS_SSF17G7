@@ -57,4 +57,13 @@ public class TransactionDAOImpl implements TransactionDAO{
 		getCurrentSession().update(t);
 	}
 
+	@Override
+	public List<Transaction> listForAccount(int accountId) {
+		// TODO Auto-generated method stub
+		return getCurrentSession().createQuery("from Transaction where auth=? and status=? "
+				+ "and (senderAccNumber=? or receiverAccNumber=?)")
+				.setParameter(0, 1)
+				.setParameter(1, 1).setParameter(2, accountId).setParameter(3, accountId).list();
+	}
+
 }

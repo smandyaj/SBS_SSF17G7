@@ -180,7 +180,7 @@
 						<div>
 							<label>Transfer Type:</label><br> <span
 								style="margin-right: 30px;"> <input type="radio"
-								checked="checked" name="type" value="Internal"
+								 name="type" value="Internal"
 								class="internal-transfer transfer-option-btn"> Internal
 							</span> <span><input type="radio" name="type" value="External"
 								class="external-transfer transfer-option-btn"> External</span>
@@ -223,7 +223,7 @@
 									placeholder="eg: abc@xyz.com"></span> <br> <span><input
 									type="radio" name="modes" value="receiverAccNumberExt"
 									id="radioAcc" class="external-transfer transfer-option-btn"
-									checked="checked"><label>Beneficiary Account
+									><label>Beneficiary Account
 										Number:</label> 
 										<input type="text" class="form-control"
 									id="textAccNum" name="receiverAccNumberExt"

@@ -26,7 +26,6 @@ Hello !!!!
 			<tr>
 				<th>Name</th>
 				<th>Balance</th>
-				<th>Statement</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -38,10 +37,11 @@ Hello !!!!
 				<tr>
 					<td>$${fn:escapeXml(account.accountId)}</td>
 					<td>$${fn:escapeXml(account.accountBalance)}</td>
-					<td><a href="bankStatements">View Statements</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
+	<br>
+	<a href=${pageContext.request.contextPath}/customer/bankStatements>View Statements</a>
 </body>
 </html>
