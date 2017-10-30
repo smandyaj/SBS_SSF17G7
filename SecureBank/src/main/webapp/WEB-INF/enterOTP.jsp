@@ -11,12 +11,20 @@
 <title>Enter the OTP</title>
 </head>
 <body>
-	<form:form class="form-enterOTP" method="post" action="enterOTP" attribute="OtpForPassword">
+	<form:form class="form-enterOTP" method="post" action="enterOTP" attribute="UpdatePassword">
 		<center>
 			<div class="modal-body">
 				<p>
 					<label>OTP:</label> <input name="otp" type="text"
 						class="form-control" placeholder="10 digits">
+				</p>
+				<p>
+					<label>Email:</label> <input name="email" type="text"
+						class="form-control" placeholder="***@gmail.com">
+				</p>
+				<p>
+					<label>Password:</label> <input name="password" type="password"
+						class="form-control" placeholder="password">
 				</p>
 			</div>
 			<div class="modal-footer">
