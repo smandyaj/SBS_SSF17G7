@@ -14,4 +14,16 @@ public interface TransactionDAO {
 	public Transaction get(int trasactionId);
 	public void add( Transaction t);
 	public void update(Transaction t);
+	
+    public Transaction getById(int Id);
+	
+	public List<Transaction> getByPayerId(int Id);
+	
+	public List<Transaction> getByReceiverId(int Id);
+	
+	public List<Transaction> getByPayerOrReceiverId(int Id);
+	
+	public List<Transaction> getByPayerOrReceiverIdOrderedByTime(int Id);
+	
+	
 }

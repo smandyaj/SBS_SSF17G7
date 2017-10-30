@@ -37,6 +37,7 @@
              <li><a href=${pageContext.servletContext.contextPath}/customer/customer-transaction>Add Transaction</a></li>
              <li><a href=${pageContext.request.contextPath}/customer/request-money>Request Money</a></li>
             <li><a href=${pageContext.request.contextPath}/customer/credit-debit>Credit-Debit</a></li>
+            <li><a href=${pageContext.request.contextPath}/customer/credit-home>Credit Card</a></li>
 			<li><a href=${pageContext.request.contextPath}/customer/requests-pending>Requests Pending</a></li>
 			<li><a href=${pageContext.servletContext.contextPath}/customer/profile>Profile</a></li>
             <li><a href=${pageContext.servletContext.contextPath}/logout>Logout</a></li>

@@ -32,6 +32,29 @@ public class Account{
 	
 	@Column(name = "account_balance")
 	private double accountBalance;
+	
+	@Column(name = "account_limit")
+	private Double accountLimit;
+	
+	@Column(name = "account_due")
+	private Integer accountDue;
+	
+
+	public Double getAccountLimit() {
+		return accountLimit;
+	}
+
+	public void setAccountLimit(Double accountLimit) {
+		this.accountLimit = accountLimit;
+	}
+
+	public Integer getAccountDue() {
+		return accountDue;
+	}
+
+	public void setAccountDue(Integer accountDue) {
+		this.accountDue = accountDue;
+	}
 
 	public int getAccountId(){
 		return accountId;

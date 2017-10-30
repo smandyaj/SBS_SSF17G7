@@ -75,4 +75,40 @@ public class TransactionDAOImpl implements TransactionDAO{
 				.setParameter(1, 1).setParameter(2, customerId).setParameter(3, customerId).setParameter(4, 0).list();
 	}
 
+	@Override
+	public Transaction getById(int Id) {
+		// TODO Auto-generated method stub
+		return (Transaction) this.getCurrentSession().get(Transaction.class, Id);
+	}
+
+	@Override
+	public List<Transaction> getByPayerId(int Id) {
+		// TODO Auto-generated method stub
+		return this.getCurrentSession().createQuery("from Transaction t where t.senderAccNumber = ?").setParameter(0, Id).list();
+	}
+
+	@Override
+	public List<Transaction> getByReceiverId(int Id) {
+		// TODO Auto-generated method stub
+		return this.getCurrentSession().createQuery("from Transaction t where t.receiverAccNumber = ?").setParameter(0, Id).list();
+	}
+
+	@Override
+	public List<Transaction> getByPayerOrReceiverId(int Id) {
+		// TODO Auto-generated method stub
+		return this.getCurrentSession().createQuery("from Transaction t where t.senderAccNumber = ? or t.receiverAccNumber= ?")
+				.setParameter(0, Id)
+				.setParameter(1, Id)
+				.list();
+	}
+
+	@Override
+	public List<Transaction> getByPayerOrReceiverIdOrderedByTime(int Id) {
+		// TODO Auto-generated method stub
+		return this.getCurrentSession().createQuery("from Transaction t where t.senderAccNumber = ? or t.receiverAccNumber = ? order by t.transactionCreateTime")
+				.setParameter(0, Id)
+				.setParameter(1, Id)
+				.list();
+	}
+
 }

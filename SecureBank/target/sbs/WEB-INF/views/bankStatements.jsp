@@ -83,8 +83,7 @@
         <tr>
             <th >Transaction Id</th>
             <th >Transaction Type</th>
-            <th>Transaction Time</th>
-            <th>Transaction Amount</th>
+
         </tr>
     </thead>
         <tbody>
@@ -106,20 +105,13 @@
                     <td width="20%"> ${statement.transactionType=='1'?'Credit':'Debit'}</td>
 <%--                     <td width="20%">${fn:escapeXml(statement.transactionCreateTime)}</td>
                     <td width="20%"> ${fn:escapeXml(statement.transactionAmount)}</td> --%>
-                     <td class="center">
-                        <form:form action="bankStatements/view" method="post">
-                            <input type="hidden" name="accountId" value="${accNumber}"></input>
-                            <input type="hidden" name="transactionId" value="${fn:escapeXml(statement.transactionId)}"></input>
-                            <input type="hidden" name="transactionType" value="${fn:escapeXml(statement.transactionType)}"></input>
-                            <button type="submit" class="btn btn-default">View</button>
-                        </form:form>
-                    </td> 
+
                     <td class="center">
-                        <form:form action="bankStatements/download" method="post">
+                        <form:form action="bankStatements/download" method="post" target="_blank">
                             <input type="hidden" name="accountId" value="${accNumber}"></input>
                             <input type="hidden" name="transactionId" value="${fn:escapeXml(statement.transactionId)}"></input>
                             <input type="hidden" name="transactionType" value="${fn:escapeXml(statement.transactionType)}"></input>
-                            <button type="submit" class="btn btn-default">Download</button>
+                            <button type="submit" class="btn btn-default" >Download</button>
                         </form:form>
                     </td>
                 </tr>

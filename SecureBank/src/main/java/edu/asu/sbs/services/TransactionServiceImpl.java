@@ -117,4 +117,34 @@ public class TransactionServiceImpl implements TransactionService{
 		return transactionDAO.listForPendingTransactions(customerId);
 	}
 
+	@Override
+	public Transaction getTransactionById(int Id) {
+		// TODO Auto-generated method stub
+		return this.transactionDAO.getById(Id);
+	}
+
+	@Override
+	public List<Transaction> getTransactionsByPayerId(int Id) {
+		// TODO Auto-generated method stub
+		return this.transactionDAO.getByPayerId(Id);
+	}
+
+	@Override
+	public List<Transaction> getTransactionsByReceiverId(int Id) {
+		// TODO Auto-generated method stub
+		return this.transactionDAO.getByReceiverId(Id);
+	}
+
+	@Override
+	public List<Transaction> getTransactionsByPayerOrReceiverId(int Id) {
+		// TODO Auto-generated method stub
+		return this.transactionDAO.getByPayerOrReceiverId(Id);
+	}
+
+	@Override
+	public List<Transaction> getOrderedTransactionsByPayerOrReceiverId(int Id) {
+		// TODO Auto-generated method stub
+		return this.transactionDAO.getByPayerOrReceiverIdOrderedByTime(Id);
+	}
+
 }
