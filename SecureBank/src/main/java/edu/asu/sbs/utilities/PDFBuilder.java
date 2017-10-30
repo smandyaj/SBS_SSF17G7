@@ -130,7 +130,7 @@ public class PDFBuilder extends AbstractITextPdfView {
 
 		doc.add(table);
 		
-		System.out.println("Trying to sign the document");
+		/*System.out.println("Trying to sign the document");
 		OutputStream baosPDF = new ByteArrayOutputStream();
 		byte[] bytearrayb = ((ByteArrayOutputStream)baosPDF).toByteArray();
 		PdfReader reader = new PdfReader(bytearrayb);
@@ -165,14 +165,14 @@ public class PDFBuilder extends AbstractITextPdfView {
         appearance.setSignatureCreator("test");
         ExternalSignature es = new PrivateKeySignature(pk, "SHA-256", "BC");
         ExternalDigest digest = new BouncyCastleDigest();*/
-        MakeSignature.signDetached(appearance, digest, es, chain, null, null, null, 0, CryptoStandard.CMS);
+        /*MakeSignature.signDetached(appearance, digest, es, chain, null, null, null, 0, CryptoStandard.CMS);
         baosPDF.flush();
         baosPDF.close();
 
         BufferedOutputStream fs = new BufferedOutputStream(new FileOutputStream(new File("myFile121.pdf")));
         fs.write(((ByteArrayOutputStream) baosPDF).toByteArray());
         fs.flush();
-        fs.close();
+        fs.close();*/
 		
 
 	}

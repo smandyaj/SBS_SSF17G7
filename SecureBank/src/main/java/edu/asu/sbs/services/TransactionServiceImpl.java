@@ -111,4 +111,10 @@ public class TransactionServiceImpl implements TransactionService{
 		return false;
 	}
 
+	@Override
+	public List<Transaction> getPendingTransactions(Integer customerId) {
+		// TODO Auto-generated method stub
+		return transactionDAO.listForPendingTransactions(customerId);
+	}
+
 }

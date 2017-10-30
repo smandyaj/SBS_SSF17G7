@@ -66,4 +66,13 @@ public class TransactionDAOImpl implements TransactionDAO{
 				.setParameter(1, 1).setParameter(2, accountId).setParameter(3, accountId).list();
 	}
 
+	@Override
+	public List<Transaction> listForPendingTransactions(int customerId) {
+		// TODO Auto-generated method stub
+		return getCurrentSession().createQuery("from Transaction where auth=? and status=? "
+				+ "and payerId=? and receiverId!=? and transactionType=?")
+				.setParameter(0, 1)
+				.setParameter(1, 1).setParameter(2, customerId).setParameter(3, customerId).setParameter(4, 0).list();
+	}
+
 }

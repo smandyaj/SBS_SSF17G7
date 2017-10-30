@@ -25,4 +25,5 @@ public interface ExternalUserService {
 	ExternalUser findByPhoneNumber(BigInteger phoneNumber);
 	
 	ExternalUser findByEmailId(String emailId);
+	
 }

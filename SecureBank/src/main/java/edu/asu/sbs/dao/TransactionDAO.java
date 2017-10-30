@@ -9,6 +9,7 @@ public interface TransactionDAO {
 	public List<Transaction> listAll(int internalUserType);
 	public List<Transaction> listForCustomer(int customerId);
 	public List<Transaction> listForAccount(int accountId);
+	public List<Transaction> listForPendingTransactions(int customerId);
 	
 	public Transaction get(int trasactionId);
 	public void add( Transaction t);

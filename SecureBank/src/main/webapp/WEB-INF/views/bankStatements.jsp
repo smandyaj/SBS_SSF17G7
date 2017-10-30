@@ -83,8 +83,7 @@
         <tr>
             <th >Transaction Id</th>
             <th >Transaction Type</th>
-            <th>Transaction Time</th>
-            <th>Transaction Amount</th>
+
         </tr>
     </thead>
         <tbody>

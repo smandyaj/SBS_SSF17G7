@@ -14,4 +14,5 @@ public interface TransactionService {
 	public boolean approveTransaction(Transaction transaction);
 	public boolean isTransferCritical(double amount);
 	List<Transaction> getTransactionsForAccount(Integer accountId);
+	List<Transaction> getPendingTransactions(Integer accountId);
 }

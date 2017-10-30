@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -120,44 +121,7 @@ public class ExternalUserController {
 		return "bankStatements";
 	}
 
-	@RequestMapping(value = "/customer/bankStatements/view", method = RequestMethod.POST)
-	public String postViewStatement(ModelMap model, HttpServletRequest request, RedirectAttributes attr) {
 
-		ExternalUser user = externalUserService.findByUserName();
-		List<Account> accounts = accountService.getAccountByCustomerId(user.getCustomerId());
-		model.put("user", user);
-
-		Account account = null;
-		for (int i = 0; i < accounts.size(); i++) {
-			if (accounts.get(i).getAccountType() == Integer.parseInt(request.getParameter("accountId"))) {
-				account = accounts.get(i);
-				break;
-			}
-		}
-
-		// If account is empty or null, skip the account service check
-
-		if (account == null) {
-			System.out.println("Someone tried view statement functionality for some other account. Details:");
-			System.out.println("Acc No: " + request.getParameter("accountId"));
-			System.out.println("Customer ID: " + user.getCustomerId());
-			attr.addFlashAttribute("statementFailureMsg",
-					"Could not process your request. Please try again or contact the bank.");
-			return "redirect:/bankStatements";
-		}
-
-		System.out.println("Acc No: " + account.getAccountId() + " " + account.getCustomerId());
-		List<Transaction> statements = transactionService
-				.getTransactionsForAccount(Integer.parseInt(request.getParameter("accountId")));
-		System.out.println("Acc No: " + statements.get(0).getTransactionId());
-		model.addAttribute("transactions", statements);
-		model.addAttribute("accNumber", request.getParameter("accountId"));
-
-		model.addAttribute("title", "Account Statements");
-		model.addAttribute("account", account);
-
-		return "bankStatement";
-	}
 
 	@RequestMapping(value = "/customer/bankStatements/download", method = RequestMethod.POST)
 	public ModelAndView postDownloadStatement(ModelMap model, HttpServletRequest request, RedirectAttributes attr) {
@@ -320,6 +284,7 @@ public class ExternalUserController {
 
 	@RequestMapping(value = "/customer/requestMoneySuccess", method = RequestMethod.POST)
 	public String processMoneyRequest(ModelMap model, HttpServletRequest request,
+
 			@ModelAttribute("transaction") Transaction senderTransaction, BindingResult result,
 			RedirectAttributes attr) {
 
@@ -420,6 +385,41 @@ public class ExternalUserController {
 		return "redirect:/customer/home";
 	}
 
+	/** show pending transactions **/
+	@RequestMapping(value="/customer/requests-pending",method=RequestMethod.GET)
+	public String getPendingTransactions(ModelMap model) {
+		System.out.println("Fetching all pending transactions for customers");
+		ExternalUser user = externalUserService.findByUserName();
+		List<Transaction> transactions = transactionService.getPendingTransactions(user.getCustomerId());
+		model.put("user", user);
+		model.put("transactions", transactions);
+		return "customerPendingTrans";
+	}
+	
+	/** approve non-critical pending( approved) transaction **/
+	@RequestMapping(value="/customer/approve-request/{id}",method=RequestMethod.GET)
+	public String approveCustomerPendingTrans(@PathVariable("id") int id){
+		System.out.println("Approving the pending request");
+		Transaction transaction = transactionService.get(id);
+		// update the respective accounts to reflect changes
+		transactionService.approveTransaction(transaction);
+		// redirection not working
+		return "redirect:/customer/requests-pending";
+	}
+	
+	/** approve non-critical pending( approved) transaction **/
+	@RequestMapping(value="/customer/decline-request/{id}",method=RequestMethod.GET)
+	public String declineCustomerPendingTrans(@PathVariable("id") int id){
+		System.out.println("Declining the pending customer transactions");
+		Transaction transaction = transactionService.get(id);
+		transaction.setStatus(2);
+		transaction.setStatus_quo("declined");
+		transactionService.updateTransaction(transaction);
+		// redirecting not working
+		return "redirect:/customer/requests-pending";
+	}
+	
+	
 	@RequestMapping(value = "/customer/customer-transaction", method = RequestMethod.GET)
 	public String returnCustomerTransactionPage(ModelMap model) {
 		System.out.println("Fetch the user: " + externalUserService.findByUserName().getUserName());
