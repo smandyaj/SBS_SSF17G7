@@ -1,32 +1,23 @@
 package edu.asu.sbs.controllers;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.sbs.model.Account;
@@ -46,7 +37,7 @@ import edu.asu.sbs.services.TransactionService;
 @Controller
 public class ExternalUserController {
 
-	final static Logger logger = Logger.getLogger(ExternalUserController.class);
+
 	final private BigDecimal CRITICAL_VALUE = new BigDecimal(500);
 /*
 	@Autowired
@@ -358,30 +349,27 @@ public class ExternalUserController {
 		return "redirect:/home/credit-debit";
 	}
 
-	/*@RequestMapping(value = "/statements", method = RequestMethod.GET)
+	@RequestMapping(value = "/statements", method = RequestMethod.GET)
 	public String getStatements(ModelMap model, HttpServletRequest request) {
-		User user = userService.getUserDetails();
+		ExternalUser user = externalUserService.findByUserName();
 		model.put("user", user);
 
-		List<Account> accounts = accountService.getAccountsByCustomerID(user
-				.getCustomerID());
+		List<Account> accounts = accountService.getAccountByCustomerId(user.getCustomerId());
 		model.addAttribute("title", "Account Statements");
 		model.addAttribute("accounts", accounts);
 
-		return "customer/statements";
+		return "statements";
 	}
 
-	@RequestMapping(value = "/statements", method = RequestMethod.POST)
+/*	@RequestMapping(value = "/statements", method = RequestMethod.POST)
 	public String postStatements(ModelMap model, HttpServletRequest request,
 			RedirectAttributes attr) {
-		User user = userService.getUserDetails();
+		ExternalUser user = externalUserService.findByUserName();
 		model.put("user", user);
 
-		List<Account> accounts = accountService.getAccountsByCustomerID(user
-				.getCustomerID());
+		List<Account> accounts = accountService.getAccountByCustomerId(user.getCustomerId());
 		model.addAttribute("title", "Account Statements " + user.getFirstName());
-		model.addAttribute("fullname",
-				user.getFirstName() + " " + user.getLastName());
+		model.addAttribute("fullname", user.getFirstName() + " " + user.getLastName());
 		model.addAttribute("accounts", accounts);
 
 		// If account is empty or null, skip the account service check
@@ -406,9 +394,9 @@ public class ExternalUserController {
 		model.addAttribute("accNumber", request.getParameter("number"));
 
 		return "customer/statements";
-	}
+	}*/
 
-	@RequestMapping(value = "/statements/view", method = RequestMethod.POST)
+/*	@RequestMapping(value = "/statements/view", method = RequestMethod.POST)
 	public String postViewStatement(ModelMap model, HttpServletRequest request,
 			RedirectAttributes attr) {
 
@@ -445,8 +433,9 @@ public class ExternalUserController {
 				+ request.getParameter("year"));
 
 		return "customer/statement";
-	}
-
+	}*/
+	
+	/*
 	@RequestMapping(value = "/statements/download", method = RequestMethod.POST)
 	public ModelAndView postDownloadStatement(ModelMap model,
 			HttpServletRequest request, RedirectAttributes attr) {
@@ -745,7 +734,7 @@ public class ExternalUserController {
 
 		// redirect to the view page
 		return "redirect:/home/fund-transfer";
-	}*/
+	}
 
 	/**
 	 * Gets the payment page customers.

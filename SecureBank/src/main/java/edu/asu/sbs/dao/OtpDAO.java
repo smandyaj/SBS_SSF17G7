@@ -3,9 +3,11 @@ package edu.asu.sbs.dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import edu.asu.sbs.model.Otp;
 
+@Repository
 public class OtpDAO {
 	
 	

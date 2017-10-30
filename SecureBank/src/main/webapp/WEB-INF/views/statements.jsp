@@ -18,8 +18,8 @@
             <select class="form-control" id="select-account-statements2" name="number" style="display:inline-block; width:60%;">
                 <option value="">Select an Account</option>
                 <c:forEach items="${accounts}" var="account">
-                    <option value="${fn:escapeXml(account.number)}" ${accNumber == account.number? 'selected': ''}>${fn:escapeXml(account.name)}
-                        (*${fn:escapeXml(fn:substring(account.number, fn:length(account.number) - 4, fn:length(account.number)))})</option>
+                    <option value="${fn:escapeXml(account.number)}" ${accNumber == account.number? 'selected': ''}>
+                        ${fn:escapeXml(account.number)}</option>
                 </c:forEach>
             </select>
             <button type="submit" class="btn btn-success" style="display:inline-block">Submit</button>
