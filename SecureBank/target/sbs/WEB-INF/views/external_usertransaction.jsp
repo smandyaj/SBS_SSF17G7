@@ -128,7 +128,8 @@
 			<div class="col-sm-9 col-md-10 main">
 
 				<div class="page-header">
-					<h1>{$firstName} {$lastName}</h1>
+					<h1>Welcome ${fn:escapeXml(fullname)}</h1>
+					<h4>Customer Id: ${fn:escapeXml(customerId) }</h4>
 				</div>
 
 				<h2>Make Payment</h2>
@@ -145,7 +146,7 @@
 								${fn:escapeXml(failureMsg)}</div>
 						</c:if>
 						<p>
-						<h2>{$firstName} {$lastName}</h2>
+
 						<label>Debit Account:</label> <select class="form-control"
 							name="senderAccNumber" id="select-account">
 							<option value="">Select an Account</option>
@@ -206,9 +207,6 @@
 							</div>
 
 							<div id="external-transfer" class="hidden">
-
-
-
 								<span><input type="radio" name="modes"
 									value="receiverPhoneNumber" id="radioPhone"
 									class="external-transfer transfer-option-btn"> <label>Beneficiary
@@ -230,13 +228,6 @@
 										<input type="text" class="form-control"
 									id="textAccNum" name="receiverAccNumberExt"
 									placeholder="eg: 1234567898764567"></span>
-
-
-								<!-- <p>
-						<label>Beneficiery Account Number:</label> <input type="text"
-							class="form-control" name="receiverAccNumberExternal"
-							placeholder="eg: 1234">
-					</p> -->
 							</div>
 							<hr>
 							<p>
@@ -249,8 +240,7 @@
 
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-success">Transfer
-							Funds</button>
+						<button type="submit" class="btn btn-success">Transfer Money</button>
 					</div>
 				</form:form>
 </html>

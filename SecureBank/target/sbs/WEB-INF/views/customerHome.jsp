@@ -38,7 +38,7 @@ Hello !!!!
 				<tr>
 					<td>$${fn:escapeXml(account.accountId)}</td>
 					<td>$${fn:escapeXml(account.accountBalance)}</td>
-					<td><a href="statements">View Statements</a></td>
+					<td><a href="bankStatements">View Statements</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>

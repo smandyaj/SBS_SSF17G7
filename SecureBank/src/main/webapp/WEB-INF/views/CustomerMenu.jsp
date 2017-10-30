@@ -35,6 +35,7 @@
 		<ul id="adminList">
              <li><a href=${pageContext.request.contextPath}/customer/home>Home</a></li>
              <li><a href=${pageContext.servletContext.contextPath}/customer/customer-transaction>Add Transaction</a></li>
+             <li><a href=${pageContext.request.contextPath}/customer/request-money>Request Money</a></li>
             <li><a href=${pageContext.request.contextPath}/customer/credit-debit>Credit-Debit</a></li>
 			<li><a href=${pageContext.request.contextPath}/customer/requests-pending>Requests Pending</a></li>
 			<li><a href=${pageContext.servletContext.contextPath}/customer/profile>Profile</a></li>

@@ -8,7 +8,7 @@
 
 <%@ include file="customerMenu.jsp"%>
 	<div class="page-header">
-		<h1>SBS Credit / Debit Funds</h1>
+		<h1>SBS Credit / Debit Funds </h1>
 	</div>
 
 	<div id="add-withdraw">

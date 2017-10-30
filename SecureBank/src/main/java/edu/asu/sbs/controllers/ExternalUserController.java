@@ -70,6 +70,155 @@ public class ExternalUserController {
 		return "customerHome";
 	}
 	
+	@RequestMapping(value="/customer/home/bankStatements",method=RequestMethod.GET)
+	public String getBankStatements(ModelMap model) {
+		ExternalUser user = externalUserService.findByUserName();
+		List<Account> accounts = accountService.getAccountByCustomerId(user
+				.getCustomerId());
+		
+		model.addAttribute("transactions");
+		//modelAndView.addObject("customerForm", externalUserService.findByUserName());
+		System.out.println("user is: "+externalUserService.findByUserName().getCustomerId());
+		return "bankStatements";
+		
+	}
+	
+	/*@RequestMapping(value = "/customer/home/bankStatements", method = RequestMethod.GET)
+	public String getStatements(ModelMap model, HttpServletRequest request) {
+		ExternalUser user = externalUserService.findByUserName();
+		List<Account> accounts = accountService.getAccountByCustomerId(user
+				.getCustomerId());
+		model.put("user", user);
+		model.addAttribute("title", "Account Statements");
+		model.addAttribute("accounts", accounts);
+
+		return "bankStatements";
+	}*/
+	/*
+	@RequestMapping(value = "/customer/home/bankStatements", method = RequestMethod.POST)
+	public String postStatements(ModelMap model, HttpServletRequest request,
+			RedirectAttributes attr) {
+		ExternalUser user = externalUserService.findByUserName();
+		model.put("user", user);
+
+		List<Account> accounts = accountService.getAccountByCustomerId(user
+				.getCustomerId());
+		model.addAttribute("title", "Account Statements " + user.getFirstName());
+		model.addAttribute("fullname",
+				user.getFirstName() + " " + user.getLastName());
+		model.addAttribute("accounts", accounts);
+
+		// If account is empty or null, skip the account service check
+		Account account = accountService.getValidAccountByNumber(request.getParameter("number"), accounts);
+		// Exit the transaction if Account doesn't exist
+		if (account == null) {
+			System.out.println("Someone tried statements functionality for some other account. Details:");
+			System.out.println("Acc No: " + request.getParameter("number"));
+			System.out.println("Customer ID: " + user.getCustomerId());
+			attr.addFlashAttribute("statementFailureMsg",
+					"Could not process your request. Please try again or contact the bank.");
+			return "redirect:/home/statements";
+		}
+
+		List<StatementMonthYear> statements = transactionService
+				.getStatementMonths(request.getParameter("number"));
+		if (statements.size() > 0) {
+			logger.debug("Received statements: " + statements.get(0).getMonth());
+		}
+		model.addAttribute("statements", statements);
+		model.addAttribute("accNumber", request.getParameter("number"));
+
+		return "bankStatements";
+	}
+	
+	
+	@RequestMapping(value = "/customer/home/bankStatements/view", method = RequestMethod.POST)
+	public String postViewStatement(ModelMap model, HttpServletRequest request,
+			RedirectAttributes attr) {
+
+		ExternalUser user = externalUserService.findByUserName();
+		List<Account> accounts = accountService.getAccountByCustomerId(user
+				.getCustomerId());
+		model.put("user", user);
+		
+		Account account=null;
+		for(int i=0;i<accounts.size();i++) {
+			if(accounts.get(i).getAccountType()==Integer.parseInt(request.getParameter("number"))) {
+				account=accounts.get(i);
+				break;
+			}
+		}
+
+		// If account is empty or null, skip the account service check
+		
+
+		if (account == null) {
+			logger.warn("Someone tried view statement functionality for some other account. Details:");
+			logger.warn("Acc No: " + request.getParameter("number"));
+			logger.warn("Customer ID: " + user.getCustomerId());
+			attr.addFlashAttribute("statementFailureMsg",
+					"Could not process your request. Please try again or contact the bank.");
+			return "redirect:/bankStatements";
+		}
+
+		List<Transaction> transactions = transactionService
+				.getCompletedTransactionsByAccountNummber(
+						request.getParameter("number"),
+						request.getParameter("month"),
+						Integer.parseInt(request.getParameter("year")));
+
+		model.addAttribute("title", "Account Statements");
+		model.addAttribute("user", user);
+		model.addAttribute("account", account);
+		model.addAttribute("transactions", transactions);
+		model.addAttribute("statementName", request.getParameter("month") + " "
+				+ request.getParameter("year"));
+
+		return "bankStatements";
+	}
+	
+	@RequestMapping(value = "/customer/home/bankStatements/download", method = RequestMethod.POST)
+	public ModelAndView postDownloadStatement(ModelMap model,
+			HttpServletRequest request, RedirectAttributes attr) {
+
+		ExternalUser user = externalUserService.findByUserName();
+		List<Account> accounts = accountService.getAccountByCustomerId(user
+				.getCustomerId());
+		model.put("user", user);
+
+		// If account is empty or null, skip the account service check
+		Account account = accountService.getValidAccountByNumber(
+				request.getParameter("number"), accounts);
+
+		if (account == null) {
+			logger.warn("Someone tried view statement functionality for some other account. Details:");
+			logger.warn("Acc No: " + request.getParameter("number"));
+			logger.warn("Customer ID: " + user.getCustomerId());
+			attr.addFlashAttribute("statementFailureMsg",
+					"Could not process your request. Please try again or contact the bank.");
+			return new ModelAndView("redirect:/bankStatements");
+		}
+
+		List<Transaction> transactions = transactionService
+				.getCompletedTransactionsByAccountNummber(
+						request.getParameter("number"),
+						request.getParameter("month"),
+						Integer.parseInt(request.getParameter("year")));
+
+		model.addAttribute("title", "Account Statements");
+		model.addAttribute("user", user);
+		model.addAttribute("account", account);
+		model.addAttribute("transactions", transactions);
+		model.addAttribute("statementName", request.getParameter("month") + " "
+				+ request.getParameter("year"));
+
+		return new ModelAndView("pdfView", "model", model);
+	}*/
+	
+	
+	
+	
+	
 	
 	@RequestMapping(value="/customer/profile",method=RequestMethod.GET)
 	public ModelAndView getCustomerProfile() {
@@ -173,6 +322,7 @@ public class ExternalUserController {
 		}
 
 		transactionService.addTransaction(transaction);
+		System.out.println("the transaction is:"+transaction);
 
 		attr.addFlashAttribute(
 				"successMsg",
@@ -181,44 +331,7 @@ public class ExternalUserController {
 		// redirect to the credit debit view page
 		return "redirect:/customer/credit-debit";
 	}
-/*
-	@RequestMapping(value = "/statements/download", method = RequestMethod.POST)
-	public ModelAndView postDownloadStatement(ModelMap model,
-			HttpServletRequest request, RedirectAttributes attr) {
 
-		ExternalUser user = externalUserService.findByUserName();
-		model.put("user", user);
-
-		List<Account> accounts = accountService.getAccountByCustomerId(user.getCustomerId());
-
-		// If account is empty or null, skip the account service check
-		Account account = accountService.getValidAccountByNumber(
-				request.getParameter("number"), accounts);
-
-		if (account == null) {
-			logger.warn("Someone tried view statement functionality for some other account. Details:");
-			logger.warn("Acc No: " + request.getParameter("number"));
-			logger.warn("Customer ID: " + user.getCustomerID());
-			attr.addFlashAttribute("statementFailureMsg",
-					"Could not process your request. Please try again or contact the bank.");
-			return new ModelAndView("redirect:/home/statements");
-		}
-
-		List<Transaction> transactions = transactionService
-				.getCompletedTransactionsByAccountNummber(
-						request.getParameter("number"),
-						request.getParameter("month"),
-						Integer.parseInt(request.getParameter("year")));
-
-		model.addAttribute("title", "Account Statements");
-		model.addAttribute("user", user);
-		model.addAttribute("account", account);
-		model.addAttribute("transactions", transactions);
-		model.addAttribute("statementName", request.getParameter("month") + " "
-				+ request.getParameter("year"));
-
-		return new ModelAndView("pdfView", "model", model);
-	}*/
 	
 	
 	
@@ -235,6 +348,131 @@ public class ExternalUserController {
 		return modelAndView;
 	}
 	
+	@RequestMapping(value="/customer/request-money", method = RequestMethod.GET)
+	public String returnCustomerRequestMoney(ModelMap model) {
+		System.out.println("Fetch the user: " + externalUserService.findByUserName().getUserName());
+		
+		ExternalUser user = externalUserService.findByUserName();
+		model.put("user", user);
+		List<Account> accounts = accountService.getAccountByCustomerId(user
+				.getCustomerId());
+		model.addAttribute("title", "Welcome " + user.getFirstName() + " " + user.getLastName());
+		model.addAttribute("fullname",
+				user.getFirstName() + " " + user.getLastName());
+		model.addAttribute("accounts", accounts);
+		model.addAttribute("customerId", user.getCustomerId());
+		return "requestMoney";
+	}
+	
+	@RequestMapping(value="/customer/requestMoneySuccess", method = RequestMethod.POST)
+	public String processMoneyRequest(ModelMap model, HttpServletRequest request,
+			@ModelAttribute("transaction") Transaction senderTransaction,
+			BindingResult result, RedirectAttributes attr) {
+		
+		boolean isManager = request.isUserInRole("ROLE_MANAGER");
+		boolean isTransferAccountValid;
+		ExternalUser receiver=externalUserService.findByUserName();
+		
+		
+		
+		// get account of the sender
+		Account senderAccount = accountService.getAccountByNumber(senderTransaction
+				.getSenderAccNumber());
+		
+		List<Account> accList=null;
+		Account receiverAcc=null;
+		int receiverAccNumber=0;
+		accList = accountService.getAccountByCustomerId(receiver.getCustomerId());
+		for(int i=0;i<accList.size();i++) {
+			if(accList.get(i).getAccountType()==0) {
+				receiverAcc=accList.get(i);
+				break;
+			}
+		}
+		
+		receiverAccNumber=receiverAcc.getAccountId();
+		// Exit the transaction if Account doesn't exist
+
+		int senderAccNumber = 0;
+
+		    senderAccNumber = Integer.parseInt(request.getParameter("senderAccNumber"));
+			
+
+				System.out.println("Account Number:" + request.getParameter("senderAccNumber"));
+				System.out.println("Request through accountNum.");
+
+			
+		
+
+		if (receiverAccNumber == Integer.parseInt(request.getParameter("senderAccNumber"))) {
+			// same account transfer not allowed
+			return "redirect:/customer/home";
+		}
+
+		// get the to account details
+		
+
+		if (receiverAcc != null) {
+			isTransferAccountValid = true;
+		} else {
+			isTransferAccountValid = false;
+		}
+
+		System.out.println("isTransferAccountValid: " + isTransferAccountValid);
+		if (isTransferAccountValid) {
+
+			double amount = Double.parseDouble((request.getParameter("amount")));
+
+			System.out.println("receiverAccNumber: " + receiverAccNumber);
+
+			boolean isCritical = transactionService.isTransferCritical(amount);
+			
+			// create the transaction object
+			int sender_status = 0;
+			int requester_status=1;
+			String status_quo = "pending";
+			
+			//java.sql.Date date = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+			Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+
+			//Date date1= new Date(Calendar.getInstance().getTime().getTime());
+			senderTransaction = new Transaction(0, currentTimestamp, senderAccount.getCustomerId(), receiver.getCustomerId(),
+					amount, sender_status, 0, status_quo,
+					Integer.parseInt(request.getParameter("senderAccNumber")),receiverAccNumber);
+			System.out.println("Sender Transaction created: " + senderTransaction);
+
+			// Check if Debit amount is < balance in the account
+			if ( senderAccount.getAccountBalance() - amount <= 0) {
+				System.out.println("No balance in account");
+				return "redirect:/customer/home";
+			}
+
+			
+			
+			Transaction requesterTransaction = new Transaction(1, currentTimestamp, senderAccount.getCustomerId(), receiver.getCustomerId(),
+					amount, requester_status, 1, status_quo,
+					Integer.parseInt(request.getParameter("senderAccNumber")),receiverAccNumber);
+			System.out.println("Receiver Transaction created: " + requesterTransaction);
+			try {
+				System.out.println("Trying to request funds");
+				
+				transactionService.addTransaction(senderTransaction);
+			
+				requesterTransaction.setStatus_quo("approved");
+			transactionService.addTransaction(requesterTransaction);
+			System.out.println("Transaction requested successfully. Request should show up on the user account now");
+					return "redirect:/customer/home";
+
+			} catch (Exception e) {
+				System.out.println("Request unsuccessful. Please try again or contact the admin.");
+				return "redirect:/customer/home";
+			}
+		} else {
+			System.out.println("Transfer unsucessful. Please try again or contact the admin");
+		}
+		// redirect to the view page
+		return "redirect:/customer/home";
+	}
 	@RequestMapping(value="/customer/customer-transaction", method = RequestMethod.GET)
 	public String returnCustomerTransactionPage(ModelMap model) {
 		System.out.println("Fetch the user: " + externalUserService.findByUserName().getUserName());
