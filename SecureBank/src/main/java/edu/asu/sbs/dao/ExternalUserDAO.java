@@ -40,4 +40,8 @@ public interface ExternalUserDAO {
 	
 	void update(ExternalUser user);
 
+	ExternalUser findByPhoneNumber(BigInteger phoneNumber);
+
+	ExternalUser findByEmailId(String emailId);
+
 }

@@ -145,5 +145,20 @@ public class ExternalUserServiceImpl implements ExternalUserService {
 		// TODO Auto-generated method stub
 		externalUserDAO.update(user);
 	}
+	
+	
+	@Override
+	public ExternalUser findByPhoneNumber(BigInteger phoneNumber) {
+		// TODO Auto-generated method stub
+		return externalUserDAO.findByPhoneNumber(phoneNumber);
+	}
+
+	@Override
+	public ExternalUser findByEmailId(String emailId) {
+		// TODO Auto-generated method stub
+		return externalUserDAO.findByEmailId(emailId);
+	}
+	
+	
 
 }

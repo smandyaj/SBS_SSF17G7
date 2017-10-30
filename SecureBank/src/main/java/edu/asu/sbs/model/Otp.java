@@ -14,6 +14,11 @@ import javax.persistence.Table;
 @Table(name="otp")
 public class Otp {
 
+	public Otp() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")

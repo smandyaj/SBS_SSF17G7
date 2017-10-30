@@ -162,5 +162,22 @@ public class TransactionServiceImpl implements TransactionService {
 
 				}
 	}
+	
+	
+
+
+	@Override
+	public List<Transaction> getPendingTransactions(Integer customerId) {
+		// TODO Auto-generated method stub
+		return transactionDAO.listForPendingTransactions(customerId);
+	}
+
+	@Override
+	public List<Transaction> getTransactionsForAccount(Integer accountId) {
+		// TODO Auto-generated method stub
+		return transactionDAO.listForAccount(accountId);
+	}
+	
+	
 
 }

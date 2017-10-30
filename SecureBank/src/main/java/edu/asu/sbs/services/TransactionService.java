@@ -22,4 +22,11 @@ void transfer_email(String email_id, String userName, double amount);
 void transfer_message(BigInteger phone, String userName, double amount);
 public boolean isTransferCritical(double amount);
 public void deleteTransaction(Transaction t);
+
+
+
+List<Transaction> getTransactionsForAccount(Integer accountId);
+List<Transaction> getPendingTransactions(Integer accountId);
+
+
 }

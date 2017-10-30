@@ -33,6 +33,7 @@ public class OtpDAO {
 	public Otp getOTPByID(String otpID) {
 		
 		try {
+			System.out.println("get the otp object --" + otpID);
 			return (Otp) getCurrentSession().get(Otp.class, Integer.parseInt(otpID));
 		} catch (Exception e) {
 			return null;

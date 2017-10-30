@@ -179,5 +179,20 @@ public class ExternalUserDAOImpl implements ExternalUserDAO {
 		externalUser.setPhone(user.getPhone());
 		getCurrentSession().update(externalUser);
 	}
+	
+	
+	@Override
+	public ExternalUser findByPhoneNumber(BigInteger phoneNumber) {
+		Criteria criteria = getCurrentSession().createCriteria(ExternalUser.class);
+		ExternalUser externalUser = (ExternalUser) criteria.add(Restrictions.eq("phone", phoneNumber)).uniqueResult();
+		return externalUser;
+	}
+
+	@Override
+	public ExternalUser findByEmailId(String emailId) {
+		Criteria criteria = getCurrentSession().createCriteria(ExternalUser.class);
+		ExternalUser externalUser = (ExternalUser) criteria.add(Restrictions.eq("emailId", emailId)).uniqueResult();
+		return externalUser;
+	}
 
 }

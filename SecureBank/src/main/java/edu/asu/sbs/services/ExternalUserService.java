@@ -45,4 +45,16 @@ public interface ExternalUserService {
 	void updateUser(ModifiedUser user);
 	
 	void deleteUser(Integer id);
+	
+	
+	
+
+	
+	ExternalUser findByPhoneNumber(BigInteger phoneNumber);
+	
+	ExternalUser findByEmailId(String emailId);
+	
+	
+	
+	
 }

@@ -20,5 +20,10 @@ public interface TransactionDAO {
 	void transfer_message(BigInteger phone, String userName, double amount);
 	public void deleteTransaction(Transaction t);
 	public Transaction getTransactionById(int transactionId);
+	
+
+	public List<Transaction> listForAccount(int accountId);
+	public List<Transaction> listForPendingTransactions(int customerId);
+
 
 }
