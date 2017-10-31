@@ -64,7 +64,7 @@ public class EmailServiceImpl implements EmailService{
             message.setSubject(email.getSubject());
             message.setText(email.getBody());
             
-            MimeBodyPart messageBodyPart = new MimeBodyPart();
+/*            MimeBodyPart messageBodyPart = new MimeBodyPart();
 
             Multipart multipart = new MimeMultipart();
 
@@ -78,7 +78,7 @@ public class EmailServiceImpl implements EmailService{
             messageBodyPart.setFileName(fileName);
             multipart.addBodyPart(messageBodyPart);
 
-            message.setContent(multipart);
+            message.setContent(multipart);*/
 
 
             System.out.println("Mail Check 3");

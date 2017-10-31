@@ -32,7 +32,7 @@
 
           <h2>Add Transaction</h2>
 
-	<form:form id="fund-transfer" action="addTransactionSuccess" method="POST" modelAttribute="transaction">
+	<form:form id="fund-transfer" action="addTransactionSuccess" method="POST" modelAttribute="transaction" htmlEscape="true">
 		<div class="modal-body">
 			<c:if test="${!empty successMsg}">
 				<div class="alert alert-success">						
@@ -122,5 +122,8 @@
 		<div class="modal-footer">
 			<button type="submit" class="btn btn-success">Transfer Funds</button>
 		</div>
+		<%--Cross site scripting protection --%>
+			<spring:htmlEscape defaultHtmlEscape="true" /> 
+		
 	</form:form>
 </html>

@@ -251,7 +251,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		return getCurrentSession().createQuery("from Transaction where auth=? and status=? "
 				+ "and payerId=? and receiverId!=? and transactionType=?")
 				.setParameter(0, 0)
-				.setParameter(1, 0).setParameter(2, customerId).setParameter(3, customerId).setParameter(4, 0).list();
+				.setParameter(1, 0).setParameter(2, customerId).setParameter(3, customerId).setParameter(4, 4).list();
 	}
 
 	@Override

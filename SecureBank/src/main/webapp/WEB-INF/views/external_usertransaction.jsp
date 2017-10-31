@@ -135,7 +135,7 @@
 				<h2>Make Payment</h2>
 
 				<form:form id="fund-transfer" action="addTransactionSuccess"
-					method="POST" modelAttribute="transaction">
+					method="POST" modelAttribute="transaction" htmlEscape="true">
 					<div class="modal-body">
 						<c:if test="${!empty successMsg}">
 							<div class="alert alert-success">
@@ -242,6 +242,9 @@
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-success">Transfer Money</button>
 					</div>
+					<%--Cross site scripting protection --%>
+			<spring:htmlEscape defaultHtmlEscape="true" /> 
+					
 				</form:form>
 </html>
 </html>

@@ -25,12 +25,10 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>Txn ID</th>
-				<th>Date</th>
-				<th>Description</th>
-				<th>Debit</th>
-				<th>Credit</th>
-				<th>Balance</th>
+				<th>Transaction ID</th>
+				<th>Transaction Date</th>
+				<th>Debit/Credit</th>
+				<th>Transfer Amount</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -43,17 +41,12 @@
 							style="F-" dateTimeZone="America/Phoenix" />
 						${transactionCreateTime}
 					</td>
-					<td>${transaction.name}</td>
-					<td>${transaction.type == 'Debit' ? transaction.transactionAmount : ''}</td>
-					<td>${transaction.type == 'Credit' ? transaction.transactionAmount : ''}</td>
+					<td>${transaction.transactionType=='1'?'Credit':'Debit'}</td>
 					<td>$${transaction.transactionAmount}</td>
 					<c:set var="total" scope="page" value="${transaction.transactionAmount}"/>
 				</tr>
 			</c:forEach>
-			<tr>
-				<td colspan="5">Total:</td>				
-				<td><strong>${total}</strong></td>
-			</tr>
+
 		</tbody>
 	</table>
 

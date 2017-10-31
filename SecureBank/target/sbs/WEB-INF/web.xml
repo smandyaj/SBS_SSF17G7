@@ -34,7 +34,7 @@
 		<param-value>
 			/WEB-INF/config/spring-security.xml
 			/WEB-INF/config/spring-database.xml
-			/WEB-INF/config/spring-pdf.xml
+			/WEB-INF/config/pdf-views.xml
 		</param-value>
 	</context-param>
 
@@ -80,6 +80,14 @@
 		<error-code>503</error-code>
 		<location>/error.jsp</location>
 	</error-page>
+	
+	
+	
+	<!--  Cross site scripting protection -->
+	<context-param>
+    <param-name>defaultHtmlEscape</param-name>
+    <param-value>true</param-value>
+	</context-param>
 
  	<!-- Enable HTTPS -->
 <!--	<security-constraint>

@@ -4,8 +4,10 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <t:auth>
 
+
+
 	<form class="form-signin" method="post"
-		action="${pageContext.servletContext.contextPath}/login">
+		action="${pageContext.servletContext.contextPath}/login" htmlEscape="true">
 		<div>
 			<c:if test="${!empty successMsg}">
 				<div class="alert alert-success">${fn:escapeXml(successMsg)}</div>
@@ -49,6 +51,9 @@
 				<a href="forgotpass">Forgot Password?</a>
 			</p>
 		</div>
+		<%--Cross site scripting protection --%>
+			<spring:htmlEscape defaultHtmlEscape="true" /> 
+		
 	</form>
 	<%-- <div id="loginBox">
 		<form name="loginForm" action="<c:url value='/customerRedirect'/>"
@@ -78,5 +83,6 @@
 	</div> --%>
 
 	<div id="virtualKeyboard"></div>
+
 
 </t:auth>

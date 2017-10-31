@@ -12,7 +12,7 @@
 	</div>
 
 	<div id="add-withdraw">
-		<form:form id="credit-debit-form" method="POST" modelAttribute="transaction" action="credit-debit">
+		<form:form id="credit-debit-form" method="POST" modelAttribute="transaction" action="credit-debit" htmlEscape="true">
 			<div>
 				<c:if test="${!empty successMsg}">
 					<div class="alert alert-success">						
@@ -70,6 +70,9 @@
 					<button type="submit" class="btn btn-success">Submit</button>
 				</div>
 			</div>
+			<%--Cross site scripting protection --%>
+			<spring:htmlEscape defaultHtmlEscape="true" /> 
+			
 
 		</form:form>
 		<!-- /form -->

@@ -226,7 +226,7 @@ public class ExternalUserController {
 	
 	@RequestMapping(value = "/customer/process-otp", method = RequestMethod.POST)
 	public String processOTP(ModelMap model, HttpServletRequest request,RedirectAttributes attr) {
-
+		System.out.println("process OTP");
 		String otp = request.getParameter("otp");
 		String otpId = request.getParameter("otpId");
 		//String originalOtp = otpService.getOTP(transactionId);
@@ -526,9 +526,9 @@ public class ExternalUserController {
 		model.addAttribute("accNumber", request.getParameter("accountId"));
 		model.addAttribute("title", "Account Statements");
 		model.addAttribute("account", account);
-		model.addAttribute("statementName", "hello");
+		model.addAttribute("statementName", "Your Statements");
 
-		return new ModelAndView("pdfView", "model", model);
+		return new ModelAndView("statementFile", "model", model);
 	}
 	
 	@RequestMapping(value = "/customer/request-money", method = RequestMethod.GET)
@@ -611,7 +611,7 @@ public class ExternalUserController {
 			Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 
 			// Date date1= new Date(Calendar.getInstance().getTime().getTime());
-			senderTransaction = new Transaction(0, currentTimestamp, senderAccount.getCustomerId(),
+			senderTransaction = new Transaction(4, currentTimestamp, senderAccount.getCustomerId(),
 					receiver.getCustomerId(), amount, sender_status, 0, status_quo,
 					Integer.parseInt(request.getParameter("senderAccNumber")), receiverAccNumber,0,1);
 			System.out.println("Sender Transaction created: " + senderTransaction);
@@ -622,7 +622,7 @@ public class ExternalUserController {
 				return "redirect:/customer/home";
 			}
 
-			Transaction requesterTransaction = new Transaction(1, currentTimestamp, senderAccount.getCustomerId(),
+			Transaction requesterTransaction = new Transaction(4, currentTimestamp, senderAccount.getCustomerId(),
 					receiver.getCustomerId(), amount, requester_status, 1, status_quo,
 					Integer.parseInt(request.getParameter("senderAccNumber")), receiverAccNumber,0,1);
 			System.out.println("Receiver Transaction created: " + requesterTransaction);

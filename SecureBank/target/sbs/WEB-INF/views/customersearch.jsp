@@ -50,6 +50,9 @@
 			<div class="modal-footer" >                
               <button type="submit" class="btn btn-success">Search</button>
             </div>
+            <%--Cross site scripting protection --%>
+			<spring:htmlEscape defaultHtmlEscape="true" /> 
+            
 		   </form:form>
           </div>
           

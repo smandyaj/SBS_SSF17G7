@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <%@ include file="adminmenu.jsp"%>
 
 <div class="container">
@@ -25,7 +26,7 @@
 	<spring:url value="admin/employee-add-modify" var="employeeActionUrl" />
 
 	<form:form class="form-horizontal" method="post"
-		modelAttribute="employeeForm" action="${employeeActionUrl}">
+		modelAttribute="employeeForm" action="${employeeActionUrl}" htmlEscape="true">
 
 		<form:hidden path="employeeId" />
 
@@ -33,7 +34,7 @@
 			<div class="form-group ${status.error ? 'has-error' : ''}">
 				<label class="col-sm-2 control-label">First Name</label>
 				<div class="col-sm-10">
-					<form:input path="firstName" type="text" class="form-control "
+					<form:input path="firstName" type="text" class="form-control" 
 						id="firstName" placeholder="FirstName" />
 					<form:errors path="firstName" class="control-label" />
 				</div>
@@ -132,6 +133,8 @@
 				</c:choose>
 			</div>
 		</div>
+	<%--Cross site scripting protection --%>
+	<spring:htmlEscape defaultHtmlEscape="true" /> 
 	</form:form>
 
 </div>

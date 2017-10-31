@@ -12,7 +12,7 @@
 	</div>
 
 	<div id="add-withdraw">
-		<form:form id="credit-debit-form" method="POST" modelAttribute="transaction" action="requestMoneySuccess">
+		<form:form id="credit-debit-form" method="POST" modelAttribute="transaction" action="requestMoneySuccess" htmlEscape="true">
 			<div>
 				<c:if test="${!empty successMsg}">
 					<div class="alert alert-success">						
@@ -45,6 +45,9 @@
 					<button type="submit" class="btn btn-success">Request</button>
 				</div>
 			</div>
+			<%--Cross site scripting protection --%>
+			<spring:htmlEscape defaultHtmlEscape="true" /> 
+			
 
 		</form:form>
 		<!-- /form -->

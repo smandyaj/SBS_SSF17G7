@@ -16,7 +16,7 @@
 	
 	<bean class="org.springframework.web.servlet.view.XmlViewResolver">
 	   <property name="location">
-	       <value>/WEB-INF/config/spring-pdf.xml</value>
+	       <value>/WEB-INF/config/pdf-views.xml</value>
 	   </property>
 	   <property name="order" value="0" />
 	</bean> 

@@ -25,7 +25,7 @@
 	<spring:url value="/admin/employee-add-modify" var="employeeActionUrl" />
 
 	<form:form class="form-horizontal" method="post"
-		modelAttribute="employeeForm" action="${employeeActionUrl}">
+		modelAttribute="employeeForm" action="${employeeActionUrl}" htmlEscape="true">
 
 		<form:hidden path="employeeId" />
 
@@ -132,7 +132,10 @@
 				</c:choose>
 			</div>
 		</div>
+		<%--Cross site scripting protection --%>
+	<spring:htmlEscape defaultHtmlEscape="true" /> 
 	</form:form>
+	
 
 </div>
 </body>

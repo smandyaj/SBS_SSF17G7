@@ -26,7 +26,7 @@
 		</c:if>
 
 	<form:form class="form-horizontal" method="post"
-		modelAttribute="customerForm" action="${actionUrl}">
+		modelAttribute="customerForm" action="${actionUrl}" htmlEscape="true">
 
 		<form:hidden path="customerId" />
 
@@ -102,6 +102,9 @@
 						<button type="submit" class="btn-lg btn-primary pull-right">Update</button>
 			</div>
 		</div>
+		<%--Cross site scripting protection --%>
+			<spring:htmlEscape defaultHtmlEscape="true" /> 
+		
 	</form:form>
 
 </div>

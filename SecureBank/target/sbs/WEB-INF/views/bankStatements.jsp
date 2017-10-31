@@ -49,7 +49,7 @@
   
 
     <div class="row" colspan="10" >
-     <form:form id="statements-form" method="POST" modelAttribute="transaction" action="bankStatements" >
+     <form:form id="statements-form" method="POST" modelAttribute="transaction" action="bankStatements" htmlEscape="true">
         
 						<p style="left: 10%;">
 
@@ -69,6 +69,8 @@
 						<form:errors path="bankAccounts" cssClass="error"
 							element="label" />
 						</p>  
+						<%--Cross site scripting protection --%>
+						<spring:htmlEscape defaultHtmlEscape="true" /> 
     </form:form> 
     </div>
 

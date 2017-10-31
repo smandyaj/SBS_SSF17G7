@@ -115,10 +115,16 @@ public class AuthorizationController {
 		Email email = new Email(emailSearch.getEmail(), "Temporary Password Reset",
 				"Your Temporary password is" + tempPassword);
 		sendEmailService.sendEmail(email);
+		
+		model.addAttribute("email", email);
+		model.addAttribute("otp", tempPassword);
+		model.addAttribute("password", "");
 		System.out.println("Email sent successfully");
 		attr.addFlashAttribute("successMsg",
 				"A temporary  password is generated and sent to you.Please use it to login");
-		return "redirect:/enterOTP";
+		return "enterOTP";
+
+
 	}
 
 	

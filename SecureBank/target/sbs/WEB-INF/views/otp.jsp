@@ -11,7 +11,7 @@
 	</div>
 
 	<div id="add-withdraw">
-		<form:form id="otp" method="POST" modelAttribute="transaction" action="process-otp">
+		<form:form id="otp" method="POST" modelAttribute="transaction" action="process-otp" htmlEscape="true">
 			<div>
 				<c:if test="${!empty successMsg}">
 					<div class="alert alert-success">						
@@ -40,6 +40,9 @@
 					<button name="submit" value="cancel" type="submit" class="btn btn-danger">I want to cancel this transaction</button>
 				</div>
 			</div>
+			<%--Cross site scripting protection --%>
+			<spring:htmlEscape defaultHtmlEscape="true" /> 
+			
 
 		</form:form>
 		<!-- /form -->

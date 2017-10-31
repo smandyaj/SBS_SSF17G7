@@ -28,7 +28,7 @@
 		</c:if>
 
 	<form:form class="form-horizontal" method="post"
-		modelAttribute="paymentForm" action="make-payment">
+		modelAttribute="paymentForm" action="make-payment" htmlEscape="true">
 		
 		<form:hidden path="transactionId" />
 
