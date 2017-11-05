@@ -3,6 +3,44 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script
+	src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
+<script
+	src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.js"></script>
+
+<link href=${pageContext.request.contextPath}/assets/CSS/jquery.virtual_keyboard.css rel="stylesheet">
+<script src=${pageContext.request.contextPath}/assets/js/jquery.virtual_keyboard.js></script>
+ <script>
+jQuery(document).ready(function() {
+$('#otpidname').keyboard({
+  // Keyboard Type
+  type: 'gatekeeper', 
+  // default, monokai, orange
+  theme: 'default', 
+  // ru_RU, es_ES, pt_PT, it_IT
+  language: 'en_US',
+  // active Shift key
+  active_shift: false,
+  // action Capslock key
+  active_caps: false,
+  // hide the keyboard on page load
+  is_hidden: true,
+  // animation speed in ms
+  open_speed: 300,
+  close_speed: 300,
+  // show on focus
+  show_on_focus_in: true,
+  // auto hide when the text field has lost focus.
+  hide_on_focus_out: true,
+  // Id selector to trigger the keyboard
+  trigger: undefined, 
+  // enable the plugin
+  enabled: true
+})
+});
+</script> 
 
   <%@ include file="customerMenu.jsp" %>
 	<div class="page-header">
@@ -28,7 +66,7 @@
 				<div class="modal-body">
 					<p>
 						<label>OTP:</label>
-						<input name="otp" type="text" class="form-control" placeholder="8 digits">
+						<input name="otp" type="text" class="form-control" placeholder="8 digits" id="otpidname">
 					</p>
 					<input name="otpId" type="hidden" class="form-control" value="${otpId}">
 					<input name="transactionId" type="hidden" class="form-control" value="${transactionId}">

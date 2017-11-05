@@ -34,7 +34,7 @@
 							<option value="">Select an Account</option>
 							<c:set var="count" value="0" scope="page" />
 							<c:forEach items="${accounts}" var="account">
-								<option id="acc${count}" value="${fn:escapeXml(account.accountId)}">${fn:escapeXml(account.accountId)}</option>
+								<option id="acc${count}" value="${fn:escapeXml(account.accountId)}">${fn:escapeXml(account.accountId)} - ${fn:escapeXml(account.accountName)}</option>
 								
 								<c:set var="count" value="${count + 1}" scope="page" />
 							</c:forEach>

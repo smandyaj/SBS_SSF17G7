@@ -1,4 +1,4 @@
-$(function() {
+/*$(function() {
 
     if ($('#virtualKeyboard').length) {
         jsKeyboard.init("virtualKeyboard");
@@ -54,4 +54,4 @@ $(function() {
         return false;
     });
 
-});
+});*/

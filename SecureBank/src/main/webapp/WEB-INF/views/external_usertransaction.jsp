@@ -153,8 +153,7 @@
 							<c:set var="count" value="0" scope="page" />
 							<c:forEach items="${accounts}" var="account">
 								<option id="acc${count}"
-									value="${fn:escapeXml(account.accountId)}">Savings:
-									${fn:escapeXml(account.accountId)}</option>
+									value="${fn:escapeXml(account.accountId)}">${fn:escapeXml(account.accountId)} - ${fn:escapeXml(account.accountName)}</option>
 
 								<c:set var="count" value="${count + 1}" scope="page" />
 							</c:forEach>
@@ -196,8 +195,7 @@
 									<c:set var="count" value="0" scope="page" />
 									<c:forEach items="${accounts}" var="account">
 										<option id="acc${count}credit"
-											value="${fn:escapeXml(account.accountId)}">Savings:
-											${fn:escapeXml(account.accountId)}</option>
+											value="${fn:escapeXml(account.accountId)}">${fn:escapeXml(account.accountId)} - ${fn:escapeXml(account.accountName)}</option>
 
 										<c:set var="count" value="${count + 1}" scope="page" />
 									</c:forEach>
