@@ -41,7 +41,6 @@
             <li><a href=${pageContext.servletContext.contextPath}/employee/pending-profile>Pending Profile</a></li>
             <li><a href=${pageContext.servletContext.contextPath}/employee/customer-list>View-Edit Customers</a></li>
             <sec:authorize access="hasRole('MANAGER')">
-            <li><a href=${pageContext.servletContext.contextPath}/employee/employee-add>Add Internal Users</a></li>
             <li><a href=${pageContext.servletContext.contextPath}/employee/employee-list>View-Edit Internal Users</a></li>
             </sec:authorize>
             <li><a href=${pageContext.servletContext.contextPath}/employee/customer-add>Add Users</a></li>

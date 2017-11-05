@@ -59,7 +59,7 @@
 							<c:set var="count" value="0" scope="page" />
 							<c:forEach items="${accounts}" var="account">
 								<option id="acc${count}"
-									value="${fn:escapeXml(account.accountId)}" ${accNumber == account.accountId? 'selected': ''}>Savings:
+									value="${fn:escapeXml(account.accountId)}" ${accNumber == account.accountId? 'selected': ''}>${fn:escapeXml(account.accountName)}:
 									${fn:escapeXml(account.accountId)}</option>
 
 								<c:set var="count" value="${count + 1}" scope="page" />

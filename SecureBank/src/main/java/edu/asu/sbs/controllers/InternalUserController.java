@@ -32,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.asu.sbs.model.Account;
+import edu.asu.sbs.model.Email;
 import edu.asu.sbs.model.ExternalUser;
 import edu.asu.sbs.model.ExternalUserSearch;
 import edu.asu.sbs.model.InternalUser;
@@ -39,11 +40,14 @@ import edu.asu.sbs.model.ModifiedUser;
 import edu.asu.sbs.model.SystemLog;
 import edu.asu.sbs.model.Transaction;
 import edu.asu.sbs.services.AccountService;
+import edu.asu.sbs.services.BCryptHashService;
+import edu.asu.sbs.services.EmailService;
 import edu.asu.sbs.services.ExternalUserService;
 import edu.asu.sbs.services.InternalUserService;
 import edu.asu.sbs.services.ModifiedUserService;
 import edu.asu.sbs.services.SystemLogService;
 import edu.asu.sbs.services.TransactionService;
+import edu.asu.sbs.utilities.SecretKey;
 
 @Controller
 public class InternalUserController {
@@ -65,6 +69,12 @@ public class InternalUserController {
 	
 	@Autowired
 	private TransactionService transactionService;
+	
+	@Autowired
+	private BCryptHashService bCryptHashService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@ModelAttribute
 	public ExternalUserSearch getExternalUser() {
@@ -555,10 +565,16 @@ public class InternalUserController {
 	@RequestMapping(value="/employee/customer-add-modify",method = RequestMethod.POST)
 	public String addingCustomer(@ModelAttribute ExternalUser externalUser) {
 		System.out.println("Adding/Modifying new customer and redirecting" + externalUser.getPasswordHash());
-		
+		SecretKey secretKeyObj = new SecretKey();
 		if( externalUser.getCustomerId() == 0) {
 			System.out.println("Add User ::" +externalUser.getCustomerType());
-			externalUserService.addUser(externalUser);	
+			String secretKey = secretKeyObj.generateRandomString();
+			String secretKeyHash = bCryptHashService.getBCryptHash(secretKey);
+			externalUser.setSecretKey(secretKeyHash);
+			externalUserService.addUser(externalUser);
+			Email email = new Email(externalUser.getEmailId(), "Secure Bank :: Account Secret Key", "Here is you secret key, please use it when updating your profile :: "
+					+ secretKey);
+			emailService.sendEmail(email);
 		}else {
 			System.out.println("Modify User" + externalUser.getCustomerId());
 			externalUserService.updateUser(externalUser);
@@ -653,7 +669,7 @@ public class InternalUserController {
 	}
 	
 
-	@RequestMapping(value="/employee/employee-delete/{id}", method=RequestMethod.POST)
+	@RequestMapping(value="/employee/employee-delete/{id}", method=RequestMethod.GET)
 	public ModelAndView deleteInternalUserForManager(@PathVariable Integer id,HttpServletRequest request) {
 		boolean isManager = request.isUserInRole("ROLE_ADMIN");
 		if( !isManager) {

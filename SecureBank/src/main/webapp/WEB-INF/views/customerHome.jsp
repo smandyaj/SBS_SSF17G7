@@ -36,7 +36,7 @@ Hello !!!!
 			</c:if>
 			<c:forEach items="${accounts}" var="account">
 				<tr>
-					<td>${fn:escapeXml(account.accountId)}</td>
+					<td>${fn:escapeXml(account.accountId)} - ${fn:escapeXml(account.accountName)}</td>
 					<td>$${fn:escapeXml(account.accountBalance)}</td>
 				</tr>
 			</c:forEach>

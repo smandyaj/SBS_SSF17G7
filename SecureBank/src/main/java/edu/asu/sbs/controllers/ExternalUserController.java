@@ -92,7 +92,9 @@ public class ExternalUserController {
 	@RequestMapping(value = "/customer/profile", method = RequestMethod.GET)
 	public ModelAndView getCustomerProfile() {
 		ModelAndView modelAndView = new ModelAndView("customer-profile");
-		modelAndView.addObject("customerForm", externalUserService.findByUserName());
+		ExternalUser externalUser = externalUserService.findByUserName();
+		externalUser.setSecretKey("");
+		modelAndView.addObject("customerForm",externalUser);
 		System.out.println("user is: " + externalUserService.findByUserName().getCustomerId());
 		return modelAndView;
 
@@ -100,6 +102,15 @@ public class ExternalUserController {
 
 	@RequestMapping(value = "/customer/modify-profile", method = RequestMethod.POST)
 	public String addModifiedProfile(@ModelAttribute ExternalUser externalUser) {
+		ExternalUser originalUser = externalUserService.findByCustomerId(externalUser.getCustomerId());
+		String originalSecretKey = originalUser.getSecretKey();
+		String currentSecretKey = externalUser.getSecretKey();
+		
+		if(!hashService.checkBCryptHash(currentSecretKey, originalSecretKey)) {
+			System.out.println("Secret Key not matching");
+			return "redirect:/customer/home";
+		}
+		
 		ModelAndView modelAndView = new ModelAndView("customer-profile");
 		System.out.println("User name to be modified ::" + externalUser.getFirstName());
 		System.out.println("User details ::" + externalUser);
@@ -109,7 +120,7 @@ public class ExternalUserController {
 		modifiedUserService.addUser(modUser);
 		modelAndView.addObject("msg", "Profile changes hav been submitted for approval by the bank. "
 				+ "Changes will be reflected shortly");
-		return "redirect:/customer-profile";
+		return "redirect:/customer/home";
 	}
 
 	@RequestMapping(value = "/customer/credit-debit", method = RequestMethod.GET)
@@ -490,6 +501,9 @@ public class ExternalUserController {
 		System.out.println("yes Acc No: " + account.getAccountId() + " " + account.getCustomerId());
 		List<Transaction> statements = transactionService
 				.getTransactionsForAccount(Integer.parseInt(request.getParameter("accountId")));
+		if( statements == null || statements.size() == 0) {
+			return "redirect:/customer/home";
+		}
 		System.out.println("Acc No: " + statements.get(0).getTransactionId());
 		model.addAttribute("statements", statements);
 		model.addAttribute("accNumber", request.getParameter("accountId"));

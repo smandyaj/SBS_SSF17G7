@@ -96,6 +96,17 @@
 				</div>
 			</div>
 		</spring:bind>
+		
+		<spring:bind path="secretKey">
+			<div class="form-group ${status.error ? 'has-error' : ''}">
+				<label class="col-sm-2 control-label">Secret Key</label>
+				<div class="col-sm-10">
+					<form:input path="secretKey" class="form-control" id="secretKey"
+						placeholder="secretKey" />
+					<form:errors path="secretKey" class="control-label" />
+				</div>
+			</div>
+		</spring:bind>
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">

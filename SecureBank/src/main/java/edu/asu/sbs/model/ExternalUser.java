@@ -43,6 +43,17 @@ public class ExternalUser
 	@Column(name = "password_hash")
 	private String passwordHash;
 	
+	@Column(name = "secret_key")
+	private String secretKey;
+	
+	public String getSecretKey() {
+		return secretKey;
+	}
+
+	public void setSecretKey(String secretKey) {
+		this.secretKey = secretKey;
+	}
+
 	/** IMPORTANT **/
 	@Transient
 	String accountType;

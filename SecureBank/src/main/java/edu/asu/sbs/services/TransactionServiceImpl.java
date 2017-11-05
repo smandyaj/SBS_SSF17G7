@@ -143,11 +143,13 @@ public class TransactionServiceImpl implements TransactionService {
 						senderAcc.setAccountBalance(senderAcc.getAccountBalance() + amount);
 						transaction.setStatus(1);
 						transaction.setStatus_quo("approved");
+						transaction.setAuth(1);
 						transactionDAO.update(transaction);
 					} else {
 						senderAcc.setAccountBalance(senderAcc.getAccountBalance() - amount);
 						transaction.setStatus(1);
 						transaction.setStatus_quo("approved");
+						transaction.setAuth(1);
 						transactionDAO.update(transaction);
 					}
 					return true;
@@ -159,6 +161,7 @@ public class TransactionServiceImpl implements TransactionService {
 					accountService.updateAccount(recieverAcc);
 					transaction.setStatus(1);
 					transaction.setStatus_quo("approved");
+					transaction.setAuth(1);
 					transactionDAO.update(transaction);
 					System.out.println("updating is done");
 					return true;
