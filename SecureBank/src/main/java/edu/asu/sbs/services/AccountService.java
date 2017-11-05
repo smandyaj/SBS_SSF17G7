@@ -16,8 +16,6 @@ public interface AccountService {
 	void transferFunds(TransactionService transactionService, AccountService accountService,
 			Transaction senderTransaction, Transaction receiverTransaction, double amount);
 	Account findByAccountNumber(int i);
-	
-	
 public Account getAccountByAccountId(Integer accountId);
 	
 	public List<Account> getAccountByCustomerId(Integer customerId);
@@ -26,6 +24,9 @@ public Account getAccountByAccountId(Integer accountId);
 	public double getBalance(Integer accountId);
 	
 	public List<Account> getAccountByAccountType(Integer customerId, int type);
+	
+	/** IMPORTANT **/
+	public void add(Account account);
 	
 	
 }

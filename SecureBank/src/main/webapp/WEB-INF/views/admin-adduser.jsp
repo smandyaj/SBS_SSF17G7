@@ -51,15 +51,15 @@
 			</div>
 		</spring:bind>
 
+		<!--  IMPORTANT -->
 		<spring:bind path="employeeType">
-			<div class="form-group ${status.error ? 'has-error' : ''}">
-				<label class="col-sm-2 control-label">Empolyee Type</label>
-				<div class="col-sm-10">
-					<form:input path="employeeType" type="text" class="form-control "
-						id="employeeType" placeholder="Employee Type" />
-					<form:errors path="employeeType" class="control-label" />
-				</div>
+		<div class="form-group ${status.error ? 'has-error' : ''}">
+			<label class="col-sm-2 control-label">Employee Type</label>
+			<div class="col-sm-10">
+				<form:select path="employeeType" items="${employeeTypes}" />
+				<form:errors path="employeeType" class="control-label" />
 			</div>
+		</div>
 		</spring:bind>
 
 

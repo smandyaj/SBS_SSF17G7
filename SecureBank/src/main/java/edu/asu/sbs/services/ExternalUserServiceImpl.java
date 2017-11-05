@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import edu.asu.sbs.dao.ExternalUserDAO;
+import edu.asu.sbs.model.Account;
 import edu.asu.sbs.model.ExternalUser;
 import edu.asu.sbs.model.ModifiedUser;
 
@@ -20,7 +21,11 @@ import edu.asu.sbs.model.ModifiedUser;
 public class ExternalUserServiceImpl implements ExternalUserService {
 	@Autowired
 	ExternalUserDAO externalUserDAO;
-
+	
+	/** IMPORTANT **/
+	@Autowired
+	AccountService accountService;
+	
 	@Override
 	public ExternalUser findUserById(Integer Id) {
 		// TODO Auto-generated method stub
@@ -32,6 +37,7 @@ public class ExternalUserServiceImpl implements ExternalUserService {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
 		externalUserDAO.add(externalUser);
+		
 	}
 
 	@Override
@@ -124,7 +130,16 @@ public class ExternalUserServiceImpl implements ExternalUserService {
 	@Override
 	public void addUser(ExternalUser user) {
 		// TODO Auto-generated method stub
-		 externalUserDAO.add(user);
+		int userId = externalUserDAO.add(user);
+		/** IMPORTANT **/
+		String accountName = "Savings";
+		if( user.getAccountType().equals("0")) {
+			accountName = "Savings";
+		}else {
+			accountName = user.getAccountType().equals("1")?"Checking":"Credit";
+		}
+		Account account = new Account(userId, Integer.parseInt(user.getAccountType()), Double.valueOf("1000"), accountName,  Double.valueOf("1000"), 0);
+		accountService.add(account);
 	}
 
 	@Override

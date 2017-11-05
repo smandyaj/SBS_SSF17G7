@@ -152,13 +152,12 @@ public class ExternalUserDAOImpl implements ExternalUserDAO {
 
 	}
 	
-
+	/** IMPORTANT **/
 	@Override
-	public void add(ExternalUser externalUser) {
+	public int add(ExternalUser externalUser) {
 		// TODO Auto-generated method stub
 		String encodedPwd = bCryptHashService.getBCryptHash(externalUser.getPasswordHash());
 		externalUser.setPasswordHash(encodedPwd);
-		getCurrentSession().save(externalUser);
 		// add to users table
 		System.out.println("Adding to users table");
 		Users user = new Users(externalUser.getUserName(),encodedPwd,1);
@@ -170,6 +169,7 @@ public class ExternalUserDAOImpl implements ExternalUserDAO {
 		Role role = new Role(externalUser.getUserName(),userRole);
 		roleDAO.add(role);
 		getCurrentSession().save(user);
+		return (int)getCurrentSession().save(externalUser);
 		
 	}
 

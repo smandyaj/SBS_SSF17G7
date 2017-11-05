@@ -1,13 +1,39 @@
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<script>
+function myFunction1() {
+    document.getElementById("demo1").innerHTML = "You pasted text!";
+	alert("Don't copy paste");
+}
+function myFunction2() {
+	var s = document.getElementById("inputEmail").value;
+	var s2 = document.getElementById("inputPassword").value;
+	var regex = /=/; // match '=' and capture everything that follows
+	var matches = s.match(regex);
+	var matches2 = s.match(regex);
+	if (matches) {
+	    alert("Invalid Input")
+	}
+	if (matches2) {
+	    alert("Invalid Input")
+	}
+	
+	}
+
+</script>
+<!--
+
+//-->
+</script>
+
 <t:auth>
 
 
 
 	<form class="form-signin" method="post"
-		action="${pageContext.servletContext.contextPath}/login" htmlEscape="true">
+		action=${pageContext.servletContext.contextPath}/login htmlEscape="true">
 		<div>
 			<c:if test="${!empty successMsg}">
 				<div class="alert alert-success">${fn:escapeXml(successMsg)}</div>
@@ -34,7 +60,7 @@
 
 
 			<label for="username" class="sr-only">User Name</label> <input
-				name="username" type="text" id="inputEmail" class="form-control"
+				name="username" type="text" onpaste="myFunction1()" id="inputEmail" class="form-control"
 				placeholder="User Name" required="" autofocus=""
 				autocomplete="off"> <label for="inputPassword"
 				class="sr-only">Password</label> <input name="password"
@@ -44,7 +70,7 @@
 			data-sitekey="6LcQrwwTAAAAAP1rFCMhODCuHWbbkgC9mJ2Qm6gz"></div> -->
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
+			<button class="btn btn-lg btn-primary btn-block"  onclick="myFunction2()" type="submit">Sign
 				in</button>
 
 			<p class="center">
@@ -55,32 +81,7 @@
 			<spring:htmlEscape defaultHtmlEscape="true" /> 
 		
 	</form>
-	<%-- <div id="loginBox">
-		<form name="loginForm" action="<c:url value='/customerRedirect'/>"
-			method='POST'>
-			<table>
-				<tr>
-					<td>User:</td>
-					<td><input type='text' name='username'></td>
-				</tr>
-				<tr>
-					<td>Password:</td>
-					<td><input type='password' name='password' /></td>
-					<!--  use keyboard for security -->
-				</tr>
-				<tr>
-					<td colspan='2'><input name="submit" type="submit"
-						value="Submit" /></td>
-				</tr>
-				<tr>
-			</table>
 
-			<span><a href="newUser"><button>Sign up</button></a></span> <span><a
-				href="forgotPassword"><button>Forgot Password</button></a></span>
-
-		</form>
-
-	</div> --%>
 
 	<div id="virtualKeyboard"></div>
 

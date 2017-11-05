@@ -1,5 +1,5 @@
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -36,7 +36,7 @@
 					</p>
 					<p>
 						<label>Request Amount:</label>
-						<input name="amount" type="text" class="form-control" placeholder="e.g. 10.50">
+						<input name="amount" type="text" class="form-control" required pattern="[-+]?(\d*[.])?\d+" placeholder="e.g. 10.50">
 						<form:errors path="amount" cssClass="error" element="label"/>
 					</p>
 				</div>

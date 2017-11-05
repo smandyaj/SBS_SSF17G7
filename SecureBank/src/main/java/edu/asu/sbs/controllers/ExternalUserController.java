@@ -35,6 +35,7 @@ import edu.asu.sbs.model.Otp;
 import edu.asu.sbs.model.SystemLog;
 import edu.asu.sbs.model.Transaction;
 import edu.asu.sbs.model.TransferEmailParameter;
+import edu.asu.sbs.model.VerifyCVVResult;
 import edu.asu.sbs.model.otpResult;
 import edu.asu.sbs.services.AccountService;
 import edu.asu.sbs.services.BCryptHashService;
@@ -106,8 +107,8 @@ public class ExternalUserController {
 				externalUser.getLastName(), externalUser.getEmailId(), externalUser.getPhone(),
 				externalUser.getCustomerAddress(), 0, "pending", 0, externalUser.getUserName());
 		modifiedUserService.addUser(modUser);
-		modelAndView.addObject("msg", "Profile has been submitted for approval");
-		// return modelAndView;
+		modelAndView.addObject("msg", "Profile changes hav been submitted for approval by the bank. "
+				+ "Changes will be reflected shortly");
 		return "redirect:/customer-profile";
 	}
 
@@ -127,7 +128,6 @@ public class ExternalUserController {
 	public String postCreditDebit(ModelMap model, HttpServletRequest request,
 			@ModelAttribute("transaction") Transaction transaction, BindingResult result, RedirectAttributes attr) {
 		int transCritical = 0;
-		// Get user details
 		ExternalUser user = externalUserService.findByUserName();
 		model.put("user", user);
 		
@@ -159,23 +159,22 @@ public class ExternalUserController {
 				amount, 0, 0, "pending", Integer.parseInt(request.getParameter("number")),
 				Integer.parseInt(request.getParameter("number")), 0, transCritical);
 
-		// If account is empty or null, skip the account service check
 		Account account = accountService.getAccountByNumber(Integer.parseInt(request.getParameter("number")));
 
-		// Exit the transaction if Account doesn't exist
+
 		if (account == null) {
-			System.out.println("Someone tried credit/debit functionality for some other account. Details:");
+			
 			System.out.println("Credit/Debit Acc No: " + request.getParameter("number"));
 			System.out.println("Customer ID: " + user.getCustomerId());
 			attr.addFlashAttribute("failureMsg",
-					"Could not process your transaction. Please try again or contact the bank.");
+					"Could not process your transaction. Please try again later.");
 			return "redirect:/customer/credit-debit";
 		}
 
-		// Check if Debit amount is < balance in the account
+		// if Debit amount < balance 
 		if (request.getParameter("type").equalsIgnoreCase("debit") && (account.getAccountBalance() < amount)) {
 			attr.addFlashAttribute("failureMsg",
-					"Could not process your transaction. Debit amount cannot be higher than account balance");
+					"Invalid Transaction request. Debit amount cannot be higher than account balance");
 			return "redirect:/customer/credit-debit";
 		}
 
@@ -183,17 +182,16 @@ public class ExternalUserController {
 		if (isCritical) {
 
 			String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-			System.out.println("Got session id: " + sessionId);
+			//System.out.println("Got session id: " + sessionId);
 			Random range = new Random();
 			int rand = range.nextInt(Integer.MAX_VALUE);
 			String otp = "";
 			try {
 				otp = otpService.generateOTP(8).toString();
 			} catch (InvalidKeyException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			// call the email Service
@@ -207,8 +205,7 @@ public class ExternalUserController {
 			int otpId = otpService.addOTP(otpObj);
 
 
-			String content = "You have made a new request to for Credit / Debit "
-					+ "The payment request will expire in the next 10 minutes from now.\n\n"
+			String content = "Your new request for Credit / Debit will expire in the next 10 minutes from now.\n\n"
 					+ "Please use the following OTP to accept the payment: " + "\n\n"
 					+ "You can accept the payment or cancel it.";
 
@@ -225,7 +222,7 @@ public class ExternalUserController {
 		transactionService.addTransaction(transaction);
 
 		attr.addFlashAttribute("successMsg",
-				"Transaction completed successfully. Transaction should show up on your account shortly after bank approval.");
+				"Transaction completed successfully. Transaction will be updated in your account shortly after Bank approval.");
 
 		// redirect to the credit debit view page
 		return "redirect:/customer/credit-debit";
@@ -313,10 +310,8 @@ public class ExternalUserController {
 
 		// Exit the transaction if Account doesn't exist
 		if (account == null) {
-			System.out.println("Someone tried credit/debit functionality for some other account. Details:");
-			// System.out.println("Credit/Debit Acc No: " + request.getParameter("number"));
-			// add the return attributes
-			model.put("msg", "The given account doesnt exists");
+
+			model.put("msg", "The given account does not exist.!!!");
 			return "redirect:/customer/home";
 		}
 
@@ -344,16 +339,11 @@ public class ExternalUserController {
 				receiverAccNumber = Integer.parseInt(request.getParameter("receiverAccNumberExt"));
 				System.out.println("Transfer through accountNum.");
 			}
-			/*
-			 * receiverAccNumber =
-			 * Integer.parseInt(request.getParameter("receiverAccNumberExt"));
-			 * System.out.println("external transfer");
-			 */
 
 		}
 
 		if (receiverAccNumber == Integer.parseInt(request.getParameter("senderAccNumber"))) {
-			// same account transfer not allowed
+
 			return "redirect:/customer/home";
 		}
 		List<Account> accList = null;
@@ -372,10 +362,7 @@ public class ExternalUserController {
 				}
 			}
 			receiverAccNumber = toAccount.getAccountId();
-			/*
-			 * receiverAccNumber=toAccount.getAccountId();
-			 * System.out.println("acc num="+receiverAccNumber);
-			 */
+
 
 		} else if (receiverPhoneNum != BigInteger.ZERO) {
 			receiver = externalUserService.findByPhone(receiverPhoneNum);
@@ -419,7 +406,6 @@ public class ExternalUserController {
 			senderTransaction = new Transaction(0, currentTimestamp, account.getCustomerId(), toAccount.getCustomerId(),
 					amount, status, 1, status_quo, Integer.parseInt(request.getParameter("senderAccNumber")),
 					receiverAccNumber, 0, transCritical);
-			System.out.println("Sender Transaction created: " + senderTransaction);
 
 			// Check if Debit amount is < balance in the account
 			if (account.getAccountBalance() - amount <= 0) {
@@ -699,7 +685,63 @@ public class ExternalUserController {
 	}
 	
 	
+	@RequestMapping(value="/customer/verifyCVV",method = RequestMethod.POST)
+	public String payCreditCard(@ModelAttribute("verifyCVVResult") VerifyCVVResult account) {
+		
+		Account payerAcc = accountService.getAccountByAccountId(account.getAccount_id());
+		
+		System.out.println("hello entered "+account.getAccount_id()+" "+account.getAmount());
+		ExternalUser externalUser = externalUserService.findByUserName();
+		if(externalUser ==  null) {
+			System.out.println("@@@@@@@@");
+		}
+		System.out.println("external user working "+externalUser.getCustomerId());
+		List<Account> merchantAccounts = accountService.getAccountByCustomerId(externalUser.getCustomerId());
+		Account merchant = null;
+		for(Account a:merchantAccounts)
+		{
+			if(a.getAccountType()==0)
+			{
+				merchant = a;
+				break;
+			}
+		}
+		
+		if(merchant == null) {
+			System.out.println("Redirecting to home");
+			return "redirect:/customer/home";
+		}
+		
+		System.out.println("merchant account has been set "+merchant.getCustomerId());
+		
+		int transCritical = 0;
+		
+		boolean isCritical = transactionService.isTransferCritical(account.getAmount());
+		
+		if(isCritical) {
+			transCritical = 1;
+		}
+		
+		Transaction transaction = new Transaction(3, new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()), payerAcc.getCustomerId(),
+				merchant.getCustomerId(),
+				account.getAmount(), 0, 0, "pending", account.getAccount_id(),
+				merchant.getAccountId(),0, transCritical);
+		
+		
+	    transactionService.add(transaction);
+		
+		return "redirect:/customer/home";
+		
+	}	
 	
 	
+	@RequestMapping(value="/customer/merchant-verification",method = RequestMethod.GET)
+	public String getMerchantVerification(ModelMap model) {
+		System.out.println("Merchant Verification");
+		ExternalUser user = externalUserService.findByUserName();
+		model.put("user", user);
+		model.put("verifyCVVResult", new VerifyCVVResult());
+		return "MerchantRequestBank";	
+	}
 	
 }

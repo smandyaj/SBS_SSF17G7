@@ -3,10 +3,14 @@
 <script type="text/javascript">
 </script>
 <html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+</head>
 <body>
 <%@ include file="customerMenu.jsp"%>
 <p></p>
-<table border="1">
+<table border="2">
 
 <tr>
 <th>Account Id: </th>
@@ -37,8 +41,8 @@
 
 
 		<!--  <table class="table table-striped">-->
-		<table border="1">
-			<thead>
+		<table border="2">
+			<thead >
 				<tr>
 					<th>Sender</th>
 					<th>Receiver</th>

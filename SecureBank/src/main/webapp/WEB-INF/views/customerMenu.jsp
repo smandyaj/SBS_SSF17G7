@@ -1,3 +1,4 @@
+ <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -35,8 +36,12 @@
             <li><a href=${pageContext.request.contextPath}/customer/credit-debit>Credit-Debit</a></li>
             <li><a href=${pageContext.request.contextPath}/customer/credit-home>Credit Card</a></li>
 			<li><a href=${pageContext.request.contextPath}/customer/requests-pending>Requests Pending</a></li>
+			<sec:authorize access="hasRole('MERCHANT')">
+			<li><a href=${pageContext.servletContext.contextPath}/customer/merchant-verification>Verify CVV</a></li>
+			</sec:authorize>
 			<li><a href=${pageContext.servletContext.contextPath}/customer/profile>Profile</a></li>
             <li><a href=${pageContext.servletContext.contextPath}/logout>Logout</a></li>
+            
 		</ul>
 	</div>
 	<script
@@ -46,6 +51,6 @@
 	<script
 		src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.js"></script>
 	<script
-		src="${pageContext.servletContext.contextPath}/assets/js/common.js"></script>
+		src=${pageContext.servletContext.contextPath}/assets/js/common.js></script>
 </body>
 </html>

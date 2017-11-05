@@ -3,8 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page isELIgnored="false" %>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+<%@ page isELIgnored="false"%>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous" />
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,10 +25,12 @@
 	</c:choose>
 	<br />
 
-	<spring:url value="/employee/customer-add-modify" var="employeeActionUrl" />
+	<spring:url value="/employee/customer-add-modify"
+		var="employeeActionUrl" />
 
 	<form:form class="form-horizontal" method="post"
-		modelAttribute="customerForm" action="${employeeActionUrl}" htmlEscape="true">
+		modelAttribute="customerForm" action="${employeeActionUrl}"
+		htmlEscape="true">
 
 		<form:hidden path="customerId" />
 
@@ -50,16 +55,16 @@
 				</div>
 			</div>
 		</spring:bind>
-
+		
+		<!--  IMPORTANT -->
 		<spring:bind path="customerType">
-			<div class="form-group ${status.error ? 'has-error' : ''}">
-				<label class="col-sm-2 control-label">User Type</label>
-				<div class="col-sm-10">
-					<form:input path="customerType" type="text" class="form-control "
-						id="userType" placeholder="User Type" />
-					<form:errors path="customerType" class="control-label" />
-				</div>
+		<div class="form-group ${status.error ? 'has-error' : ''}">
+			<label class="col-sm-2 control-label">User Type</label>
+			<div class="col-sm-10">
+				<form:select path="customerType" items="${customerTypes}" />
+				<form:errors path="customerType" class="control-label" />
 			</div>
+		</div>
 		</spring:bind>
 
 
@@ -91,8 +96,8 @@
 			<div class="form-group ${status.error ? 'has-error' : ''}">
 				<label class="col-sm-2 control-label">Mobile</label>
 				<div class="col-sm-10">
-					<form:input path="phone" class="form-control"
-						id="phone" placeholder="Mobile" />
+					<form:input path="phone" class="form-control" id="phone"
+						placeholder="Mobile" />
 					<form:errors path="phone" class="control-label" />
 				</div>
 			</div>
@@ -108,6 +113,16 @@
 				</div>
 			</div>
 		</spring:bind>
+
+	<!--  IMPORTANT -->
+		<div class="form-group ${status.error ? 'has-error' : ''}">
+			<label class="col-sm-2 control-label">Select Account Type</label>
+			<div class="col-sm-10">
+				<form:select path="accountType" items="${accountTypes}" />
+				<form:errors path="accountType" class="control-label" />
+			</div>
+		</div>
+
 
 		<spring:bind path="passwordHash">
 			<div class="form-group ${status.error ? 'has-error' : ''}">
@@ -133,8 +148,8 @@
 			</div>
 		</div>
 		<%--Cross site scripting protection --%>
-			<spring:htmlEscape defaultHtmlEscape="true" /> 
-		
+		<spring:htmlEscape defaultHtmlEscape="true" />
+
 	</form:form>
 
 </div>

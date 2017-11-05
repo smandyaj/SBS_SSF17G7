@@ -1,5 +1,5 @@
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -11,9 +11,9 @@
 	</div>
 
 	<div id="add-withdraw">
-		<form:form id="otp" method="POST" modelAttribute="transaction" action="${pageContext.request.contextPath}/customer/creditcard/process-otp" htmlEscape="true">
+		<form:form id="otp" method="POST" modelAttribute="transaction" action=${pageContext.request.contextPath}/customer/creditcard/process-otp htmlEscape="true">
 			<div>
-				<c:if test="${!empty successMsg}">
+				<c:if test=${!empty successMsg}>
 					<div class="alert alert-success">						
 						${fn:escapeXml(successMsg)}
 					</div>

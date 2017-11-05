@@ -23,6 +23,22 @@ public class Account{
 		return customerId;
 	}
 
+	public Account(int customerId, int accountType, double accountBalance, String accountName, Double accountLimit,
+			Integer accountDue) {
+		super();
+		this.customerId = customerId;
+		this.accountType = accountType;
+		this.accountBalance = accountBalance;
+		this.accountName = accountName;
+		this.accountLimit = accountLimit;
+		this.accountDue = accountDue;
+	}
+
+	public Account() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
 	}

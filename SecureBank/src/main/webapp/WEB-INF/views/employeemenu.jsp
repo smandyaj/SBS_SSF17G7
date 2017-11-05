@@ -35,18 +35,18 @@
 <body>
 	<div id="adminMenu">
 		<ul id="adminList">
-             <li><a href="${pageContext.servletContext.contextPath}/employee/home">Home</a></li>
-            <li><a href="${pageContext.servletContext.contextPath}/employee/customer-transaction">Add Transaction</a></li>
-            <li><a href="${pageContext.servletContext.contextPath}/employee/pending-transactions">Pending Transactions</a></li>
-            <li><a href="${pageContext.servletContext.contextPath}/employee/pending-profile">Pending Profile</a></li>
-            <li><a href="${pageContext.servletContext.contextPath}/employee/customer-list">View-Edit Customers</a></li>
+             <li><a href=${pageContext.servletContext.contextPath}/employee/home>Home</a></li>
+            <li><a href=${pageContext.servletContext.contextPath}/employee/customer-transaction>Add Transaction</a></li>
+            <li><a href=${pageContext.servletContext.contextPath}/employee/pending-transactions>Pending Transactions</a></li>
+            <li><a href=${pageContext.servletContext.contextPath}/employee/pending-profile>Pending Profile</a></li>
+            <li><a href=${pageContext.servletContext.contextPath}/employee/customer-list>View-Edit Customers</a></li>
             <sec:authorize access="hasRole('MANAGER')">
-            <li><a href="${pageContext.servletContext.contextPath}/employee/employee-add">Add Internal Users</a></li>
-            <li><a href="${pageContext.servletContext.contextPath}/employee/employee-list">View-Edit Internal Users</a></li>
+            <li><a href=${pageContext.servletContext.contextPath}/employee/employee-add>Add Internal Users</a></li>
+            <li><a href=${pageContext.servletContext.contextPath}/employee/employee-list>View-Edit Internal Users</a></li>
             </sec:authorize>
-            <li><a href="${pageContext.servletContext.contextPath}/employee/customer-add">Add Users</a></li>
-			<li><a href="${pageContext.servletContext.contextPath}/employee/profile">Profile</a></li>
-            <li><a href="${pageContext.servletContext.contextPath}/logout">Logout</a></li>
+            <li><a href=${pageContext.servletContext.contextPath}/employee/customer-add>Add Users</a></li>
+			<li><a href=${pageContext.servletContext.contextPath}/employee/profile>Profile</a></li>
+            <li><a href=${pageContext.servletContext.contextPath}/logout>Logout</a></li>
 		</ul>
 	</div>
 </body>

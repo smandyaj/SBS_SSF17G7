@@ -64,7 +64,8 @@ public class InternalUserDAOImpl implements InternalUserDAO{
 		userDAO.add(user);
 		// add to user_roles table with appropriate role
 		System.out.println("Adding to roles table");
-		String userRole = internalUser.getEmployeeType() == 0 ? "ROLE_REGULAR" : "ROLE_MANAGER";
+		String userRole = internalUser.getEmployeeType() == 0 ? "ROLE_REGULAR" 
+				: internalUser.getEmployeeType() == 1 ? "ROLE_MANAGER": "ROLE_ADMIN";
 		Role role = new Role(internalUser.getUserName(),userRole);
 		roleDAO.add(role);
 	}

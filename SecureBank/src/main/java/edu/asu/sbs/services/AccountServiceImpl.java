@@ -108,4 +108,12 @@ public class AccountServiceImpl implements AccountService{
 		return this.accountDAO.findByAccountType(customerId, type);
 	}
 
+	/** IMPORTANT **/
+	@Override
+	public void add(Account account) {
+		// TODO Auto-generated method stub
+		System.out.println("Adding account1");
+		accountDAO.add(account);
+	}
+
 }

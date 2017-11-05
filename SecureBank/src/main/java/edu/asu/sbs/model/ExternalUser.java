@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "external_users")
@@ -42,6 +43,18 @@ public class ExternalUser
 	@Column(name = "password_hash")
 	private String passwordHash;
 	
+	/** IMPORTANT **/
+	@Transient
+	String accountType;
+	
+	public String getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
+	}
+
 	public String getPasswordHash() {
 		return passwordHash;
 	}

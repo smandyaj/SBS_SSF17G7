@@ -5,7 +5,10 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -114,12 +117,18 @@ public class InternalUserController {
 		return modelAndView;
 	}
 	
+	/** IMPORTANT **/
 	@RequestMapping(value="/admin/employee-add")
 	public ModelAndView addInternalUserPage() {
 		System.out.println("Add new user page");
 		ModelAndView modelAndView = new ModelAndView("admin-adduser");
 		modelAndView.addObject("employee", "new");
 		modelAndView.addObject("employeeForm", new InternalUser());
+		Map<Integer,String> employeeType = new LinkedHashMap<Integer,String>();
+		employeeType.put(0, "Regular");
+		employeeType.put(1, "Manager");
+		employeeType.put(2, "Admin");
+		modelAndView.addObject("employeeTypes", employeeType);
 		return modelAndView;
 	}
 	
@@ -492,6 +501,18 @@ public class InternalUserController {
 		ModelAndView modelAndView = new ModelAndView("int-addcustomer");
 		modelAndView.addObject("customer", "new");
 		modelAndView.addObject("customerForm", new ExternalUser());
+		/** IMPORTANT **/
+
+		Map<String,String> accountType = new LinkedHashMap<String,String>();
+		accountType.put("0", "Savings");
+		accountType.put("1", "Checking");
+		accountType.put("2", "Credit");
+		modelAndView.addObject("accountTypes", accountType);
+		
+		Map<Integer,String> userType = new LinkedHashMap<Integer,String>();
+		userType.put(0, "Regular");
+		userType.put(1, "Merchant");
+		modelAndView.addObject("customerTypes", userType);
 		return modelAndView;
 	}
 	
@@ -508,7 +529,7 @@ public class InternalUserController {
 
 	}
 	
-	@RequestMapping(value="/employee/customer-delete/{id}", method = RequestMethod.GET)
+	@RequestMapping(value="/employee/customer-delete/{id}", method = RequestMethod.POST)
 	public ModelAndView deleteCutomerForManager(@PathVariable Integer id,HttpServletRequest request){
 		boolean isManager = request.isUserInRole("ROLE_MANAGER");
 		System.out.println("Deleting the customer");
@@ -536,7 +557,7 @@ public class InternalUserController {
 		System.out.println("Adding/Modifying new customer and redirecting" + externalUser.getPasswordHash());
 		
 		if( externalUser.getCustomerId() == 0) {
-			System.out.println("Add User" + externalUser.getCustomerId());
+			System.out.println("Add User ::" +externalUser.getCustomerType());
 			externalUserService.addUser(externalUser);	
 		}else {
 			System.out.println("Modify User" + externalUser.getCustomerId());

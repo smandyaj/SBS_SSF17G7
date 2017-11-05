@@ -9,5 +9,15 @@
 </head>
 <body>
 <%@ include file="adminmenu.jsp"%>
+<div class="container">
+<c:if test="${not empty msg}">
+			<div class="alert alert-${css} alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<strong>${msg}</strong>
+			</div>
+		</c:if>
+</div>
 </body>
 </html>

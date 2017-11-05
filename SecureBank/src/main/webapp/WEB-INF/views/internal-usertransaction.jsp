@@ -15,7 +15,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
 	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.js"></script>
-	<script src="${pageContext.servletContext.contextPath}/assets/js/transaction.js"></script>
+	<script src=${pageContext.servletContext.contextPath}/assets/js/transaction.js></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Internal User - Transaction</title>
 <%@ include file="employeemenu.jsp" %>

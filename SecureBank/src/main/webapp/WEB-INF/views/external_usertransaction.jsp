@@ -24,7 +24,7 @@
 	src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
 <script
 	src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.js"></script>
-<!-- <script src="${pageContext.servletContext.contextPath}/assets/js/transaction.js"></script> -->
+ <script src=${pageContext.servletContext.contextPath}/assets/js/inputValidate.js></script> 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>External User - Transaction</title>
 <%@ include file="customerMenu.jsp"%>
@@ -212,7 +212,7 @@
 									class="external-transfer transfer-option-btn"> <label>Beneficiary
 										Phone Number:</label> 
 										<input type="text" class="form-control"
-									id="textPhone" name="receiverPhoneNumber"
+									id="textPhone" onkeypress="return isNum(event)" name="receiverPhoneNumber"
 									placeholder="eg: 480***27**"></span> <br> <span> <input
 									type="radio" name="modes" id="radioEmail"
 									value="receiverEmailId"
@@ -226,13 +226,13 @@
 									><label>Beneficiary Account
 										Number:</label> 
 										<input type="text" class="form-control"
-									id="textAccNum" name="receiverAccNumberExt"
+									id="textAccNum" onkeypress="return isNum(event)" name="receiverAccNumberExt"
 									placeholder="eg: 1234567898764567"></span>
 							</div>
 							<hr>
 							<p>
 								<label>Amount to be Transferred:</label> <input name="amount"
-									type="text" class="form-control" placeholder="e.g. 10.50">
+									type="text" class="form-control" onkeypress="return isNumberKey(event)" placeholder="e.g. 10.50">
 								<form:errors path="amount" cssClass="error" element="label" />
 							</p>
 						</div>

@@ -36,7 +36,9 @@ public interface ExternalUserDAO {
 	void add(ModifiedUser user);
 
 	public ExternalUser findByCustomerId(Integer customerId);
-	void add(ExternalUser user);
+	
+	/** IMPORTANT **/
+	int add(ExternalUser user);
 	
 	void update(ExternalUser user);
 

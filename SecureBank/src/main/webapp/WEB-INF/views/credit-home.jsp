@@ -2,7 +2,8 @@
 <script type="text/javascript">
 </script>
 <html>
-
+<head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+</head>
 <body>
 <%@ include file="customerMenu.jsp"%>
 
@@ -15,14 +16,14 @@
 <tr>
 <th>accountId</th>
 <th>Current balance</th>
-<th>Detailes</th>
+<th>Details</th>
 </tr>
   		
  	<c:forEach var="account" items="${accounts}">
    <tr>
    <td>${account.accountId}</td>
     <td>${account.accountBalance}</td> 
-      <td><a href=${pageContext.request.contextPath}/customer/creditcard/${account.accountId} >Detailes</a>
+      <td><a href=${pageContext.request.contextPath}/customer/creditcard/${account.accountId} >Details</a>
 
             </td> 
     </tr>

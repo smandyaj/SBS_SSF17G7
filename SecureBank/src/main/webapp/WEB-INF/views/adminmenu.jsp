@@ -34,7 +34,7 @@
 <body>
 	<div id="adminMenu">
 		<ul id="adminList">
-			<li><a href=#>Home</a></li>
+			<li><a href=${pageContext.request.contextPath}/admin/employee-list>Home</a></li>
 			<li><a href=${pageContext.request.contextPath}/admin/employee-list>PII And Employee Management</a></li>
 			<li><a href=${pageContext.request.contextPath}/admin/requests-pending>Requests Pending</a></li>
 			<li><a href=${pageContext.request.contextPath}/admin/systemlogs>System Log</a></li>

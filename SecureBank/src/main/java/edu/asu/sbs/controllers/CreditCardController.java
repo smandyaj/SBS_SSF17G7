@@ -145,8 +145,7 @@ public class CreditCardController {
 		int otpId = otpService.addOTP(otpObj);
 		
 		
-		String content = "You have made a new request to for Credit / Debit "
-				+ "The payment request will expire in the next 10 minutes from now.\n\n"
+		String content = "Your new request for Credit / Debit will expire in the next 10 minutes from now.\n\n"
 				+ "Please use the following OTP to accept the payment: " + "\n\n"
 				+ "You can accept the payment or cancel it.";
 
