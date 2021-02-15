@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,18 +12,10 @@
 <title>Systems Log</title>
 </head>
 <body>
-<jsp:include page="adminMenu.jsp" />
+<!--  jsp:include page="adminMenu.jsp" /-->
 <div class="container">
-<c:if test="${not empty msg}">
-			<div class="alert alert-${css} alert-dismissible" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<strong>${msg}</strong>
-			</div>
-		</c:if>
 
-		<h1>All employeess</h1>
+		<h1>All employee - ${msg} </h1>
 
 		<table class="table table-striped">
 			<thead>
@@ -34,14 +27,14 @@
 				</tr>
 			</thead>
 
-			<c:forEach var="logs" items="${systemLogs}">
+			<c:forEach var="systemLog" items="${systemLogList}">
 				<tr>
 					<td>
-						${logs.timeStamp}
+						${systemLog.logTime}
 					</td>
-					<td>${logs.firstName}</td>
-					<td>${logs.lastName}</td>
-					<td>${logs.action}</td>
+					<td>${systemLog.firstName}</td>
+					<td>${systemLog.lastName}</td>
+					<td>${systemLog.action}</td>
 				</tr>
 			</c:forEach>
 		</table>

@@ -17,6 +17,7 @@ public class SBSWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public ViewResolver viewResolver() {
+		System.out.println("Configuring Spring..");
 		InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
 		internalResourceViewResolver.setViewClass(JstlView.class);
 		internalResourceViewResolver.setPrefix("/WEB-INF/views/");
