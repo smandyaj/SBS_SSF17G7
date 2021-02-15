@@ -1,0 +1,41 @@
+import java.io.IOException;
+import java.util.List;
+
+import com.gnostice.pdfone.PDFOne;
+import com.gnostice.pdfone.PdfDocument;
+import com.gnostice.pdfone.PdfException;
+import com.gnostice.pdfone.PdfFormField;
+import com.gnostice.pdfone.PdfFormSignatureField;
+import com.gnostice.pdfone.PdfRect;
+import com.gnostice.pdfone.PdfSignature;
+
+
+public class PKIService {
+
+  public static void main(String[] args) throws IOException, PdfException {
+	  String pkcs12FileName = args[0].trim();
+		String pdfInputFileName = args[1];
+		String outputfile=args[2];
+    // Load an existing PDF document
+		System.out.println(pkcs12FileName);
+		System.out.println(pdfInputFileName);
+    PdfDocument doc = new PdfDocument();
+    doc.load(pdfInputFileName);
+
+    // Add signature to the  document
+    doc.addSignature(pkcs12FileName,  // pathname of PFX 
+            "QAZ?@741",                               // password for PFX
+            "This is 100% genuine.",                  // description
+            "State Bank of USA",                      // reason
+            "cse545g7@gmail.com",                       // contact info
+            1,                                        // page number
+            "fldsig",                                 // field name
+            new PdfRect(400,10,250,70));              // location
+
+    // Save the document to file
+    doc.save(outputfile);
+
+    // Close IO resources
+    doc.close();
+  }
+}
