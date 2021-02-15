@@ -1,6 +1,7 @@
 package edu.asu.sbs.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ public class SystemLog {
 	private int id;
 	
 	@Column(name= "login_time")
-	private Date logTime;
+	private Timestamp logTime;
 	
 	@Column(name = "first_name")
 	private String firstName;
@@ -35,11 +36,11 @@ public class SystemLog {
 	@Column(name = "action")
 	private String action;
 
-	public Date getLogTime() {
+	public Timestamp getLogTime() {
 		return logTime;
 	}
 
-	public void setLogTime(Date logTime) {
+	public void setLogTime(Timestamp logTime) {
 		this.logTime = logTime;
 	}
 
@@ -67,7 +68,7 @@ public class SystemLog {
 		this.action = action;
 	}
 
-	public SystemLog(Date logTime, String firstName, String lastName, String action) {
+	public SystemLog(Timestamp logTime, String firstName, String lastName, String action) {
 		super();
 		this.logTime = logTime;
 		this.firstName = firstName;
